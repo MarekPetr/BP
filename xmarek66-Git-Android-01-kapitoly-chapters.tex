@@ -18,24 +18,24 @@ Git annex řeší stejný problém jako Git LFS, ale mírně odlišným způsobe
 \chapter{Průzkum existujících řešení}
 Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace operačního systému Android, tak na desktopové operační systémy Linux a Windows.
 
-    \subsection {Android}
+    \section {Android}
     Pro operační systémy Android je trh s řešeními Gitu velice omezený. Existují zde aplikace s podporou pouze pro čtení repozitáře či takové, které zvládají i ostatní základní příkazy Gitu.
-    \subsubsection{MGit}
+    \subsection{MGit}
     Za zmínku z nich stojí \emph{MGit}. Bohužel neposkytuje podporu pro \emph{git-lfs} ani \emph{git-annex}. K implementaci funkcí Gitu využívá knihovnu \emph{JGit}. Ta sice v aktuální verzi podporuje \emph{git-lfs}, ale v té, kterou aplikace využívá ji ještě nemá. Ale 
     má otevřený kód a její ovládání je velice intuitivní.
     Základní ovládací prvek aplikace je drawer, který se vysunuje tlačítkem umístěném v pravém horním rohu. V něm jsou obsaženy všechny funkce Gitu. Tedy jeho užívání není při porozumění obecného užívání Gitu nijak náročné. Tato aplikace má integrovaný prohlížeč souborů i jejich editování. Ovšem tento editor není dokonalý. Špatně se v něm posouvá kurzor a navíc nemaže konce řádků. Práce s ním je tedy spíše na obtíž. Naštěstí zde autoři přidali i možnost zvolení vlastního editoru z nainstalovaných aplikací.
 
-    \subsubsection{Pocket Git}
+    \subsection{Pocket Git}
     Dále existuje například aplikace \emph{Pocket Git}. Ta je placená a její kód není veřejně přístupný. Využívá integrovaného správce souborů, ale editor již nechává plně na jiných aplikacích. \emph{Pocket Git} má na první pohled přehlednější uživatelské rozhraní. Jednotlivé funkce gitu rozděluje do různých kategorií a vedle souborů přidává ikonku o jeho stavu. Nicméně \emph{Add} a \emph{Commit} jsou natolik integrované do prohlížeče souborů, že jejich správné použití není vůbec intuitivní. Navíc při práci s tou aplikací často narazíte na nejednoznačná chybová hlášení, která neobsahují bližší popis chyby.
 
-    \subsubsection{Termux}
+    \subsection{Termux}
     Pro vývojáře upřednostňující příkazový řádek je možnost instalace aplikace \emph{Termux} a nainstalování Gitu do prostředí jeho terminálu. Tam je i možné doinstalovat rozšíření \emph{git-lfs} a \emph{git-annex}. \emph{Git-lfs} lde doinstalovat přímo jako balíček. \emph{Git-annex} je možné stáhnout z \url{https://git-annex.branchable.com/} a dle návodu uvést do provozu. Obě tato rozšíření lze ovládat z příkazové řádky, přičemž \emph{git-annex} i přes uživatelské rozhraní. To je implementováno v prohlížeči. Tato webová aplikace je přehledná i pro mobilní zařízení a umožňuje synchronizaci souborů mezi repozitáři různých zařízení.
 
-    \subsection {Desktop}
-    \subsubsection{GitKraken}
+    \section {Desktop}
+    \subsection{GitKraken}
     Na Linux či Windows existuje mnoho aplikací, které práci s repozitáři zvládají velice dobře. Nicméně prostředí Androidu je od toho desktopového natolik rozdílné, že prostor pro inspiraci je značně omezený. Dobré zkušenosti mám například s aplikací \emph{GitKraken}. Ta zobrazuje repozitář přehledně ve stromové struktuře. V ní lze přímo najetím myši na uzel provádět změny. Funkce Gitu má přehledně zobrazené v horním panelu. Navíc jsou zde dobře řešeny konflikty v souborech. Na jedné straně obrazovky vidíte jednu verzi a na druhé straně druhou. Ve spodní části obrazovky se generuje nová verze. Tu vytváříte postupným procházením obou současných verzí a vybíráním vyhovující varianty. \emph{GitKraken} umí pracovat i s \emph{git-lfs}. K ovládání takto sledovaných souborů používá zvláštní vysouvací nabídku s funkcemi \emph{git-lfs}. Ta se v případě práce s repozitářem podporující toto rozšíření zobrazí vedle základních funkcí. Které soubory takto sleduje lze měnit v nastavení repozitáře či při přidávání souborů do stage.
 
-    \subsubsection{Ungit}
+    \subsection{Ungit}
     Na první pohled dobrým dojmem působí i aplikace \emph{Ungit}. Ta vás při každé akci naviguje krok po kroku a usnadňuje tak používání Gitu pro méně zkušené uživatele. Jedná se o webovou aplikaci založenou na \emph{node.js}. Pro její instalaci je třeba příkazová řádka, pro spuštění pak webový prohlížeč. Její hlavní výhoda je tedy nezávislost na platformě. Její ovládání je rychlé, jelikož aplikace zjednodušuje určité procedury Gitu. Například sama nabízí \emph{Commit} bez nutnosti přidávát soubory do \emph{Stage}. Nicméně aplikace tím zapouzdřuje většinu funkcí. Na základní obrazovce kromě stromu změn repozitáře není další ovládací prvek a aplikace se tak v konečném důsledku jeví až příliš uzavřeně.
 
     \section{Zhodnocení průzkumu}
@@ -55,29 +55,48 @@ Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace o
         \item Bude využívat externí správce souborů i textový editor
     \end{enumerate}
 
-    \subsection{Funkce Gitu}
+    \section{Funkce Gitu}
     Jelikož žádné aplikace pro Android kromě \emph{Termux} neimplementují rozšíření \emph{git-annex} a nenalezl jsem knihovnu, která by toto dokázala, rozhodl jsem se pro ně využít zkompilované binární soubory. Ty bude aplikace volat pro provedení funkcí Gitu.
     V případě repozitáře podporujícího \emph{git-lfs} k nim přibudou i příkazy starající se o soubory sledované tímto rozšířením. K implementaci \emph{Git-annex} využiji existující webové rozhraní. Velké množství příkazů spojené s tímto rozšířením by aplikaci udělalo nepřehlednou. Navíc obě rozšíření řeší stejný problém, přičemž větší podporu od ostatních aplikací i serverů má \emph{git-lfs}. Pokud tedy uživatel bude chtít mít vše plně pod kontrolou, využije \emph{git-lfs}. Pokud bude chtít jednoduché uživatelské rozhraní, které jednoduše splní funkci synchronizace souborů, zvolí \emph{git-annex}.
 
-    \subsection{Architektura aplikace}
+    \section{Architektura aplikace}
     Aplikace je psána v jazyce \emph{Java}. Pro tento jazyk existuje velké množství materiálů a implementace tak může být kvalitnější a rychlejší, než za použití jazyku \emph{Kotlin}.
+
+    \subsection{Balíčky}
     Podle zaměření tříd je aplikace dělena do třech základních balíčků. Jsou jimi \emph{java}, \emph{assets}, a \emph{res}. V balíčku \emph{Java} je specifikováno chování aplikace. Balíček \emph{assets} obsahuje soubory nutné pro běh aplikace. V této aplikaci to budou binární spustitelné soubory Gitu. Posledním balíčkem je \emph{res}. Ten obsahuje všechny layouty, ikony a další grafické i textové prvky, které aplikace používá pro grafické rozhraní.
 
-        \subsubsection{Java} 
-        Nejdůležitější balíček v balíčku \emph{Java} je \emph{activities}. Ten aplikaci dělí na obrazovky a o každou z nich se stará jedna třída. Tedy v případě, že aplikace potřebuje určitou obrazovku, je zavolána příslušná aktivita s jejím chováním.
+        \subsubsection{activities}
+        Nejdůležitější součást balíčku \emph{Java} je balíček \emph{activities}. Ten aplikaci dělí na obrazovky a o každou z nich se stará jedna třída. Tedy v případě, že aplikace potřebuje určitou obrazovku, je zavolána příslušná aktivita s jejím chováním. Všechny aktivity aplikace rozšiřují základní aktivitu \emph{BasicAbstractActivity}. Ta implementuje společné prvky rozhraní aktivit. Například získávání oprávnění, zobrazení různých oznámení či dialogů.
 
-        Základní funkce Gitu i jeho rozšíření \emph{git-annex} a \emph{git-lfs}, jsou implementovány v balíčku \emph{tasks}. Tyto třídy rozšiřují základní třídu \emph{GitExecuter} využívající \emph{ProcessBuilder}. Ta spustí binární soubor, který vykoná danou funkci Gitu na zařízení.
+        \subsubsection{adapters}
+        Tento balíček obsahuje třídy, které slouží k zobrazení položek stejného typu. Tato aplikace je využívá k zobrazení seznamu repozitářů základní obrazovky a funkcí Gitu v bočním výsuvném panelu.  
 
-        Dále zde bude balíček \emph{exceptions}, starající se o chybová hlášení, \emph{preference}, ukládající potřebné informace do paměti zařízení a \emph{dialogs}, který obsahuje třídy dialogů.
+        \subsubsection{database}
+        Tento balíček obsahuje balíček \emph{model}, ve kterém se nachází třída Repo. Ta implementuje tabulku databáze uchovávající všechny potřebné informace o repozitáři. Instance databáze se uchovává ve třidě \emph{RepoDatabase}. K přístupu k ní se využívá třídu \emph{RepoDao}. Tato třída obsahuje metody volající \emph{SQL} dotazy databáze. Aplikaci je databáze zprostředkována třídou \emph{RepoRepository}.
 
-        O instalaci binárních souborů se stará třída \emph{AssetImporter} v balíčku \emph{importer}, která při prvním spuštění zkopíruje potřebné zkompilované programy ze složky \emph{assets} do zařízení.
+        \subsubsection{fragments}
+        Fragmenty, které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace používá fragmenty k instalaci a nastavení.
 
-    \subsection{Manipulace se soubory}
-    Pro prohlížení souborů repozitářů využiji výchozí průzkumník souborů daného zařízení. Uživatel si bude moci vybrat jaký správce souborů mu vyhovuje a předejde se tak problémů příliš jednoduchého či naopak složitého prohlížeče. Systém Android podporuje symbolické odkazy a neměl by zde tedy nastat větší technický problém.
-    Jelikož úprava souborů bude probíhat v průzkumníku souborů, textový editor bude rovněž využit z externích aplikací.
+        \subsubsection{installer}
+        O instalaci binárních souborů se stará třída \emph{AssetInstaller} v balíčku \emph{installer}. Ta při prvním spuštění aplikace zkopíruje potřebné soubory ze složky \emph{assets} do interní paměti zařízení. Systém Android podporuje symbolické odkazy. Ovšem při kopírování souboru symbolického odkazu dochází ke kopírování souboru, na který odkaz odkazuje, nikoliv samotného odkazu. Proto je nutné tyto odkazy vytvářet během instalace zvlášť.
 
-    \subsection{Grafické uživatelské rozhraní}
-    Jelikož jsem již tušil jakým směrem se bude funkční část aplikace odebírat, rozhodl jsem se vytvořit i základní snímky uživatelského rozhraní. Rozhraní se nejvíce inspiruje aplikací \emph{MGit} a přidává prvky vzniklé z požadavků na aplikaci. \emph{Merge} se mírně inspiruje jeho zpracováním \emph{Git-krakenem}. Ovšem pro menší obrazovky bude používat jen rozdělené obrazovky na dvě poloviny, přičemž vybraná verze změny bude barevně odlišena.
+        \subsubsection{tasks}
+        Základní funkce Gitu i jeho rozšíření \emph{git-annex} a \emph{git-lfs}, jsou implementovány v balíčku \emph{tasks}. Tyto třídy rozšiřují základní třídu \emph{AbstractExecutor} využívající \emph{ProcessBuilder}. Ta spustí binární soubor, který vykoná danou funkci Gitu na zařízení.
+
+        \subsubsection{utilities}
+        Jedná se o statické metody a proměnné, které jsou použitelné kdekoliv v aplikaci.
+
+        \subsubsection{view\_models}
+        Třídy obsahující perzistentní data a implementující logiku nad nimi.
+
+    \newpage
+    \section{Manipulace se soubory}
+    Průzkumník souborů je možné implementovat různými způsoby s různým stupněm jeho komplexnosti. Proto je pro prohlížení souborů repozitářů využíváno externího aplikace. Uživateli je tak ponechána volnost při jeho volbě a předejde se tak hledání kompromisů pro jeho implementaci.
+
+    Jelikož úprava souborů probíhá za použití průzkumníku souborů, je logické, že textový editor je rovněž využit z externích aplikací.
+
+    \section{Grafické uživatelské rozhraní}
+    Jelikož jsem již tušil jakým směrem se bude funkční část aplikace odebírat, rozhodl jsem se vytvořit i základní snímky uživatelského rozhraní. Rozhraní se nejvíce inspiruje aplikací \emph{MGit} a přidává prvky vzniklé z požadavků na aplikaci.
 
     Dále je zde navrhnuto zpracování rozlišení repozitářů, které podporují jedno z rozšíření. V případě, že repozitář bude podporovat \emph{git-lfs} přidají se dané funkce do draweru k ostaním funkcím Gitu. Dále se do nastavení repozitáře \emph{Edit repository} přidá možnost změnit sledované soubory tímto rozšířením podle jejich přípony.
 
