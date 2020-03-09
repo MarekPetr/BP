@@ -48,6 +48,7 @@ Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace o
 %------------CHAPTER--------------
 \chapter{Vývoj aplikací pro systém Android}
 
+%------------CHAPTER--------------
 \chapter{Návrh aplikace}
     Dle zhodnocení průzkumu a vlastních zkušeností jsem usoudil, že aplikace bude
     \begin{enumerate}
@@ -62,8 +63,12 @@ Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace o
     V případě repozitáře podporujícího \emph{git-lfs} nebo \emph{Git-annex} k nim přibudou i příkazy starající se o soubory sledované těmito rozšířeními. Tyto příkazy budou dostupné při otevření repozitáře v bočním výsuvném panelu aplikace.
 
     \section{Architektura aplikace}
-    Aplikace je psána v jazyce \emph{Java}. Pro tento jazyk existuje velké množství materiálů a implementace tak může být kvalitnější a rychlejší, než za použití jazyku \emph{Kotlin}.
-    Dále využívá návrhového vzoru \emph{Model–view–viewmodel} (dále jen MVVM) a \emph{SQLite} databáze. K přístupu k databázi používá \emph{Room Persistence Library} (dále jen Room). Tato knihovna poskytuje abstraktní vrstvu nad databází \emph{SQLite}, zajišťující robustní přístup při plném využití potenciálu tohoto systému řízení báze dat.
+
+        \subsection{Programovací jazyk - Kotlin vs. Java}
+        Od 7. května 2019 se \emph{Kotlin} stal preferovaným jazykem vývoje pro Android. Proto jsem od začátku plánoval programovat aplikaci právě v něm. Nicméně během programování aplikace jsem zjistil, že naprostá většina zdrojů na internetu pro řešení problémů pro tuto platformu je psána v Javě. Android studio sice umožňuje zkonvertovat kód do Kotlinu, nicméně ani to není to vždy dokonalé. Užití Kotlinu má tu výhodu, že dovoluje programátorovi vynechat určité části kódu, které jsou nutné pro běh aplikace, ale přímo neřeší daný problém. V angličtině se pro ně vžil výraz boiler-plate code. Ovšem tento kód je přesto třeba vygenerovat, ale o to se již stará Kotlin. To je také jeden z důvodů, proč Kotlin trvá déle zkompilovat. Pokročilým Android developerům jistě přijde rychlejí práce vhod, ale jako začínají programátor na této platformě více ocením transparetnost Javy. Pokud totiž části, které Kotlin generuje automaticky budete chtít využít, musíte vědět, jakým způsobem jsou generovány. V konečném důsledku je tedy mnohdy hledáte déle, než kdyby jste je naprogramovali sami.
+
+        Aplikace je psána v jazyce \emph{Java}. Pro tento jazyk existuje velké množství materiálů a implementace tak může být kvalitnější a rychlejší, než za použití jazyku \emph{Kotlin}.
+        Dále využívá návrhového vzoru \emph{Model–view–viewmodel} (dále jen MVVM) a \emph{SQLite} databáze. K přístupu k databázi používá \emph{Room Persistence Library} (dále jen Room). Tato knihovna poskytuje abstraktní vrstvu nad databází \emph{SQLite}, zajišťující robustní přístup při plném využití potenciálu tohoto systému řízení báze dat.
 
         \subsection{Databáze}
 

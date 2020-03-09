@@ -7,7 +7,7 @@
 # asi budete chtit prejmenovat / you will probably rename:
 CO=xmarek66-Git-Android
 
-all: $(CO).pdf
+all: pdf clean_garb
 
 pdf: $(CO).pdf
 
@@ -30,6 +30,9 @@ clean:
 	rm -f *.dvi *.log $(CO).blg $(CO).bbl $(CO).toc *.aux $(CO).out $(CO).lof $(CO).ptc
 	rm -f $(CO).pdf
 	rm -f *~
+
+clean_garb:
+	rm -f *.dvi *.log $(CO).blg $(CO).bbl $(CO).toc *.aux $(CO).out $(CO).lof $(CO).ptc
 
 pack:
 	tar czvf $(CO).tar.gz *.tex *.bib *.bst ./template-fig/* ./bib-styles/* ./cls/* zadani.pdf $(CO).pdf Makefile Changelog
