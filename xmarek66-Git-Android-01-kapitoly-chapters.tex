@@ -15,12 +15,16 @@ Git slouží zejména programátorům k verzování jejich práce, popřípadě
 Git Large File Storage (LFS) nahrazuje velké soubory v repozitářích ukazateli. Samotné soubory jsou pak uloženy na vzdáleném serveru.
 
 \subsection{Git Annex}
-Git annex řeší stejný problém jako Git LFS, ale mírně odlišným způsobem. V repozitáři je uložen symbolický odkaz na klíč, který je hash daného souboru. Samotný soubor je pak uložen v adresáři \emph{.git/annex/}. Při změně souboru se mění jen jeho hash a aktualizuje symbolický odkaz. Tímto způsobem je zajištěno šetření místa, jelikož samotný soubor je v repozitáři uložen maximálně jeden.
+Git annex řeší stejný problém jako Git LFS, ale mírně odlišným způsobem. V repozitáři je uložen symbolický odkaz na klíč, který je hash daného souboru. Samotný soubor je pak uložen v adresáři \emph{.git/annex/}. Při změně souboru se mění jen jeho hash a aktualizuje symbolický odkaz. Tímto způsobem je zajištěno šetření místa, jelikož samotný soubor je v repozitáři uložen maximálně jednou.
 
 \chapter{Specifikace řešení}
-Hlavním cilem aplikace je nabídnout uživatelům řešení pro verzování synchronizaci souborů jejich Git repozitářů na zařízení systému Android.
+Hlavním cilem aplikace je nabídnout uživatelům řešení pro verzování a synchronizaci souborů jejich Git repozitářů na zařízení systému Android.
 
 \section{Funkce aplikace}
+Hlavním účelem aplikace je co nejjednodušší správa Git repozitářů. K tomuto účelu bude mít aplikace dvě základní funkce - správa repozitářů a funkce Gitu.
+
+\subsection{správa repozitářů}
+Aplikace bude především umět základní správu repozitářů na zařízení. Nejprve uživatel přidá repozitář. Bude moci přidat již existující lokální repozitář, inicializovat nový nebo klonovat vzdálený. Při otevření repozitáře nad ním může provádět základní funkce Gitu a také některé vybrané funkce již zmíněných rozšíření. V případě úplného ukončení práce s repozitářem ho může přímo z aplikace ze zařízení smazat.
 
 \section{Cílová skupina}
 
