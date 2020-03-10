@@ -26,6 +26,9 @@ $(CO).dvi: $(CO).tex $(CO).bib
 	latex $(CO)
 	latex $(CO)
 
+remove_pdf:
+	rm -f $(CO).pdf
+
 clean:
 	rm -f *.dvi *.log $(CO).blg $(CO).bbl $(CO).toc *.aux $(CO).out $(CO).lof $(CO).ptc
 	rm -f $(CO).pdf

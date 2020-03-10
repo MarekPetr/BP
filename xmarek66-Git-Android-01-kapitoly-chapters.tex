@@ -1,7 +1,7 @@
 % Tento soubor nahraďte vlastním souborem s obsahem práce.
 %=========================================================================
 % Autoři: Michal Bidlo, Bohuslav Křena, Jaroslav Dytrych, Petr Veigend a Adam Herout 2019
-%------------CHAPTER--------------
+%-----------------------------------CHAPTER------------------------------------
 \chapter{Úvod}
 Trend poslední doby byl a stále je neustálé zvětšování obrazovek zařízení i jejich výkonu. Dostali jsme se již do takové fáze, že je tyto zařízení možné využívat obdobně jako klasické počítače a tak je jejich využití pro synchronizaci souborů na snadě.
 Vyvíjená aplikace poskytuje systém, který může každý uživatel využít pro svůj účel a svým způsobem. Nejčastěji jet Git využíván programátory pro verzování souborů vyvíjených programů. Rozšíření Git LFS a Git Annex pak pro přidání velkých souborů do těchto repozitářů. Jejich využitím se dosáhne efektivity využití prostoru zařízení a současně plného využití systému Git. Tyto rozšíření lze ale využívat i samostatně. Například pro ukládání videí nebo i jiných velkých souborů na externí úložiště pro pozdější synchronizaci mezi různými zařízeními různých systémů.
@@ -17,18 +17,22 @@ Git Large File Storage (LFS) nahrazuje velké soubory v repozitářích ukazatel
 \subsection{Git Annex}
 Git annex řeší stejný problém jako Git LFS, ale mírně odlišným způsobem. V repozitáři je uložen symbolický odkaz na klíč, který je hash daného souboru. Samotný soubor je pak uložen v adresáři \emph{.git/annex/}. Při změně souboru se mění jen jeho hash a aktualizuje symbolický odkaz. Tímto způsobem je zajištěno šetření místa, jelikož samotný soubor je v repozitáři uložen maximálně jednou.
 
+
+%-----------------------------------CHAPTER------------------------------------
 \chapter{Specifikace řešení}
 Hlavním cilem aplikace je nabídnout uživatelům řešení pro verzování a synchronizaci souborů jejich Git repozitářů na zařízení systému Android.
 
 \section{Funkce aplikace}
 Hlavním účelem aplikace je co nejjednodušší správa Git repozitářů. K tomuto účelu bude mít aplikace dvě základní funkce - správa repozitářů a funkce Gitu.
 
-\subsection{správa repozitářů}
-Aplikace bude především umět základní správu repozitářů na zařízení. Nejprve uživatel přidá repozitář. Bude moci přidat již existující lokální repozitář, inicializovat nový nebo klonovat vzdálený. Při otevření repozitáře nad ním může provádět základní funkce Gitu a také některé vybrané funkce již zmíněných rozšíření. V případě úplného ukončení práce s repozitářem ho může přímo z aplikace ze zařízení smazat.
+\subsection{Správa repozitářů}
+Aplikace bude především umět základní správu repozitářů na zařízení. Nejprve uživatel přidá repozitář. Bude moci přidat již existující lokální repozitář, inicializovat nový nebo klonovat vzdálený. V případě úplného ukončení práce s repozitářem ho může přímo z aplikace ze zařízení smazat.
+
+\subsection{Funkce Gitu}
+Při otevření repozitáře nad ním může provádět základní funkce Gitu a také některé vybrané funkce již zmíněných rozšíření.
 
 \section{Cílová skupina}
 
-%------------CHAPTER--------------
 \section{Průzkum existujících řešení}
 Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace operačního systému Android, tak na desktopové operační systémy Linux a Windows.
 
@@ -42,7 +46,7 @@ Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace o
     Dále existuje například aplikace \emph{Pocket Git}. Ta je placená a její kód není veřejně přístupný. Využívá integrovaného správce souborů, ale editor již nechává plně na jiných aplikacích. \emph{Pocket Git} má na první pohled přehlednější uživatelské rozhraní. Jednotlivé funkce gitu rozděluje do různých kategorií a vedle souborů přidává ikonku o jeho stavu. Nicméně \emph{Add} a \emph{Commit} jsou natolik integrované do prohlížeče souborů, že jejich správné použití není vůbec intuitivní. Navíc při práci s tou aplikací často narazíte na nejednoznačná chybová hlášení, která neobsahují bližší popis chyby.
 
     \subsubsection{Termux}
-    Pro vývojáře upřednostňující příkazový řádek je možnost instalace aplikace \emph{Termux} a nainstalování Gitu do prostředí jeho terminálu. Tam je i možné doinstalovat rozšíření \emph{Git LFS} a \emph{Git Annex}. \emph{Git LFS} lde doinstalovat přímo jako balíček. \emph{Git Annex} je možné stáhnout z \url{https://Git Annex.branchable.com/} a dle návodu uvést do provozu. Obě tato rozšíření lze ovládat z příkazové řádky, přičemž \emph{Git Annex} i přes uživatelské rozhraní. To je implementováno v prohlížeči. Tato webová aplikace je přehledná i pro mobilní zařízení a umožňuje synchronizaci souborů mezi repozitáři různých zařízení.
+    Pro vývojáře upřednostňující příkazový řádek je možnost instalace aplikace \emph{Termux} a nainstalování Gitu do prostředí jeho terminálu. Tam je i možné doinstalovat rozšíření \emph{Git LFS} a \emph{Git Annex}. \emph{Git LFS} lde doinstalovat přímo jako balíček. \emph{Git Annex} je možné stáhnout z \url{https://git-annex.branchable.com/} a dle návodu uvést do provozu. Obě tato rozšíření lze ovládat z příkazové řádky, přičemž \emph{Git Annex} i přes uživatelské rozhraní. To je implementováno v prohlížeči. Tato webová aplikace je přehledná i pro mobilní zařízení a umožňuje synchronizaci souborů mezi repozitáři různých zařízení.
 
     \subsection {Desktop}
     \subsubsection{GitKraken}
@@ -58,10 +62,10 @@ Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace o
 
     Dalším bodem jsou chybová hlášení. Těm by měla aplikace pokud možno předcházet. Pokud chybě již není vyhnutí, alespoň by měla mít dobrý popis a nebo i návrh jejího řešení.
 
-%------------CHAPTER--------------
+%-----------------------------------CHAPTER------------------------------------
 \chapter{Vývoj aplikací pro systém Android}
 
-%------------CHAPTER--------------
+%-----------------------------------CHAPTER------------------------------------
 \chapter{Návrh aplikace}
     Dle zhodnocení průzkumu a vlastních zkušeností jsem usoudil, že aplikace bude
     \begin{enumerate}
@@ -73,6 +77,9 @@ Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace o
 
     \section{Funkce Aplikace}
         Git je velice komplexní systém a jeho plná implementace by na zařízeních android byla velice nepřehledná. Proto jsem se rozhodl nejprve implementovat pouze základní funkce Gitu tak, aby aplikace byla funkční a bylo možné další funkce postupně přidávat.
+
+        \subsection{Správa repozitářů}
+        Při používání aplikace musí uživatel repozitář nejprve přidat. Nejjednodušší způsob bude přidáním cesty k již existujícímu repozitáři. Uživatel bude při tomto kroku využívat externího správce souborů, kde vybere složku s repozitářem, která se při potvrzení přidá do seznamu všech repozitářů. Dále bude uživatel opět užitím správce souborů definovat cestu ke složce, kde bude chtít inicializovat nový repozitář. A poslední možností bude klonování repozitáře vložením jeho adresy do příslušného textového pole. Nad těmito repozitáři bude uživatel provádět operace Gitu. Pokud již s prací nad daným repozitářem skončí, bude ho moci přímo z aplikace i smazat.
 
         \subsection{Funkce Gitu}
         Jelikož žádné aplikace pro Android kromě \emph{Termux} neimplementují rozšíření \emph{Git Annex} a nenalezl jsem knihovnu, která by toto dokázala, rozhodl jsem se pro ně využít zkompilované binární soubory. Ty bude aplikace volat pro provedení funkcí Gitu.
@@ -135,6 +142,11 @@ Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace o
     Dále je zde navrhnuto zpracování rozlišení repozitářů, které podporují jedno z rozšíření. V případě, že repozitář bude podporovat \emph{Git LFS} přidají se dané funkce do draweru k ostaním funkcím Gitu. Dále se do nastavení repozitáře \emph{Edit repository} přidá možnost změnit sledované soubory tímto rozšířením podle jejich přípony.
 
     Pokud uživatel bude pracovat s rozšířením \emph{Git Annex}, do možností ovládání repozitáře se přidá tlačítko \emph{Annex Web app}. To spustí webovou aplikaci \emph{git-annexu} a umožní sdílení souborů i tímto způsobem.
+
+%-----------------------------------CHAPTER------------------------------------
 \chapter{Implementace}
+
+%-----------------------------------CHAPTER------------------------------------
 \chapter{Testování}
+%-----------------------------------CHAPTER------------------------------------
 \chapter{Závěr}
