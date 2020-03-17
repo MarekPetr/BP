@@ -26,7 +26,6 @@ Git Large File Storage (LFS) nahrazuje velké soubory v repozitářích ukazatel
 \subsection{Git Annex}
 Git annex slouží k indexaci, synchronizaci a sdílení souborů mezi více úložišti nezávisle na komerční službě nebo centrálním serveru [REF: https://en.wikipedia.org/wiki/Git-annex]. V repozitáři je uložen symbolický odkaz na klíč, který je hash daného souboru. Samotný soubor je pak uložen v adresáři \emph{.git/annex/}. Při změně souboru se mění jen jeho hash a aktualizuje symbolický odkaz. Tímto způsobem je zajištěno šetření místa, jelikož samotný soubor je v repozitáři uložen maximálně jednou.
 
-
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Specifikace řešení}
 Hlavním cilem aplikace je nabídnout uživatelům řešení pro verzování a synchronizaci souborů jejich Git repozitářů na zařízení systému Android.
@@ -35,6 +34,7 @@ Hlavním cilem aplikace je nabídnout uživatelům řešení pro verzování a s
 Aplikace bude mít dvě základní funkce - správa repozitářů a funkce Gitu. Uživatel bude moci spravovat Git repozitáře následujícím způsobem. K přidání nového repozitáře bude mít tři možnosti. Buď může vybrat adresář s daným repozitářem z místních souborů zařízení, inicializovat úplně nový ve zvolené složce nebo klonovat vzdálený. Při otevření repozitáře nad ním může provádět základní funkce Gitu a také některé vybrané funkce již zmíněných rozšíření.
 
 \section{Cílová skupina}
+Cílovou skupinou jsou především programátoři nebo i jiní technicky zdatní uživatelé. Ti aplikaci využijí nejčastěji pro prohlížení jejich repozitářů, ale mohou je také jakkoliv měnit a pracovat na nich třeba i z veřejné dopravy. Git annex využijí například při procházení souborů uložených na více fyzických úložištích. Všechny takto sledované soubory budou přehledně zobrazeny v repozitáři a uživatel tak v danou chvíli ani nemusí přemýšlet, kde jsou právě uložené. Jelikož Git annex používá jednoduchý formát Git repozitáře, je navíc garantováno, že tyto data budou v budoucnu dostupná i bez jeho použití.
 
 \section{Průzkum existujících řešení}
 Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace operačního systému Android, tak na desktopové operační systémy Linux a Windows.
