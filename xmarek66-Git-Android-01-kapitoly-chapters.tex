@@ -160,8 +160,8 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     \subsubsection{fragments}
     Fragmenty, třídy které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace používá fragmenty například k instalaci a nastavení. Každá aktivita může obsahovat několik fragmentů, které samostatně řeší určitou část aktivity.
 
-    \subsubsection{installer}
-    O instalaci binárních souborů se stará třída \emph{InstallTask} v balíčku \emph{installer}. Ta při prvním spuštění aplikace zkopíruje potřebné soubory ze složky \emph{cpp} do interní paměti zařízení.
+    \subsubsection{install}
+    O instalaci binárních souborů se stará třída \emph{InstallTask} v balíčku \emph{install}. Ta při prvním spuštění aplikace zkopíruje potřebné soubory ze složky \emph{cpp} do interní paměti zařízení.
 
     \subsubsection{executors}
     Základní funkce gitu i jeho rozšíření jsou implementovány v balíčku \emph{executors}. Tyto třídy využívají základní třídu \emph{BinaryExecutor} využívající \emph{ProcessBuilder}. Ta spustí binární soubor, který vykoná danou funkci na zařízení.
@@ -211,40 +211,47 @@ Správce souborů je možné implementovat různými způsoby s různým stupně
 Jak již bylo zmíněno, aplikace pro funkce gitu využívá binárních souborů. Ty je samozřejmě nejprve nutné do prostoru aplikace nějakým způsobem přenést. Z důvodu architektury systému Android není tato operace tak přímočará jako například na desktopovém systému Linux. Existují zde dvě možnosti. První je využití nativní knihovny o jejíž přenos a spouštění se postará systém Android. Druhá možnost je tyto operace provádět v rámci aplikace po instalaci balíčku.
 
     \subsection{Nativní knihovny}
-    Z implementačního pohledu nejjednodušší způsob je první možnost. Tedy užití binární knihovny s příponou \emph{.so}. Tuto knihovnu je třeba v rámci struktury aplikace umístit do správného adresáře a systém Android si s její instalací poradí během samotné instalace aplikace. Tato metoda je dobře aplikovatelná v případě, že máte k dispozici staticky linkované binární soubory se strojovým výstupem. Z nich je pak snadné za použití Android NDK\footnoteURL{https://developer.android.com/ndk} a JNI\footnoteURL{https://developer.android.com/training/articles/perf-jni} vytvořit funkce, které lze používat přímo v kódu a získávat tak z těchto knihoven jejich výstup. Staticky linkované binární soubory v sobě obsahují všechny potřebné závislosti a jejich použití je tak možné samostatně. Lze jim tedy jednoduše přiřadit potřebnou příponu a budou zcela funkční. Získat tyto soubory je možné například křížovou kompilací daného programu. Staticky linkovaný git je možné zkompilovat například využitím tohoto repozitáře\footnoteURL{https://github.com/EXALAB/git-static}. Problém s tímto způsobem tkví v tom, že takto získaný binární soubor nelze jednoduše modifikovat. Je nutné ho pokaždé znovu zkompilovat, což je časově velice náročné. Navíc tyto binární soubory musí obsahovat veškeré knihovny, které pro svůj běh potřebují. Tedy při použití více těchto binárních souborů dochází k jejich redundanci.
+    Z implementačního pohledu nejjednodušší způsob je první možnost. Tedy užití binární knihovny s příponou \emph{.so}. Tuto knihovnu je třeba v rámci struktury aplikace umístit do správného adresáře a systém Android si s její instalací poradí během samotné instalace aplikace. Tato metoda je dobře aplikovatelná v případě, že máte k dispozici staticky linkované binární soubory se strojovým výstupem. Z nich je pak snadné za použití Android NDK\footnoteURL{https://developer.android.com/ndk} a JNI\footnoteURL{https://developer.android.com/training/articles/perf-jni} vytvořit funkce, které lze používat přímo v kódu a získávat tak z těchto knihoven jejich výstup. Staticky linkované binární soubory v sobě obsahují všechny potřebné závislosti a jejich použití je tak možné samostatně. Lze jim tedy jednoduše přiřadit potřebnou příponu a budou zcela funkční. Získat tyto soubory je možné například křížovou kompilací daného programu. Staticky linkovaný git je možné zkompilovat využitím již existujících nástrojů\footnoteURL{https://github.com/EXALAB/git-static}. Problém s tímto způsobem tkví v tom, že takto získaný binární soubor nelze jednoduše modifikovat. Je nutné ho pokaždé znovu zkompilovat, což je časově velice náročné. Navíc tyto binární soubory musí obsahovat veškeré knihovny, které pro svůj běh potřebují. Tedy při použití více těchto binárních souborů dochází k jejich redundanci.
 
-    \subsection{Spouštění binárních souborů aplikace}
-    Druhá možnost je využít binárních souborů dynamicky linkovaných. Ty závislosti nemají obsažené přímo v nich samých, ale hledají je v daných umístěních. Tím dochází k úspoře místa. Navíc jsou tak jednoduše rozšiřitelné. Tento způsob řešení ale není pro zařízení Android zcela běžný a přináší tak další řadu problémů. Předně je nutné mít je zkompilované pro pevně danou cestu a správně nastavovat systémové proměnné. Dále tyto soubory nelze spouštět přes rozhraní JNI. Pro spouštění se využívá \emph{ProcessBuilderu}\footnoteURL{https://developer.android.com/reference/java/lang/ProcessBuilder}. Toto spouštění je nutné provádět na samostatném vlákně a implementace tak není zcela triviální.
+    \subsection{Vlastní binární soubory}\label{subsec:dyn_binaries}
+    Druhá možnost je využít binárních souborů dynamicky linkovaných a jejich spouštění implementovat v rámci aplikace. Tyto binární soubory nemají jejich závislosti obsažené přímo v nich samých, ale hledají je v daných umístěních. Tím dochází k úspoře místa. Také jsou jednoduše rozšiřitelné. Tento způsob řešení ale není pro zařízení Android zcela běžný a přináší tak další řadu problémů. Předně je nutné mít je zkompilované pro pevně danou cestu a správně nastavovat systémové proměnné. Dále tyto soubory nelze spouštět přes rozhraní JNI, ale dosáhne se toho využitím tříd, které vytváří vlastní proces na základě dodaných parametrů. Těmi jsou například metoda \emph{exec} třídy \emph{Runtime}\footnoteURL{https://developer.android.com/reference/java/lang/Runtime} nebo právě již zmíněná metoda \emph{command} třídy \emph{ProcessBuilder}\footnoteURL{https://developer.android.com/reference/java/lang/ProcessBuilder}. Toto spouštění i následné čtení výsledků je nutné provádět na samostatném vlákně a implementace tak není zcela triviální.
 
 \section{Návrh instalace binárních souborů}
-Pro tuto aplikaci je výhodnější využití dynamicky linkovaných binárních souborů s vlastní instalací i spouštěním. Lépe se s nimi pracuje a aplikace bude snadno do budoucna rozšiřitelná. Navíc je velké množství dynamicky linkovaných programů již připraveno pro kompilaci prostřednictvím \emph{Termux-packages}\footnoteURL{https://github.com/termux/termux-packages/}.
+Pro tuto aplikaci bylo použito dynamicky linkovaných binárních souborů s vlastní instalací i spouštěním. Lépe se s nimi pracuje a aplikace tak bude lépe do budoucna rozšiřitelná. Navíc je velké množství dynamicky linkovaných programů již připraveno pro kompilaci prostřednictvím \emph{Termux-packages}\footnoteURL{https://github.com/termux/termux-packages/}. Pro samotné spouštění bylo využito třídy \emph{ProcessBuilder}. Je snadno použitelná a umožňuje intuitivní nastavování různých parametrů běhu procesu.
 
 \section{Aplikační binární rozhraní - ABI}
-Zařízení Android nemají jednotné ABI\footnoteURL{https://developer.android.com/ndk/guides/abis}. Navíc pro vydání aplikace na \emph{Google Play} je nutné, aby aplikace podporovala 32-bitové i 64-bitové verze dané architektury. Také většina fyzických používá architekturu \emph{arm} a naopak většina emulátorů pro vývoj aplikací používá \emph{x86}. Aplikace tedy podporuje obě architektury pro obě verze. Takto vytvořený balíček by byl samozřejmě příliš velký a proto aplikace používá pro generování balíčků formát \emph{Android App Bundle}\footnoteURL{https://developer.android.com/guide/app-bundle}.
+Různá zařízení Android mají osazeny různé procesory, které podporují různé sady instrukcí. Každá taková kombinace procesoru a instrukční sady má vlastní Aplikační binární rozhraní - \emph{ABI}\footnoteURL{https://developer.android.com/ndk/guides/abis}. Většina fyzických zařízení používá architekturu \emph{arm}\footnoteURL{https://handstandsam.com/2016/01/28/determining-supported-processor-types-abis-for-an-android-device/}. Pro ladění aplikací se používá Android emulátorů a ty naopak pro nejlepší výkon používají architekturu \emph{x86}. Pro vydání aplikace na \emph{Google Play} je nutné, aby aplikace podporovala 32-bitové i 64-bitové verze dané architektury. Proto aplikace podporuje obě architektury pro obě verze. Jelikož by byl takto vytvořený \emph{APK} balíček příliš velký, aplikace používá pro distribuci formát \emph{Android App Bundle}\footnoteURL{https://developer.android.com/guide/app-bundle}.
     
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Implementace}
 Po návrhu řešení aplikace následuje implementační část. V předchozí kapitole zabývajícím se návrhem byly popsány základní části aplikace, využité nástroje a architektura vývoje. Tato kapitola pojednává o postupu vývoje aplikace od získání binárních souborů po samotné vydání aplikace.
 
-\section{Kompilace binárních souborů}
+\section{Spustitelné binární soubory}
+\subsection{Kompilace binárních souborů}
 Jak již bylo zmíněno při návrhu, binární soubory jsou zkompilovány využitím repozitáře \emph{Termux-packages}\footnoteURL{https://github.com/termux/termux-packages/}. Ten pro tento účel poskytuje obraz \emph{Dockeru}. Pro jeho použití pro jinou aplikaci je nutné upravit skript \emph{scripts/build/termux\_step\_setup\_variables.sh} tak, aby cesta ke spustitelným souborům odpovídala cílové aplikaci. Při kompilaci pro tuto aplikaci byla nastavena cesta \emph{TERMUX\_PREFIX} na \emph{/data/data/com.lfgit/files/usr}. Takto byly zkompilovány binární soubory pro \emph{git} i \emph{git-lfs}. \emph{Git-annex} touto cestou bohužel nelze. Jeho kompilace je velice problémová a přes veškeré úsilí se nakonec nepodařila. Další informace a provedený postup naleznete v sekci \ref{sec:problemy_annex}.
 
-\section{Instalace binárních souborů}
-Pro instalaci binárních souborů bylo využito třídy \emph{TermuxInstaller} aplikace Termux\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java}. Ta řeší podobný problém při instalaci linuxového prostředí a využití části metody \emph{setupIfNeeded} vyřešilo problémy s instalací symbolických odkazů do aplikaci. Běžné kopírování souborů, jehož metody jsou popsány například zde \footnoteURL{https://www.baeldung.com/java-copy-file} totiž kopírují soubory, na které tyto symbolické soubory ukazují a tím dochází k jejich redundanci a nabývání velikosti instalace. Tato část byla implementována ve třídě \emph{installAssets}.
+\subsection{Instalace binárních souborů}
+Pro instalaci binárních souborů bylo využito třídy \emph{TermuxInstaller} aplikace Termux\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java}. Ta řeší podobný problém při instalaci linuxového prostředí a využití části metody \emph{setupIfNeeded} vyřešilo problémy s instalací symbolických odkazů do aplikaci. Běžné kopírování souborů, jehož metody jsou popsány například zde \footnoteURL{https://www.baeldung.com/java-copy-file} totiž kopírují soubory, na které tyto symbolické soubory ukazují a tím dochází k jejich redundanci a nabývání velikosti instalace. Tato část byla implementována třídou \emph{installTask} v balíčku \emph{install}.
 
 Tento postup instalace vyžaduje užití \emph{Android NDK}\footnoteURL{https://developer.android.com/ndk/} pro získání zdroje dat ze zkomprimovaného souboru ve formátu \emph{ZIP}. Ty jsou využity jak pro snížení velikosti, tak pro snadnou implementaci načtení a přenosu souborů.
 
-Po kompilaci byly smazány některé nepotřebné soubory zvětšující velikost instalace. Dále bylo třeba vygenerovat seznam symbolických odkazů pro všechny architektury. Ten byl vygenerován příkazem \code{find . -type l -ls > SYMLINKS.txt}. Poté byl tento seznam upraven tak, aby odpovídal formátu \emph{$\hbox{symlink} \rightarrow \hbox{file}$}. Třída \emph{installAssets} byla upravena tak, aby s tímto formátem pracovala. Soubor SYMLINKS.txt byl dále připojen k souborům dané architektury, zkomprimován a přesunut do složce \emph{cpp}.
+Po kompilaci byly smazány některé nepotřebné soubory zvětšující velikost instalace. Dále bylo třeba vygenerovat seznam symbolických odkazů pro všechny architektury. Ten byl vygenerován příkazem \code{find . -type l -ls > SYMLINKS.txt}. Poté byl tento seznam upraven tak, aby odpovídal formátu \emph{$\hbox{symlink} \rightarrow \hbox{file}$}. Třída \emph{installTask} byla upravena tak, aby s tímto formátem pracovala. Soubor \emph{SYMLINKS.txt} byl dále připojen ke složce s binárními soubory dané architektury. Celá tato složka byla zkomprimována a archiv přesunut do složky \emph{cpp}. Z těchto archivů se poté během instalace aplikace za pomocí \emph{Android NDK} kopírují soubory do zařízení.
 
+\subsection{Spouštění binárních souborů}
+Jak již bylo zmíněno \ref{subsec:dyn_binaries}, aplikace používá pro spouštění spustitelných souborů \emph{Process Builder}. Ten je implementován metodou \emph{run} třídy \emph{BinaryExecutor}. \emph{Process Builder} se sice postará o vytvoření nového procesu, ale pokud po jeho ukončení očekáváme nějaký výstup, nemůže se samozřejmě běh aplikace během čekání blokovat. Proto se tyto příkazy spouští na samostatném vlákně a výsledek se předává prostřednictvím příslušného \emph{callbacku}, tedy zpětného volání. Toto zpětné volání je implementováno rozhraním \emph{ExecListener} třídy \emph{executors}. Toto rozhraní poté implementuje třída, která očekává výsledek daného volání.
 
+\section{Aplikace}
 
-\section{Přidání repozitáře}
-\section{Seznam repozitářů}
-\section{Funkce gitu}
-\section{Problémy objevené při implementaci}\label{sec:problemy_implem}
-\subsection{Symbolické odkazy}\label{sec:problemy_symb}
-\subsection{Git LFS}\label{sec:problemy_lfs}
-\subsection{Git annex}\label{sec:problemy_annex}
+\subsection{Přidání repozitáře}
+
+\subsection{Seznam repozitářů}
+\subsection{Funkce gitu}
+\subsection{Problémy objevené při implementaci}\label{sec:problemy_implem}
+\subsubsection{Symbolické odkazy}\label{sec:problemy_symb}
+\subsubsection{Autentizace Git}\label{sec:problemy_autent}
+\subsubsection{Git LFS}\label{sec:problemy_lfs}
+\subsubsection{Git annex}\label{sec:problemy_annex}
+
 
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Testování}
