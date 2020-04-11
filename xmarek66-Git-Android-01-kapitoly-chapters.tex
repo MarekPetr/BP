@@ -82,9 +82,9 @@ Tato kapitola se zabývá teoretickými základy tohoto systému, které je uži
 \section{Základy aplikace}
 Aplikace pro Android mohou být psány v Kotlinu, Javě, nebo C++. Nástroje Android SDK kompilují kód spolu s ostatními potřebnými daty do APK souboru. Prakticky se jedná o zip archiv, který Android používá pro instalaci aplikací.
 
-Každá aplikace pracuje ve svém vlastním uzavřeném prostoru. Android implementuje princip nejmenších pověření (v originále \emph{principle of least privilege}). Ten zaručuje, že každá aplikace má práva k přístupu jen ke zdrojům, které potřebuje. Další práva lze aplikaci přidat pouze s explicitním souhlasem uživatele.
+Každá aplikace pracuje ve svém vlastním uzavřeném prostoru. Android implementuje princip nejmenších pověření, v originále \emph{principle of least privilege}. Ten zaručuje, že každá aplikace má práva k přístupu jen ke zdrojům, které potřebuje. Další práva lze aplikaci přidat pouze s explicitním souhlasem uživatele.
 
-\section{Komponenty aplikace}
+% TODO \section{Komponenty aplikace}
 
 
 %-----------------------------------CHAPTER------------------------------------
@@ -128,7 +128,7 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     \end{figure}
 
     \subsection{Návrhový vzor}
-    \emph{Model–view–viewmodel} je v době psaní této práce doporučovaným návrhovým vzorem Android aplikací. K volbě tohoto návrhového vzoru dopomohlo také využití knihovny \emph{Room}. Tato knihovna totiž spoléhá na využití \emph{MVVM} vzoru alespoň pro účely funkčnosti databáze. Je tomu tak proto, že data, která závisí na databázi se ukládají do proměnné datového typu \emph{LiveData}. Hodnotu této proměnné lze sledovat a na jejím základě řídit běh aplikace. Aby byla hodnota této proměnné perzistentní při běhu aplikace, uchovává se její hodnota ve \emph{viewmodelu}. Hlavní takovou proměnnou je v této aplikaci seznam všech \emph{Git} repozitářů. Ta se nachází ve třídě \code{RepoRepository}, nicméně její instanciace se provádí pouze v části \code{view\_model} MVVM.
+    \emph{Model–view–viewmodel} je v době psaní této práce doporučovaným návrhovým vzorem Android aplikací. K volbě tohoto návrhového vzoru dopomohlo také využití knihovny \emph{Room}. Tato knihovna totiž spoléhá na využití \emph{MVVM} vzoru alespoň pro účely funkčnosti databáze. Je tomu tak proto, že data, která závisí na databázi se ukládají do proměnné datového typu \emph{LiveData}. Hodnotu této proměnné lze sledovat a na jejím základě řídit běh aplikace. Aby byla hodnota této proměnné perzistentní při běhu aplikace, uchovává se její hodnota ve \emph{viewmodelu}. Hlavní takovou proměnnou je v této aplikaci seznam všech \emph{Git} repozitářů, \code{mAllRepos}, který se nachází ve třídě \code{RepoRepository}.
     
     \subsection{Obrazovky Aplikace}
     Aplikace bude rozdělena podle obrazovek do aktivit. Tyto aktivity dále mohou obsahovat různé fragmenty. Ke každé aktivitě, která poskytuje určitou obrazovku je připojen její ViewModel. Ten jí poskytuje data a funkcionalitu. Vzhled obrazovky je dán jejím layoutem.
@@ -249,11 +249,10 @@ Po implementaci spouštění binárních souborů přichází na řadu implement
     Uvítací obrazovka je implementována aktivitou \code{RepoListActivity}. Ta při prvním spuštění nainstaluje potřebné binární soubory a dále zobrazí prázdný seznam repozitářů. Tento seznam zobrazuje aktuální stav databáze repozitářů. Repozitář uživatel do seznamu přidá prostřednictvím menu. Vybraná akce spustí daný \emph{Intent} a přesune uživatele na další obrazovku. Mezi tyto akce patří i přidání  repozitáře. Přidané repozitáře jsou také synchronizovány s úložištěm. V případě smazání z úložiště dojde při dalším načtení tohoto seznamu k jeho smazání ze seznamu a tedy i databáze. Obnovení seznamu lze provést i okamžitě gestem táhnutí shora dolů. V případě smazání repozitáře v době jeho otevření, bude uživatel na toto upozorněn při provádění příkazů \emph{Gitu} a navrácen zpět do seznamu repozitářů. 
 
     \subsection{Přidání repozitáře}
-    Repozitář lze do seznamu přidat třemi způsoby. Pokud již existuje v paměti zařízení, lze ho přidat tlačítkem menu \code{Add repository}. Tato akce spustí \emph{intent} pro vybrání složky s repozitářem. Dále je možné repozitář inicializovat a klonovat. Obrazovka s klonování a inicializací je implementována aktivitou \emph{AddRepoActivity}.  Také je podporováno mělké klonování pro zadaný počet \emph{commitů}, tedy hloubku. 
+    Repozitář lze do seznamu přidat třemi způsoby. Pokud již existuje v paměti zařízení, lze ho přidat tlačítkem menu \code{Add repository}. Tato akce spustí \emph{intent} pro vybrání složky s repozitářem. Dále je možné repozitář inicializovat a klonovat. Obrazovka s klonování a inicializací je implementována aktivitou \emph{AddRepoActivity}. Také je podporováno mělké klonování pro zadaný počet \emph{commitů}, tedy hloubku. 
 
     \subsection{Provedení příkazů \emph{Gitu}}
     Po kliknutí na repozitář dojde k jeho otevření. V pravém bočním panelu se nachází seznam všech podporovaných příkazů. Ten je implementován třídou \code{RepoTasksAdapter}. Při kliknutí na příkaz dojde k zavolání metody \code{execGitTask} do \code{RepoTasksViewModelu}. Ta z pole příkazů implementovaného rozhraním \code{GitAction} vybere podle polohy v panelu správný příkaz a vykoná ho.
-
 
 \section{Problémy objevené při implementaci}\label{sec:problemy_implem}
 Implementace provázelo velké množství překážek. Ty se začaly objevovat již při procesu získání binárních souborů a jejich řešení nebylo vždy snadné. Následující text se bude věnovat nejzajímavějším problémům, které nejsou při vývoji zcela běžné.
@@ -279,8 +278,18 @@ Implementace provázelo velké množství překážek. Ty se začaly objevovat j
     
     Pro řešení bylo přidána tzv. \emph{issue} v oficiálním repozitáři \emph{Git LFS}\footnoteURL{https://github.com/git-lfs/git-lfs}. S pomocí jednoho z hlavních vývojářů tohoto programu byl problém vyřešen. Využitím přepínače \code{strace '-f'} bylo zjištěno, že \emph{Git LFS} nenalezl \emph{shell}. Problém byl vyřešen mírnou oklikou a to přidáním symbolického odkazu na \code{/system/shell} do složky \code{bin}, kde byl tento interpret očekáván.
 
+    \newpage
     \subsection{Git annex}\label{sec:problemy_annex}
+    Získávání spustitelných souborů pro \emph{Git Annex} se ukázalo jako velice problematické. Následující text je shrnutím mnoha provedených pokusů, z nichž některé byly velice blízko k získání těchto souborů, ale nakonec se to bohužel nepodařilo.
 
+    \subsubsection{Oficiální distribuce pro Termux}
+    Nejprve byly staženy instalační soubory \emph{Git Annex} z oficiální webové wiki stránky \footnoteURL{https://git-annex.branchable.com/Android/}. Tyto soubory byly nainstalovány do vnitřního prostoru aplikace s příslušnými právy pro spuštění. Při prvních pokusech byly zjištěny problémy týkající se chybějících programů interpretu shellu Android. Pro jejich vyřešení byl stažen program \emph{Busybox}\footnoteURL{https://busybox.net/} pro architekturu testovacího zařízení. Ten problém nevyřešil, jelikož z nějakého důvodu nebylo možné ho spustit. Proto byly potřebné skripty přepsány do podoby, kterou shell zařízení byl schopný zpracovat. Později se zjistilo, že používaná verze \emph{Busyboxu} byla vadná a problém vyřešila jiná verze, ale tento program už nebyl potřeba. Přes přepsání všech inkriminovaných příkazů skriptů \emph{Git Annexu} se nedařilo tento program spustit. Užitím programu \emph{strace} bylo zjištěno, že bezpečnostní zabezpečení Android tzv. \emph{Seccomp} filtrování zamezuje spuštění určitého kódu spojeného s jeho spuštěním. Na tento problém již narazil i Joe Hess, vývojář \emph{Git Annexu} při jeho portování na \emph{Termux} Androidu. Po prozkoumání jeho řešení bylo zjištěno, že řešení leží v nástroji zvané \emph{Proot}, která toto filtrování umí obejít. Bohužel ani po mnoha pokusech spouštění \emph{Git Annexu} tímto nástrojem nebylo dosaženo kýženého výsledku.
+
+    \subsubsection{Vlastní kompilace Git Annex}
+    Dále následovalo mnoho pokusů o vlastní křížovou kompilaci \emph{Git annexu}. Jeho kód je psán v jazyce \emph{Haskell} a tato kompilace je tím značně zkomplikována. Byly provedeny pokusy o kompilace pomocí nástroje \emph{Nix}\footnoteURL{https://github.com/pololu/nixcrpkgs}, \emph{GHC Android}\footnoteURL{https://medium.com/@zw3rk/a-haskell-cross-compiler-for-android-8e297cb74e8a} a dalších. Některé pokusy selhaly již při kompilaci křížového kompilátoru, jiné až při kompilaci \emph{Git Annexu}.
+
+    \subsubsection{Vlastní kompilace nástroje Proot}
+    Jelikož nebylo skrze křížovou kompilaci dosaženo většího pokroku než užitím verze určené pro \emph{Termux}, další pokusy pokračovaly právě s ní. Na pomoc s problémem s \emph{Proot} byla kontaktována jeho komunita na jeho komunikačním kanále služby \emph{Gitter}\footnoteURL{https://gitter.im/proot-me/devs}. S pomocí těchto vývojářů se podařilo zkompilovat verzi \emph{Prootu}, kterou používá \emph{Termux} pro prostředí balíčku vyvíjené aplikace. To vyřešilo problém s \emph{Seccomp} filtrováním, ale objevil se další. \emph{Git annex} stále nebylo možné spustit. Problém se týkal chybějících programů interpretu. \emph{Termux} pro běh programů vytváří vlastní linuxový systém, kde jsou nainstalovány všechny standardní programy. Toto prostředí mu tato aplikace neposkytuje. Tento fakt byl pro funkci skriptů obejit jejich přepsáním. Pro binární soubory toto bohužel možné není. Implementace vlastního systém uvnitř aplikace je velice problémová a také náročná na úložiště. Tento problém nakonec nebyl vyřešen. Všechny zdroje byly investovány do vývoje kvalitní aplikace bez podpory \emph{Git Annexu} s možností rozšíření po jejím vydání, v případě nalezení řešení.
 
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Testování}
