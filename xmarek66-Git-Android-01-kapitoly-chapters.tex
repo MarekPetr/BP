@@ -155,7 +155,7 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     Tento balíček obsahuje třídy, které slouží k zobrazení položek stejného typu. Tato aplikace je využívá k zobrazení seznamu repozitářů základní obrazovky a funkcí gitu v bočním výsuvném panelu.  
 
     \subsubsection{database}
-    Tento balíček obsahuje balíček \code{model}, ve kterém se nachází třída Repo. Ta implementuje tabulku databáze uchovávající všechny potřebné informace o repozitáři. Instance databáze se uchovává ve třídě \code{RepoDatabase}. K přístupu k ní se využívá třída \code{RepoDao}. Tato třída obsahuje metody volající \emph{SQLite} dotazy databáze. Aplikaci je databáze zprostředkována třídou \code{RepoRepository}, která odpovídá \code{Repository} modelu MVVM.
+    Tento balíček obsahuje balíček \code{model}, ve kterém se nachází třída Repo. Ta implementuje tabulku databáze uchovávající všechny potřebné informace o repozitáři. Instance databáze se uchovává ve třídě \code{RepoDatabase}. K přístupu k ní se využívá třída \code{RepoDao}. Tato třída obsahuje metody volající \emph{SQLite} dotazy databáze. Aplikaci je databáze zprostředkována třídou \code{RepoRepository}, která odpovídá \code{Repository} modelu MVVM. Databáze se ukládá do bezpečného vnitřního prostoru balíčku aplikace.
 
     \subsubsection{fragments}
     Fragmenty, třídy které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace používá fragmenty například k instalaci a nastavení. Každá aktivita může obsahovat několik fragmentů, které samostatně řeší určitou část aktivity.
@@ -242,11 +242,23 @@ Po kompilaci byly smazány některé nepotřebné soubory zvětšující velikos
 \subsection{Spouštění binárních souborů}
 Jak již bylo zmíněno \ref{subsec:dyn_binaries}, aplikace používá pro spouštění spustitelných souborů \code{Process Builder}. Ten je implementován metodou \code{run} třídy \code{BinaryExecutor}. \code{Process Builder} se sice postará o vytvoření nového procesu, ale pokud po jeho ukončení očekáváme nějaký výstup, nemůže se samozřejmě běh aplikace během čekání blokovat. Proto se tyto příkazy spouští na samostatném vlákně a výsledek se předává prostřednictvím příslušného \emph{callbacku}, tedy zpětného volání. Toto zpětné volání je implementováno rozhraním \code{ExecListener} třídy \code{executors}. Toto rozhraní poté implementuje třída, která očekává výsledek daného volání.
 
-\subsection{Příkazy gitu}
-Příkazy gitu jsou implementovány ve view modelech jednotlivých aktivit. Jelikož všechny volané funkce vrací hodnotu zpětným voláním, bylo nutné jednotlivé výsledky mezi sebou rozeznávat. K tomu slouží třída \code{TaskState}. Obsahuje atribut \code{mInnerState} určující aktuální stav rozpracované úlohy a \code{mPendingTask} definující tuto úlohu. Úloha je implementována jako konečný stavový automat. Jeho stavy jsou dány atributem \code{mInnerState}. Počáteční stav úlohy je konstanta \code{FOR\_APP}, koncový \code{FOR\_USER}. Koncový stav pro aplikaci znamená vykonat daný příkaz a zobrazit jeho výstup uživateli.
-
+\newpage
 \section{Aplikace}
 Po implementaci spouštění binárních souborů přichází na řadu implementace samotné aplikace. Základní popis implementace stěžejních částí je rozdělen podle jednotlivých obrazovek aplikace.
+
+\subsection{Příkazy gitu}
+Příkazy gitu jsou implementovány ve view modelech aktivit, které je používají. Jelikož všechny volané funkce vrací hodnotu zpětným voláním, bylo nutné pro získání všech vstupů pro vykonání daného příkazu definovat stavy jeho zpracování. K tomu slouží třída \code{TaskState}. Obsahuje atribut \code{mInnerState} určující aktuální stav rozpracovaného příkazu a \code{mPendingTask} definující zpracovávaný příkaz. Existují zde dva speciální stavy atributu \code{mInnerState} \code{FOR\_APP} a \code{FOR\_USER}. Jsou to stavy, které určují, jestli bude výsledek následujícího příkazu zobrazen uživateli, či bude využit jako vstupní argument pro jiný účel aplikace.
+
+\subsubsection{Push}
+Nejsložitější příkaz na implementaci je příkaz \emph{push}. Ten pro přístup do vzdáleného repozitáře potřebuje jak jeho \emph{URL}, tak přihlašovací údaje uživatele. Ty jsou žádány pro každý nově přidaný repozitář pouze při prvním vykonávání příkazu \emph{push}. Po jejich zadání jsou uloženy v databázi v tabulce daného repozitáře. Jelikož je tato databáze uložena ve vnitřním prostoru aplikace, kam má přístup jen ona samotná, je uložení těchto citlivých údajů relativně bezpečné. Následující diagram znázorňuje vykonání úlohy tohoto příkazu.
+
+\begin{figure}[h]
+    \centering
+    \vspace{0.5cm}
+    \includegraphics[]{drawio/push_diagram.pdf}
+    \caption[Diagram provedení úlohy příkazu push]{Zjednodušený diagram provedení úlohy příkazu push.}
+    \label{diagram:push}
+\end{figure}
 
 \subsection{Seznam repozitářů}
 Uvítací obrazovka je implementována aktivitou \code{RepoListActivity}. Ta při prvním spuštění nainstaluje potřebné binární soubory a dále zobrazí prázdný seznam repozitářů. Repozitář uživatel do seznamu přidá prostřednictvím menu. Tato akce spustí daný \emph{Intent} a přesune uživatele na další obrazovku.
