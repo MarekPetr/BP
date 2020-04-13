@@ -169,10 +169,10 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     \subsubsection{utilities}
     Jedná se o třídy, metody a proměnné, které je možné použít kdekoliv v aplikaci.
 
+    \newpage
     \subsubsection{view\_models}
     Třídy obsahující perzistentní data a implementující logiku nad nimi. Tento balíček odpovídá části \emph{ViewModel} MVVM a poskytuje aplikaci metody zajišťující její funkčnost. Komunikace mezi třídami ViewModelů a aktivitami je zajištěna pomocí \emph{databindingu}, \emph{observerů} a veřejných metod, které tyto třídy poskytují.
 
-    \newpage
     \begin{figure}[h]
         \centering
         \vspace{0.5cm}
@@ -181,11 +181,9 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
         \label{diagram:view_models}
     \end{figure}
 
-
+\newpage
 \section{Grafické uživatelské rozhraní}
-Významnou součástí řešení mobilní aplikace je i její uživatelské rozhraní. To bylo navrženo s důrazem na užití \emph{Material Designu}~\footnoteURL{https://material.io/}. Uživatelé Android jsou na něj zvyklí z většiny populární aplikací a orientace v něm je tedy pro ně bezproblémová. Navíc \emph{Android studio} používá jeho prvky jako výchozí při tvorbě aplikace.
-
-Protože důraz této práce je spíše na funkčnost, než samotné rozhraní, bude toto rozhraní co nejjednodušší.
+Významnou součástí řešení mobilní aplikace je i její uživatelské rozhraní. To bylo navrženo s důrazem na užití \emph{Material Designu}~\footnoteURL{https://material.io/}. Uživatelé Android jsou na něj zvyklí z většiny populárních aplikací a orientace v něm je tedy pro ně bezproblémová.
 
 Grafické rozhraní se nejvíce inspiruje aplikací \emph{MGit} a přidává prvky vzniklé z požadavků na aplikaci. Především se jedná o přidání příkazů rozšíření a změnu rozhraní pro práci s repozitářem. Uživateli bude po volání příkazů \emph{Gitu} sdělen přesný textový výstup, který mu poslouží pro další práci s \emph{Gitem}. 
 
@@ -223,6 +221,7 @@ Jak již bylo zmíněno, aplikace pro příkazy \emph{Gitu} využívá binární
     \subsection{Nativní knihovny}
     Z implementačního pohledu nejjednodušší způsob je první možnost. Tedy užití binární knihovny s příponou \emph{.so}. Tuto knihovnu je třeba v rámci struktury aplikace umístit do správného adresáře a systém Android si s její instalací poradí během samotné instalace aplikace. Tato metoda je dobře aplikovatelná v případě, že máte k dispozici staticky linkované binární soubory se strojovým výstupem. Z nich je pak snadné za použití Android NDK~\footnoteURL{https://developer.android.com/ndk} a JNI~\footnoteURL{https://developer.android.com/training/articles/perf-jni} vytvořit funkce, které lze používat přímo v kódu a získávat tak z těchto knihoven jejich výstup. Staticky linkované binární soubory v sobě obsahují všechny potřebné závislosti a jejich použití je tak možné samostatně. Lze jim tedy jednoduše přiřadit potřebnou příponu a budou zcela funkční. Získat tyto soubory je možné například křížovou kompilací daného programu. Staticky linkovaný \emph{Git} je možné zkompilovat využitím již existujících nástrojů~\footnoteURL{https://github.com/EXALAB/git-static}. Problém s tímto způsobem tkví v tom, že takto získaný binární soubor nelze jednoduše modifikovat. Je nutné ho pokaždé znovu zkompilovat, což je časově velice náročné. Navíc tyto binární soubory musí obsahovat veškeré knihovny, které pro svůj běh potřebují. Tedy při použití více těchto binárních souborů dochází k jejich redundanci.
 
+    \newpage
     \subsection{Vlastní binární soubory}\label{subsec:dyn_binaries}
     Druhá možnost je využít binárních souborů dynamicky linkovaných a jejich spouštění implementovat v rámci aplikace. Tyto binární soubory nemají jejich závislosti obsažené přímo v nich samých, ale hledají je v daných umístěních. Tím dochází k úspoře místa. Také jsou jednoduše rozšiřitelné. Tento způsob řešení ale není pro zařízení Android zcela běžný a přináší tak další řadu problémů. Předně je nutné mít je zkompilované pro pevně danou cestu a správně nastavovat systémové proměnné. Dále tyto soubory nelze spouštět přes rozhraní JNI, ale dosáhne se toho využitím tříd, které vytváří vlastní proces na základě dodaných parametrů. Těmi jsou například metoda \code{exec} třídy \code{Runtime}~\footnoteURL{https://developer.android.com/reference/java/lang/Runtime} nebo právě již zmíněná metoda \code{command} třídy \code{ProcessBuilder}~\footnoteURL{https://developer.android.com/reference/java/lang/ProcessBuilder}. Toto spouštění i následné čtení výsledků je nutné provádět na samostatném vlákně a implementace tak není zcela triviální.
 
@@ -268,7 +267,7 @@ Po implementaci spouštění binárních souborů přichází na řadu implement
 Implementace provázelo velké množství překážek. Ty se začaly objevovat již při procesu získání binárních souborů a jejich řešení nebylo vždy snadné. Následující text se bude věnovat nejzajímavějším problémům, které nejsou při vývoji zcela běžné.
 
     \subsection{Příkazy Gitu}
-    Logika příkazů \emph{Gitu} je implementována ve \emph{view modelech} daných aktivit. Jelikož všechny volané funkce vrací hodnotu zpětným voláním, bylo nutné pro získání všech vstupů pro vykonání daného příkazu definovat stavy jeho zpracování. K tomu slouží třída \code{TaskState}. Obsahuje atribut \code{mInnerState} určující aktuální stav rozpracovaného příkazu a \code{mPendingTask} definující zpracovávaný příkaz. Existují zde dva speciální stavy atributu \code{mInnerState} \code{FOR\_APP} a \code{FOR\_USER}. Jsou to stavy, které určují, jestli bude výsledek následujícího příkazu zobrazen uživateli, či bude využit jako vstupní argument pro jiný účel aplikace.
+    Logika příkazů \emph{Gitu} je implementována ve \emph{view modelech} daných aktivit. Jelikož všechny volané funkce vrací hodnotu zpětným voláním, bylo nutné pro získání všech vstupů pro vykonání daného příkazu definovat stavy jeho zpracování. K tomu slouží třída \code{TaskState}. Obsahuje atribut \code{mInnerState} určující aktuální stav rozpracovaného příkazu a atribut \code{mPendingTask} definující zpracovávaný příkaz. Existují zde dva speciální stavy atributu \code{mInnerState} \code{FOR\_APP} a \code{FOR\_USER}. Jsou to stavy, které určují, jestli bude výsledek následujícího příkazu zobrazen uživateli, či bude využit jako vstupní argument pro jiný účel aplikace.
 
         \subsubsection{Push}
         Nejsložitější příkaz na implementaci je příkaz \emph{push}. Ten pro přístup do vzdáleného repozitáře potřebuje jak jeho \emph{URL}, tak přihlašovací údaje uživatele. Ty jsou žádány pro každý nově přidaný repozitář pouze při prvním vykonávání tohoto příkazu. Po jejich zadání jsou uloženy v databázi v tabulce daného repozitáře. Databáze je uložena ve vnitřním prostoru aplikace, kam má přístup jen ona samotná. Uložení těchto citlivých údajů je tedy relativně bezpečné. Před provedením příkazu jsou znaky uživatelského jména a hesla kódovány do \code{application/x-www-form-urlencoded} MIME formátu~~\footnoteURL{https://developer.android.com/reference/java/net/URLEncoder}.\\ Samotné provedení pak probíhá prostřednictvím \emph{http} nebo \emph{https} protokolu a to příkazem \code{git push http(s)://username:password@domain}.
