@@ -164,15 +164,24 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     O instalaci binárních souborů se stará třída \code{InstallTask} v balíčku \code{install}. Ta při prvním spuštění aplikace zkopíruje potřebné soubory ze složky \code{cpp} do interní paměti zařízení.
 
     \subsubsection{executors}
-    Základní příkazy \emph{Gitu} i jeho rozšíření jsou implementovány v balíčku \code{executors}. Tyto třídy využívají základní třídu \code{BinaryExecutor} využívající \code{ProcessBuilder}. Ta spustí binární soubor, který vykoná danou funkci na zařízení.
+    Základní příkazy \emph{Gitu} i jeho rozšíření jsou implementovány v balíčku \code{executors}. Tyto definující jednotlivé příkazy implementují metody třídy \code{GitExec}. Tyto metody volají metodu \code{run} třídy \code{BinaryExecutor} využívající \code{ProcessBuilder}. Ta spustí binární soubor, který vykoná daný příkaz na zařízení.
 
     \subsubsection{utilities}
-    Jedná se o statické metody a proměnné, které jsou použitelné kdekoliv v aplikaci. 
+    Jedná se o třídy, metody a proměnné, které je možné použít kdekoliv v aplikaci.
 
     \subsubsection{view\_models}
     Třídy obsahující perzistentní data a implementující logiku nad nimi. Tento balíček odpovídá části \emph{ViewModel} MVVM a poskytuje aplikaci metody zajišťující její funkčnost. Komunikace mezi třídami ViewModelů a aktivitami je zajištěna pomocí \emph{databindingu}, \emph{observerů} a veřejných metod, které tyto třídy poskytují.
 
-\newpage
+    \newpage
+    \begin{figure}[h]
+        \centering
+        \vspace{0.5cm}
+        \includegraphics[]{drawio/viewmodels_class_diagram.pdf}
+        \caption[Diagram závislostí tříd view modelů]{Diagram závislostí tříd view modelů}
+        \label{diagram:view_models}
+    \end{figure}
+
+
 \section{Grafické uživatelské rozhraní}
 Významnou součástí řešení mobilní aplikace je i její uživatelské rozhraní. To bylo navrženo s důrazem na užití \emph{Material Designu}\footnoteURL{https://material.io/}. Uživatelé Android jsou na něj zvyklí z většiny populární aplikací a orientace v něm je tedy pro ně bezproblémová. Navíc \emph{Android studio} používá jeho prvky jako výchozí při tvorbě aplikace.
 
