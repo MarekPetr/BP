@@ -133,6 +133,12 @@ Komponenty aplikace jsou základním stavebním blokem každé Android aplikace.
     \subsection{Aktivace komponent}
     \emph{Activity}, \emph{service} a \emph{broadcast receiver} jsou aktivovány mechanismem zvaným \emph{intent}\footnoteURL{https://developer.android.com/reference/android/content/Intent}. Ty během chodu aplikace propojují jednotlivé komponenty tak, aby mohly vzájemně spolupracovat. Fungují tedy jako most, přes který si mezi sebou komponenty vyměňují informace.
     
+\section{Architektura aplikace}
+ Mobilní prostředí aplikací je velice odlišné od toho desktopového, což má vliv na architekturu aplikací. Zejména je to dáno tím, že uživatel často využívá kooperace více aplikací. Například pro sdílení snímků fotoaparátu na sociálních sítích daná aplikace vyvolá \emph{intent} pro spuštění kamery. Ten spustí jinou aplikaci poskytující rozhraní pro pořízení snímku. Tato aplikace po jeho pořízení snímek předá původní aplikaci a ta ho dále zpracovává. Tento způsob práce je pro \emph{Android} typický a aplikace s ním musí umět pracovat. Tato sekce čerpá informace z oficiálních návodů pro architekturu \emph{Android} \footnoteURL{https://developer.android.com/jetpack/docs/guide}.
+
+%\subsection{Základní architektonické principy}
+%Tato sekce popisuje základní 
+
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Návrh aplikace}
 Dle zhodnocení průzkumu i vlastních zkušeností byly na aplikaci stanoveny následující požadavky. Aplikace bude:
@@ -328,6 +334,10 @@ Implementace provázelo velké množství překážek. Ty se začaly objevovat j
             \label{diagram:push}
         \end{figure}
     
+    \subsection{Správce souborů}
+    Implementace užití externího správce souborů se ukázala jako více problematická, než se při návrhu předpokládalo. Původní návrh této funkcionality spočíval v předání \emph{URI} externí aplikaci správce souborů, kterou uživatel používá jako výchozí. Toho nebylo možné dosáhnout z důvodu použití rozdílných typů \emph{URI} existujících aplikací správce souborů. Pro jeho zahrnutí do aplikace by tak bylo nutné implementovat vlastní správce. Toho se aplikace snažila z mnoha důvodů již od návrhu vyhnout. Zejména proto, že různí uživatelé budou mít na tento správce různé požadavky. Proto byl prostor aplikace plně věnován prostředí \emph{Git}. Uživatel tak obdobně jako při užití na desktopových systémech bude přecházet z jedné aplikace do druhé. To pro pokročilého uživatele systému \emph{Android} a \emph{Git}, na kterého tato aplikace cílí, nepředstavuje překážku.
+    Toto rozhodnutí je podpořeno také faktem, že samotné užití programu \emph{Git} neřeší žádný komplexní problém uživatele. Ten proto bude používat řadu dalších aplikací, které v kooperaci splní jeho cíl.
+
     \subsection{Git LFS}\label{sec:problemy_lfs}
     \subsubsection{Integrace do aplikace}
     Integraci tohoto rozšíření provázely problémy, ale všechny byly řešitelné. Neobvyklý problém nastal při prvních pokusech o přidání sledovaného souboru do \emph{stage}. \emph{Git LFS} při něm zobrazoval chybou hlášku, že není možné vytvořit podproces pro spuštění jeho programu \code{filter-process}. Pro zjištění možné příčiny byl příkaz \code{git add .} spuštěn prostřednictvím ladícího programu \emph{strace}~\footnoteURL{https://strace.io/}. Pro jeho užití bylo nutné výstup přesměrovávat do souboru. \code{StringBuilder}, který je v aplikace využit pro zpracování výstupu z binárních programů již tak rozsáhlý výstup nezvládal zpracovávat a vracel jen jeho část. Ani samotný \emph{strace} ale nebyl nic platný. Na žádnou chybu neupozornil.
