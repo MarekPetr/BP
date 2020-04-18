@@ -86,12 +86,12 @@ Aplikace pro Android mohou být psány v Kotlinu, Javě, nebo C++. Nástroje And
 Každá aplikace pracuje ve svém vlastním uzavřeném prostoru. Android implementuje princip nejmenších pověření - \emph{principle of least privilege}. Ten zaručuje, že každá aplikace má práva k přístupu jen ke zdrojům, které potřebuje. Další práva lze aplikaci přidat pouze s explicitním souhlasem uživatele.
 
 \section{Android ABI}\label{sec:zaklady_abi}
-Různá zařízení mají osazeny různý hardware a tedy i procesory. Různé procesory používají různé instrukční sady. Každá kombinace procesoru a instrukční sady má vlastní aplikační binární rozhraní - \emph{Application Binary Interface (ABI)}. \emph{ABI}\footnoteURL{https://developer.android.com/ndk/guides/abis} zahrnuje následující informace:
+Různá zařízení mají osazeny různý hardware a tedy i procesory. Různé procesory používají různé instrukční sady. Každá kombinace procesoru a instrukční sady má vlastní aplikační binární rozhraní - \emph{Application Binary Interface (ABI)}. \emph{ABI}~\footnoteURL{https://developer.android.com/ndk/guides/abis} zahrnuje následující informace:
 \begin{itemize}
     \item Instrukční sadu.
     \item \emph{Endian} načítání a ukládání paměti. Android je vždy \emph{little-endian}.
     \item Konvenci sdílení dat mezi aplikacemi a systémem.
-    \item Formát spustitelných binárních souborů. Android vždy používá \emph{ELF}\footnoteURL{https://linuxhint.com/understanding_elf_file_format/}.
+    \item Formát spustitelných binárních souborů. Android vždy používá \emph{ELF}~\footnoteURL{https://linuxhint.com/understanding_elf_file_format/}.
     \item Formu implementace \emph{C++} kódu \footnoteURL{http://itanium-cxx-abi.github.io/cxx-abi/}.
 \end{itemize}
 
@@ -131,13 +131,46 @@ Komponenty aplikace jsou základním stavebním blokem každé Android aplikace.
         \emph{Content providers}, v překladu poskytovatelé obsahu, spravují data aplikace. Tyto data mohou být uloženy v souborovém systému, v \emph{SQLite} databázi, na internetu nebo na kterémkoliv jiném trvalém úložišti, ke kterému má aplikace přístup. \emph{Content providers} poskytují rozhraní k přístupu k těmto datům. Tato data jsou identifikována svým \emph{URI} - \emph{Uniform Resource Identifier}. Systém po obdržení daného \emph{URI} rozhodne na základě práv aplikace o přiřazení daného zdroje dat aplikaci. \emph{URI} tedy slouží obdobně jako absolutní cesta v souborovém systému, jen její užití je univerzální.
 
     \subsection{Aktivace komponent}
-    \emph{Activity}, \emph{service} a \emph{broadcast receiver} jsou aktivovány mechanismem zvaným \emph{intent}\footnoteURL{https://developer.android.com/reference/android/content/Intent}. Ty během chodu aplikace propojují jednotlivé komponenty tak, aby mohly vzájemně spolupracovat. Fungují tedy jako most, přes který si mezi sebou komponenty vyměňují informace.
-    
-\section{Architektura aplikace}
- Mobilní prostředí aplikací je velice odlišné od toho desktopového, což má vliv na architekturu aplikací. Zejména je to dáno tím, že uživatel často využívá kooperace více aplikací. Například pro sdílení snímků fotoaparátu na sociálních sítích daná aplikace vyvolá \emph{intent} pro spuštění kamery. Ten spustí jinou aplikaci poskytující rozhraní pro pořízení snímku. Tato aplikace po jeho pořízení snímek předá původní aplikaci a ta ho dále zpracovává. Tento způsob práce je pro \emph{Android} typický a aplikace s ním musí umět pracovat. Tato sekce čerpá informace z oficiálních návodů pro architekturu \emph{Android} \footnoteURL{https://developer.android.com/jetpack/docs/guide}.
+    \emph{Activity}, \emph{service} a \emph{broadcast receiver} jsou aktivovány mechanismem zvaným \emph{intent}~\footnoteURL{https://developer.android.com/reference/android/content/Intent}. Ty během chodu aplikace propojují jednotlivé komponenty tak, aby mohly vzájemně spolupracovat. Fungují tedy jako most, přes který si mezi sebou komponenty vyměňují informace.
 
-%\subsection{Základní architektonické principy}
-%Tato sekce popisuje základní 
+\newpage    
+\section{Architektura aplikace}
+ Mobilní prostředí aplikací je velice odlišné od toho desktopového, což má vliv na architekturu aplikací. Zejména je to dáno tím, že uživatel často využívá kooperace více aplikací. Například pro sdílení snímků fotoaparátu na sociálních sítích daná aplikace vyvolá \emph{intent} pro spuštění kamery. Ten spustí jinou aplikaci poskytující rozhraní pro pořízení snímku. Tato aplikace po jeho pořízení snímek předá původní aplikaci a ta ho dále zpracovává. Tento způsob práce je pro \emph{Android} typický a aplikace s ním musí umět pracovat.
+
+ Je důležité mít na paměti, že komponenty mohou být spuštěny v různém pořadí a operační systém může jejich běh v jakoukoliv dobu ukončit. Proto by data a stav aplikace neměl být uchováván v rámci těchto komponent.
+ 
+ Tato sekce čerpá informace z oficiálních návodů pro architekturu \emph{Android}~\footnoteURL{https://developer.android.com/jetpack/docs/guide}. Jedná se o doporučenou architekturu pro vývoj mobilních aplikací a aplikace, které se týká tato práce je na ní postavena. Pro implementaci této architektury se využívá knihovny \emph{Android Jetpack}~\footnoteURL{https://developer.android.com/jetpack}.
+
+    \subsection{Základní architektonické principy}
+    Existují dva základní architektonické principy. Jejich použití řeší problém kde uchovávat data a stav aplikace tak, aby byly odděleny od uživatelského rozhraní a aplikace byla dobře testovatelná a konzistentní.
+
+        \subsubsection{Oddělení zodpovědnosti}
+        Základem této architektury je, aby Aktivita nebo Fragment implementovali pouze logiku týkající se uživatelského rozhraní. To umožní vyhnout se mnoha problémům, které vznikají v rámci životního cyklu aplikace.
+
+        \subsubsection{Uživatelské rozhraní řídí model}
+        Dalším důležitým bodem je řídit uživatelské rozhraní z perzistentního modelu. \emph{Model} je komponenta, která má za úkol spravovat data aplikace. Je nezávislá na objektech uživatelského rozhraní a komponent aplikace tak, aby nebyla ovlivněna životním cyklem aplikace.
+
+        \newpage
+        \subsection{Doporučená architektura}
+        Následující diagram zobrazuje závislosti jednotlivých komponent doporučené architektury. Využitím těchto komponent se dosáhne splnění zmíněných architektonických principů. Tuto architekturu lze také popsat jako \emph{Model, View, ViewModel} - zkráceně \emph{MVVM}.
+
+        \begin{figure}[h]
+            \centering
+            \vspace{0.5cm}
+            \includegraphics[width=\textwidth, keepaspectratio]{jetpack-architecture.png}
+            \caption[Architektura aplikace]{Doporučená architektura~\footnoteURL{https://developer.android.com/jetpack/docs/guide}}
+            \label{diagram:jetpack_arch}
+        \end{figure}
+        
+        \begin{enumerate}
+            \item Třída \emph{Activity / Fragment} implementuje logiku uživatelského rozhraní. V terminologii \emph{MVVM} se jedná o \emph{View}.
+            \item \emph{ViewModel}~\footnoteURL{https://developer.android.com/reference/androidx/lifecycle/ViewModel} je třída, umožňující ukládat a spravovat data aplikace nezávisle na jejím životním cyklu.
+            \item \emph{LiveData}~\footnoteURL{https://developer.android.com/reference/android/arch/lifecycle/LiveData} je třída obsahující data. Je uzpůsobena ke komunikaci mezi aktivitou / fragmentem a \emph{ViewModelem}.
+            \item \emph{Repository} poskytuje operace nad daty.
+            \item \emph{Model} definuje data databáze.
+            \item \emph{Room}~\footnoteURL{https://developer.android.com/topic/libraries/architecture/room} je knihovna poskytující abstraktní vrstvu nad SQLite databází.
+        \end{enumerate}
+        
 
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Návrh aplikace}
@@ -159,10 +192,10 @@ Git je velice komplexní systém a proto hrozí, že jeho plná implementace by 
     Jelikož žádné aplikace pro Android kromě \emph{Termux} neimplementují rozšíření \emph{Git Annex} a nenalezl jsem knihovnu, která by toto dokázala, bylo rozhodnuto pro příkazy \emph{Gitu} využít zkompilované binární soubory. Mezi tyto funkce patří i funkce jednotlivých rozšíření. Všechny tyto příkazy budou dostupné při otevření repozitáře v bočním výsuvném panelu aplikace. V případě velkého množství takových příkazů budou rozděleny do kategorií, či se zobrazí jen v případě, kdy má jejich užití smysl. Pro transparentní zobrazení stavu repozitáře budou tyto funkce zobrazovat i svůj klasický textový výstup.
 
 \section{Použité technologie a nástroje}
-Před samotným programováním aplikace bylo třeba udělat průzkum nástrojů, které se při vývoji na zařízení Android používají. Tyto nástroje byly vybrány s důrazem na efektivitu vývoje i náročnost jejich použití. Nejdůležitějším z nich je \emph{Android Studio}~\footnoteURL{https://developer.android.com/studio}, prostředí, ve kterém probíhal vývoj aplikace. Aplikace byla dále vyvíjena za použití Android Jetpack~\footnoteURL{https://developer.android.com/jetpack}. Ty přináší komponenty pro efektivní vývoj aplikací. Pro verzování byl použit nástroj \emph{Git}, prostřednictvím aplikace \emph{GitKraken}~\footnoteURL{https://www.gitkraken.com/}. Kód aplikace byl synchronizován se vzdáleným repozitářem na serveru \emph{GitHub}~\footnoteURL{https://github.com/}. Pro dynamické generování instalačních souborů aplikace byl repozitář navíc synchronizován s \emph{GitLab CI/CD}~\footnoteURL{https://docs.gitlab.com/ee/ci/}. Pro vytváření binárních souborů \emph{Gitu} a \emph{Git} LFS byl použit \emph{Docker}~\footnoteURL{https://www.docker.com/}. Obraz pro jejich kompilace poskytuje aplikace \emph{Termux packages}~\footnoteURL{https://github.com/termux/termux-packages}.
+Před samotným programováním aplikace bylo třeba udělat průzkum nástrojů, které se při vývoji na zařízení Android používají. Tyto nástroje byly vybrány s důrazem na efektivitu vývoje i náročnost jejich použití. Nejdůležitějším z nich je \emph{Android Studio}~\footnoteURL{https://developer.android.com/studio}. Pro verzování byl použit nástroj \emph{Git}, prostřednictvím aplikace \emph{GitKraken}~\footnoteURL{https://www.gitkraken.com/}. Kód aplikace byl synchronizován se vzdáleným repozitářem na serveru \emph{GitHub}~\footnoteURL{https://github.com/}. Pro dynamické generování instalačních souborů aplikace byl repozitář navíc synchronizován s \emph{GitLab CI/CD}~\footnoteURL{https://docs.gitlab.com/ee/ci/}. Pro vytváření binárních souborů \emph{Gitu} a \emph{Git} LFS byl použit \emph{Docker}~\footnoteURL{https://www.docker.com/}. Obraz pro jejich kompilace poskytuje aplikace \emph{Termux packages}~\footnoteURL{https://github.com/termux/termux-packages}.
 
 \section{Architektura aplikace}
-Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \emph{Model–view–viewmodel} (dále jen~\emph{MVVM}) a \emph{SQLite} databáze. K přístupu k databázi používá \emph{Room Persistence Library} (dále jen Room). Tato knihovna poskytuje abstraktní vrstvu nad databází \emph{SQLite}, zajišťující robustní přístup při plném využití potenciálu tohoto systému řízení báze dat.
+Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \emph{Model–view–viewmodel} (dále jen~\emph{MVVM}). K implementaci této architektury využívá knihovny \emph{Android Jetpack}~\footnoteURL{https://developer.android.com/jetpack}.
 
     \subsection{Kotlin vs. Java}
     Od 7. května 2019 se \emph{Kotlin} stal preferovaným jazykem vývoje pro Android. Proto jsem od začátku plánoval programovat aplikaci právě v něm. Nicméně během programování aplikace jsem zjistil, že naprostá většina zdrojů na internetu pro řešení problémů pro tuto platformu je psána v Javě. Android studio sice umožňuje zkonvertovat kód do Kotlinu, nicméně ani to není to vždy dokonalé. Užití Kotlinu má tu výhodu, že dovoluje programátorovi vynechat určité části kódu, které jsou nutné pro běh aplikace, ale přímo neřeší daný problém. V angličtině se pro ně vžil výraz \emph{boilerplate code}. Ovšem tento kód je přesto třeba vygenerovat, ale o to se již stará Kotlin. To je také jeden z důvodů, proč Kotlin trvá déle zkompilovat. Pokročilým Android vývojářům jistě přijde rychlejí práce vhod, ale jako začínají programátor na této platformě více ocením transparentnost Javy.
