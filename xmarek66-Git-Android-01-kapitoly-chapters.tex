@@ -184,7 +184,7 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
         \end{enumerate}
 
         \subsection{ViewModel}
-        Stěžejní částí této architektury je \emph{ViewModel}. Do něj se přesouvá maximum logiky aplikace, data i operace nad nimi. \emph{ViewModel} je inicializován v rámci aktivity nebo fragmentu. Jak již bylo naznačeno v předchozí sekci~\ref{arch:viewmodel}, data uložené v jeho rámci přetrvávají změny stavu spojené s životním cyklem aktivity/fragmentu. Jak dokládá \ref{diagram:viewmodel_lifecycle}, jeho stav zůstává v paměti dokud neskončí jeho aktivita nebo není odpojen jeho fragment.
+        Stěžejní částí této architektury je \emph{ViewModel}. Do něj se přesouvá logika aplikace, data i operace nad nimi. \emph{ViewModel} je inicializován v rámci aktivity nebo fragmentu. Jak již bylo naznačeno v předchozí sekci~\ref{arch:viewmodel}, data uložené v jeho rámci přetrvávají změny stavu spojené s životním cyklem aktivity/fragmentu. Jak dokládá \ref{diagram:viewmodel_lifecycle}, jeho stav zůstává v paměti dokud neskončí daná aktivita nebo není odpojen příslušný fragment.
 
         \begin{figure}[h!]
             \centering
@@ -195,7 +195,7 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
 
         \newpage
         \subsection{Architektonický vzor MVVM}
-        Pro správné užití tohoto architektonického vzoru je nutné dodržovat následující závislosti mezi jeho částmi a principy správné komunikace. Pro komunikaci směrem z \emph{View} do \emph{ViewModelu} slouží \emph{Observer}~\cite{livedata}. Ten sleduje data \emph{LiveData} a při jejich změně vykoná předem definované operace.
+        Pro správné užití tohoto architektonického vzoru je nutné dodržovat následující principy správné komunikace. Pro komunikaci směrem z \emph{View} do \emph{ViewModelu} slouží \emph{Observer}~\cite{livedata}. Ten sleduje data \emph{LiveData} a při jejich změně vykoná předem definované operace.
 
         \begin{figure}[h!]
             \centering
