@@ -66,7 +66,7 @@ Během průzkumu již existující aplikací jsem se zaměřil jak na aplikace o
     \subsection{Zhodnocení průzkumu}
     Z testování aplikací vyplynulo, že nejjednodušší způsob práce s \emph{Git}em je tehdy, když aplikace transparentně zobrazuje příkazy \emph{Gitu} a jejich použití nechá na uživateli. Předejde se tím chybám, jejichž hlášení nejsou vždy dostačující k vyřešení problému. Pokud je funkce dobře zpracována, není třeba vést uživatele krok po kroku. Ovládání se tak urychlí a je stále přehledné.
 
-    Testované aplikace často využívají vlastní textový editor a správce souborů. V obou případech tyto aplikace integrují velice jednoduché verze a jejich použitelnost je tak značně omezená.
+    Testované mobilní aplikace často využívají vlastní textový editor a správce souborů. V obou případech tyto aplikace integrují velice jednoduché verze a jejich použitelnost je tak značně omezená.
 
     Dalším bodem jsou chybová hlášení. Těm by měla aplikace pokud možno předcházet. Pokud chybě již není vyhnutí, alespoň by měla mít dobrý popis a nebo i návrh jejího řešení.
 
@@ -101,10 +101,10 @@ Komponenty aplikace jsou základním stavebním blokem každé Android aplikace.
     \subsection{Typy komponent}
     Existují čtyři typy komponent:
     \begin{itemize}
-        \item \emph{Activities} - Aktivity
-        \item \emph{Services} - Služby
-        \item \emph{Broadcast receivers} - přijímače vysílání
-        \item \emph{Content providers} - Poskytovatele obsahu
+        \item \textbf{Activities} - Aktivity
+        \item \textbf{Services} - Služby
+        \item \textbf{Broadcast receivers} - přijímače vysílání
+        \item \textbf{Content providers} - Poskytovatele obsahu
     \end{itemize}
 
         \subsubsection{Activities}
@@ -133,7 +133,19 @@ Komponenty aplikace jsou základním stavebním blokem každé Android aplikace.
     \subsection{Aktivace komponent}
     \emph{Activity}, \emph{service} a \emph{broadcast receiver} jsou aktivovány mechanismem zvaným \emph{intent}~\footnoteURL{https://developer.android.com/reference/android/content/Intent}. Ty během chodu aplikace propojují jednotlivé komponenty tak, aby mohly vzájemně spolupracovat. Fungují tedy jako most, přes který si mezi sebou komponenty vyměňují informace.
 
-\newpage    
+\newpage
+\section{Životní cyklus aktivity}
+Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do aktivity, je často potřeba pro různé účely detekovat tyto změny stavů. K tomu aktivita poskytuje řadu metod zpětného volání tzv. \emph{callback}. Ty jsou volány v případě, že systém aktivitu vytváří - \textbf{OnCreate()}, přerušuje - \textbf{onPause()}), zastavuje - \textbf{onStop()}, obnovuje - \textbf{onRestart()} nebo ruší - \textbf{onDestroy()}.
+
+\begin{figure}[h!]
+    \centering
+    \vspace{0.5cm}
+    \includegraphics[height=0.7\textheight ,keepaspectratio]{activity_lifecycle_medium.png}
+    \caption[Životní cyklus aktivity]{Životní cyklus aktivity~\cite{activity-life-cycle}}
+    \label{diagram:activity_lifecycle}
+\end{figure}
+
+\newpage
 \section{Architektura aplikace}
  Mobilní prostředí aplikací je velice odlišné od toho desktopového, což má vliv na architekturu aplikací. Zejména je to dáno tím, že uživatel často využívá kooperace více aplikací. Například pro sdílení snímků fotoaparátu na sociálních sítích daná aplikace vyvolá \emph{intent} pro spuštění kamery. Ten spustí jinou aplikaci poskytující rozhraní pro pořízení snímku. Tato aplikace po jeho pořízení snímek předá původní aplikaci a ta ho dále zpracovává. Tento způsob práce je pro \emph{Android} typický a aplikace s ním musí umět pracovat.
 
@@ -154,23 +166,24 @@ Komponenty aplikace jsou základním stavebním blokem každé Android aplikace.
         \subsection{Doporučená architektura}
         Následující diagram zobrazuje závislosti jednotlivých komponent doporučené architektury. Využitím těchto komponent se dosáhne splnění zmíněných architektonických principů. Tuto architekturu lze také popsat jako \emph{Model, View, ViewModel} - zkráceně \emph{MVVM}.
 
-        \begin{figure}[h]
+        \begin{figure}[h!]
             \centering
             \vspace{0.5cm}
             \includegraphics[width=\textwidth, keepaspectratio]{jetpack-architecture.png}
-            \caption[Architektura aplikace]{Doporučená architektura~\footnoteURL{https://developer.android.com/jetpack/docs/guide}}
+            \caption[Architektura aplikace]{Doporučená architektura~\cite{app-architecture-guide}}
             \label{diagram:jetpack_arch}
         \end{figure}
         
         \begin{enumerate}
-            \item Třída \emph{Activity / Fragment} implementuje logiku uživatelského rozhraní. V terminologii \emph{MVVM} se jedná o \emph{View}.
-            \item \emph{ViewModel}~\footnoteURL{https://developer.android.com/reference/androidx/lifecycle/ViewModel} je třída, umožňující ukládat a spravovat data aplikace nezávisle na jejím životním cyklu.
-            \item \emph{LiveData}~\footnoteURL{https://developer.android.com/reference/android/arch/lifecycle/LiveData} je třída obsahující data. Je uzpůsobena ke komunikaci mezi aktivitou / fragmentem a \emph{ViewModelem}.
-            \item \emph{Repository} poskytuje operace nad daty.
-            \item \emph{Model} definuje data databáze.
-            \item \emph{Room}~\footnoteURL{https://developer.android.com/topic/libraries/architecture/room} je knihovna poskytující abstraktní vrstvu nad SQLite databází.
+            \item Třída \textbf{Activity / Fragment} implementuje logiku uživatelského rozhraní. V terminologii \emph{MVVM} se jedná o \emph{View}.
+            \item \textbf{ViewModel}~\footnoteURL{https://developer.android.com/reference/androidx/lifecycle/ViewModel} je třída, umožňující ukládat a spravovat data aplikace nezávisle na jejím životním cyklu.
+            \item \textbf{LiveData}~\footnoteURL{https://developer.android.com/reference/android/arch/lifecycle/LiveData} je třída obsahující data. Je uzpůsobena ke komunikaci mezi aktivitou / fragmentem a \emph{ViewModelem}.
+            \item \textbf{Repository} poskytuje operace nad daty.
+            \item \textbf{Model} definuje data databáze.
+            \item \textbf{Room}~\footnoteURL{https://developer.android.com/topic/libraries/architecture/room} je knihovna poskytující abstraktní vrstvu nad SQLite databází.
         \end{enumerate}
         
+
 
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Návrh aplikace}
@@ -188,9 +201,38 @@ Git je velice komplexní systém a proto hrozí, že jeho plná implementace by 
     \subsection{Správa repozitářů}
     Po spuštění aplikace uživatele uvítá obrazovka se seznamem sledovaných repozitářů. Repozitář je možné do něj přidat několika způsoby. Prvním je přidání již existujícího repozitáře specifikováním jeho cesty v úložišti zařízení. Druhým je klonování nebo inicializace repozitáře z prostředí aplikace. Tento seznam repozitářů je synchronizován s úložištěm zařízení. Příkazy \emph{Gitu} bude moci uživatel provádět po otevření daného repozitáře.
 
+    \newpage
     \subsection{Příkazy Gitu}
-    Jelikož žádné aplikace pro Android kromě \emph{Termux} neimplementují rozšíření \emph{Git Annex} a nenalezl jsem knihovnu, která by toto dokázala, bylo rozhodnuto pro příkazy \emph{Gitu} využít zkompilované binární soubory. Mezi tyto funkce patří i funkce jednotlivých rozšíření. Všechny tyto příkazy budou dostupné při otevření repozitáře v bočním výsuvném panelu aplikace. V případě velkého množství takových příkazů budou rozděleny do kategorií, či se zobrazí jen v případě, kdy má jejich užití smysl. Pro transparentní zobrazení stavu repozitáře budou tyto funkce zobrazovat i svůj klasický textový výstup.
+    Jelikož žádné aplikace pro Android kromě \emph{Termux} neimplementují rozšíření \emph{Git Annex} a nenalezl jsem knihovnu, která by toto dokázala, bylo rozhodnuto pro příkazy \emph{Gitu} využít zkompilované binární soubory. Mezi tyto funkce patří i funkce rozšíření. Všechny tyto příkazy budou dostupné při otevření repozitáře v bočním výsuvném panelu aplikace. Pro transparentní zobrazení stavu repozitáře budou tyto funkce zobrazovat i svůj klasický textový výstup.
 
+        \subsubsection{Git}
+        Pro umožnění základního užití nástroje \emph{Git} budou uživateli dostupné následující příkazy:
+        \begin{itemize}
+            \item \textbf{\code{add}} - přidání souborů do \emph{stage}
+            \item \textbf{\code{commit}} - vytvoření nového \emph{commitu} - potvrzení změn a vytvoření nového uzlu \emph{Gitu}
+            \item \textbf{\code{push}} - nahrání obsahu nových \emph{commitů} na vzdálený server
+            \item \textbf{\code{pull}} - stažení obsahu nových \emph{commitů} ze vzdáleného serveru
+            \item \textbf{\code{status}} - výpis stavu souborů repozitáře
+            \item \textbf{\code{log}} - detailní výpis \emph{commitů} repozitáře
+            \item \textbf{\code{reset --hard}} - obnova změněných souborů, které ještě nejsou součástí aktuálního uzlu
+            \item \textbf{\code{remote add origin}} - přidání \emph{URL} nového vzdáleného serveru
+            \item \textbf{\code{remote set-url origin}} - editace \emph{URL} aktuálního vzdáleného serveru
+            \item \textbf{\code{branch}} - výpis větví
+            \item \textbf{\code{checkout <branch>}} - přepnutí z aktuální větve na větev \code{<branch>}
+            \item \textbf{\code{checkout --track <branch>}} - stažení obsahu vzdálené větve a přepnutí z aktuální větve na tuto novou větvi
+        \end{itemize}
+
+        \subsubsection{Git LFS}
+        Pro rozšíření \emph{Git LFS} pak budou dostupné tyto příkazy:
+        \begin{itemize}
+            \item \textbf{\code{track <pattern>}} - přidání souborů, které odpovídají regulárnímu výrazu \emph{pattern} sledovaných souborů
+            \item \textbf{\code{untrack <pattern>}} - ukončení sledování souborů daných výrazem \emph{pattern}
+            \item \textbf{\code{track}} - výpis sledovaných výrazů
+            \item \textbf{\code{ls-files}} - výpis sledovaných souborů 
+            \item \textbf{\code{status}} - výpis stavi repozitáře s \emph{Git LFS}
+            \item \textbf{\code{env}} - výpis prostředí \emph{Git LFS}, pro hledání řešení chyb repozitáře
+        \end{itemize}
+    
 \section{Použité technologie a nástroje}
 Před samotným programováním aplikace bylo třeba udělat průzkum nástrojů, které se při vývoji na zařízení Android používají. Tyto nástroje byly vybrány s důrazem na efektivitu vývoje i náročnost jejich použití. Nejdůležitějším z nich je \emph{Android Studio}~\footnoteURL{https://developer.android.com/studio}. Pro verzování byl použit nástroj \emph{Git}, prostřednictvím aplikace \emph{GitKraken}~\footnoteURL{https://www.gitkraken.com/}. Kód aplikace byl synchronizován se vzdáleným repozitářem na serveru \emph{GitHub}~\footnoteURL{https://github.com/}. Pro dynamické generování instalačních souborů aplikace byl repozitář navíc synchronizován s \emph{GitLab CI/CD}~\footnoteURL{https://docs.gitlab.com/ee/ci/}. Pro vytváření binárních souborů \emph{Gitu} a \emph{Git} LFS byl použit \emph{Docker}~\footnoteURL{https://www.docker.com/}. Obraz pro jejich kompilace poskytuje aplikace \emph{Termux packages}~\footnoteURL{https://github.com/termux/termux-packages}.
 
@@ -372,14 +414,19 @@ Implementace provázelo velké množství překážek. Ty se začaly objevovat j
     Toto rozhodnutí je podpořeno také faktem, že samotné užití programu \emph{Git} neřeší žádný komplexní problém uživatele. Ten proto bude používat řadu dalších aplikací, které v kooperaci splní jeho cíl.
 
     \subsection{Git LFS}\label{sec:problemy_lfs}
+    S implementací tohoto rozšíření \emph{Gitu} se pojily dva problémy. První se týká samotné integrace do prostředí systému \emph{Android}, druhý pak mechanismu \emph{Git Hooks}\footnoteURL{https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks}.
+
+    \emph{Hooks}, neboli háček, \emph{Gitu} umožňuje před nebo po vykonání jeho příkazu spustit z definovaného adresáře daný skript. \emph{Git LFS} tohoto mechanismu využívá pro synchronizaci repozitáře.
+
     \subsubsection{Integrace do aplikace}
     Integraci tohoto rozšíření provázely problémy, ale všechny byly řešitelné. Neobvyklý problém nastal při prvních pokusech o přidání sledovaného souboru do \emph{stage}. \emph{Git LFS} při něm zobrazoval chybou hlášku, že není možné vytvořit podproces pro spuštění jeho programu \code{filter-process}. Pro zjištění možné příčiny byl příkaz \code{git add .} spuštěn prostřednictvím ladícího programu \emph{strace}~\footnoteURL{https://strace.io/}. Pro jeho užití bylo nutné výstup přesměrovávat do souboru. \code{StringBuilder}, který je v aplikace využit pro zpracování výstupu z binárních programů již tak rozsáhlý výstup nezvládal zpracovávat a vracel jen jeho část. Ani samotný \emph{strace} ale nebyl nic platný. Na žádnou chybu neupozornil.
     
     Pro řešení bylo přidána tzv. \emph{issue} v oficiálním repozitáři \emph{Git LFS}~\footnoteURL{https://github.com/git-lfs/git-lfs}. S pomocí jednoho z hlavních vývojářů tohoto programu byl problém vyřešen. Využitím přepínače \code{strace '-f'} bylo zjištěno, že \emph{Git LFS} nenalezl \emph{shell}. Problém byl vyřešen mírnou oklikou a to přidáním symbolického odkazu na \code{/system/shell} do složky \code{bin}, kde byl tento interpret očekáván.
 
-    \newpage
     \subsubsection{Git LFS hooks}~\label{subsub:problemy_git_hooks}
-    Integrací problémy s Git LFS stále nekončily. Při vykonávání kteréhokoliv příkazu, který spouštěl tzv. \emph{hook} \emph{Git} vracel chybu pro nedostatečná práva pro otevření těchto souborů. Bylo to dáno tím, že příkaz pro instalaci \emph{Git LFS} do repozitáře, vytvářel \emph{hooky} uvnitř tohoto repozitáře, ale nepřiřadil jim patřičná práva. Řešení byla možná dvě. Buď po proběhnutí každé instalace nastavit práva těmto souborům ručně, nebo tyto hooky vytvářet ve vnitřním prostoru aplikace, kde jsou již potřebná práva nastavena.
+    Integrací problémy s Git LFS stále nekončily. Při vykonávání kteréhokoliv příkazu, který spouštěl tzv. \emph{hook}, \emph{Git} vracel chybu pro nedostatečná práva pro otevření těchto souborů.
+    
+    Bylo to dáno tím, že příkaz pro instalaci \emph{Git LFS} do repozitáře, vytvářel \emph{hooky} uvnitř tohoto repozitáře, ale nepřiřadil jim patřičná práva. Řešení byla možná dvě. Buď po proběhnutí každé instalace nastavit práva těmto souborům ručně, nebo tyto hooky vytvářet ve vnitřním prostoru aplikace, kde jsou již potřebná práva nastavena.
     
     Na první pohled by se mohlo zdát, že uživatelsky přívětivější je první řešení. Uživatel \emph{hooky} vytvoří jednou při instalaci \emph{Git LFS} a při klonování repozitáře na jiném zařízení již budou nainstalovány. Bohužel situace taková není. \emph{Hooky} jsou při výchozím nastavení umístěny lokálně ve složce \code{.git} repozitáře a při klonování zkopírovány nejsou~~\footnoteURL{https://www.atlassian.com/git/tutorials/git-hooks}.
 
