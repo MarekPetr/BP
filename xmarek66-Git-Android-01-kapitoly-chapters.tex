@@ -177,7 +177,7 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
         \begin{enumerate}
             \item Třída \textbf{Activity / Fragment} implementuje logiku uživatelského rozhraní. V terminologii \emph{MVVM} se jedná o \emph{View}.
             \item \textbf{ViewModel}~\footnoteURL{https://developer.android.com/reference/androidx/lifecycle/ViewModel} - třída, umožňující ukládat a spravovat data aplikace nezávisle na jejím životním cyklu.\label{arch:viewmodel}
-            \item \textbf{LiveData}~\footnoteURL{https://developer.android.com/reference/android/arch/lifecycle/LiveData} - třída, obsahující data. Je uzpůsobena ke komunikaci mezi aktivitou / fragmentem a \emph{ViewModelem}. 
+            \item \textbf{LiveData}~\cite{livedata} - třída, obsahující data. Je uzpůsobena ke komunikaci mezi aktivitou / fragmentem a \emph{ViewModelem}. 
             \item \textbf{Repository} - třída, poskytující operace nad daty.
             \item \textbf{Model} - třída, definující data databáze.
             \item \textbf{Room}~\footnoteURL{https://developer.android.com/topic/libraries/architecture/room} - knihovna poskytující abstraktní vrstvu nad \emph{SQLite} databází.
@@ -195,13 +195,13 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
 
         \newpage
         \subsection{Architektonický vzor MVVM}
-        Pro správné užití tohoto architektonického vzoru je nutné dodržovat následující závislosti mezi jeho částmi a principy správné komunikace. Pro komunikaci směrem z \emph{View} do \emph{ViewModelu} slouží tzv. \emph{Observer}. Ten sleduje data \emph{LiveData} a při jejich změně vykoná předem definované operace.
+        Pro správné užití tohoto architektonického vzoru je nutné dodržovat následující závislosti mezi jeho částmi a principy správné komunikace. Pro komunikaci směrem z \emph{View} do \emph{ViewModelu} slouží \emph{Observer}~\cite{livedata}. Ten sleduje data \emph{LiveData} a při jejich změně vykoná předem definované operace.
 
         \begin{figure}[h!]
             \centering
             \includegraphics[width=\textwidth, keepaspectratio]{android-mvvm-pattern.png}
             \caption[Vzor MVVM]{Vzor MVVM~\cite{mvvm-pattern}}
-            \label{diagram:viewmodel_lifecycle}
+            \label{diagram:mvvm_pattern}
         \end{figure}
         
 %-----------------------------------CHAPTER------------------------------------
