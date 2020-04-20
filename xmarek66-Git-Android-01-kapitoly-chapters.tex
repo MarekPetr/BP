@@ -157,7 +157,7 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
     Existují dva základní architektonické principy. Jejich použití řeší problém kde uchovávat data a stav aplikace tak, aby byly odděleny od uživatelského rozhraní a aplikace byla dobře testovatelná a konzistentní.
 
         \subsubsection{Oddělení zodpovědnosti}
-        Základem této architektury je, aby Aktivita nebo Fragment implementovali pouze logiku týkající se uživatelského rozhraní. To umožní vyhnout se mnoha problémům, které vznikají v rámci životního cyklu aplikace.
+        Základem této architektury je, aby Aktivita nebo Fragment implementoval pouze logiku týkající se uživatelského rozhraní. To umožní vyhnout se mnoha problémům, které jsou způsobené životním cyklem aplikace.
 
         \subsubsection{Uživatelské rozhraní řídí model}
         Dalším důležitým bodem je řídit uživatelské rozhraní z perzistentního modelu. \emph{Model} je komponenta, která má za úkol spravovat data aplikace. Je nezávislá na objektech uživatelského rozhraní a komponent aplikace tak, aby nebyla ovlivněna životním cyklem aplikace.
@@ -203,7 +203,58 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
             \caption[Vzor MVVM]{Vzor MVVM~\cite{mvvm-pattern}}
             \label{diagram:mvvm_pattern}
         \end{figure}
-        
+
+        \subsection{Příklad inicializace LiveData}
+        Následující kód demonstruje inicializaci \emph{LiveData}. Jedná se o wrapper, který může obsahovat jakékoliv data. Může tedy i implementovat kolekce, například seznam. Následující kód byl převzat z~\cite{livedata} a názorně ukazuje, jakým způsobem jsou LiveData inicializována. Z důvodu perzistence její hodnoty se tak děje v rámci \emph{ViewModelu}.
+
+        \begin{lstlisting}[language=Java, caption=Inicializace LiveData]
+        public class NameViewModel extends ViewModel {
+
+            // Create a LiveData with a String
+            private MutableLiveData<String> currentName();
+            
+            public MutableLiveData<String> getCurrentName() {
+                if (currentName == null) {
+                    currentName = new MutableLiveData<String>();
+                }
+                return currentName;
+            }
+            // Rest of the ViewModel...
+        }
+        \end{lstlisting}
+
+        \newpage
+        \subsection{Příklad získání hodnoty LiveData}
+        Hodnota \emph{LiveData} potřebná pro aktualizaci uživatelského rozhraní se získává pomocí \emph{Observeru}. Hodnotu je potřeba znát v rámci aktivity a proto se k odběru změn hodnoty \emph{LiveData} přihlásíme právě z ní.
+
+        \begin{lstlisting}[language=Java, caption=Získání hodnoty LiveData]
+        public class NameActivity extends AppCompatActivity {
+
+            private NameViewModel model;
+
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+
+                // Other code to setup the activity...
+
+                // Get the ViewModel.
+                model = new ViewModelProvider(this).get(NameViewModel.class);
+
+                // Create the observer which updates the UI.
+                final Observer<String> nameObserver = new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable final String newName) {
+                        // Update the UI, in this case, a TextView.
+                        nameTextView.setText(newName);
+                    }
+                };
+
+                // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+                model.getCurrentName().observe(this, nameObserver);
+            }
+        }
+        \end{lstlisting}
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Návrh aplikace}
 Dle zhodnocení průzkumu i vlastních zkušeností byly na aplikaci stanoveny následující požadavky. Aplikace bude:
@@ -259,7 +310,7 @@ Před samotným programováním aplikace bylo třeba udělat průzkum nástrojů
 Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \emph{Model–view–viewmodel} (dále jen~\emph{MVVM}). K implementaci této architektury využívá knihovny \emph{Android Jetpack}~\footnoteURL{https://developer.android.com/jetpack}.
 
     \subsection{Kotlin vs. Java}
-    Od 7. května 2019 se \emph{Kotlin} stal preferovaným jazykem vývoje pro Android. Proto jsem od začátku plánoval programovat aplikaci právě v něm. Nicméně během programování aplikace jsem zjistil, že naprostá většina zdrojů na internetu pro řešení problémů pro tuto platformu je psána v Javě. Android studio sice umožňuje zkonvertovat kód do Kotlinu, nicméně ani to není to vždy dokonalé. Užití Kotlinu má tu výhodu, že dovoluje programátorovi vynechat určité části kódu, které jsou nutné pro běh aplikace, ale přímo neřeší daný problém. V angličtině se pro ně vžil výraz \emph{boilerplate code}. Ovšem tento kód je přesto třeba vygenerovat, ale o to se již stará Kotlin. To je také jeden z důvodů, proč Kotlin trvá déle zkompilovat. Pokročilým Android vývojářům jistě přijde rychlejí práce vhod, ale jako začínají programátor na této platformě více ocením transparentnost Javy.
+    Od 7. května 2019 se \emph{Kotlin} stal preferovaným jazykem vývoje pro Android. Proto jsem od začátku plánoval programovat aplikaci právě v něm. Nicméně během programování aplikace jsem zjistil, že naprostá většina zdrojů na internetu pro řešení problémů pro tuto platformu je psána v Javě. Android studio sice umožňuje zkonvertovat kód do Kotlinu, ale ani to se neobejde bez další práce. Užití Kotlinu má tu výhodu, že dovoluje programátorovi vynechat určité části kódu, které jsou nutné pro běh aplikace, ale přímo neřeší daný problém. V angličtině se pro ně vžil výraz \emph{boilerplate code}. Ovšem tento kód je přesto třeba vygenerovat, ale o to se již stará Kotlin. To je také jeden z důvodů, proč Kotlin trvá déle zkompilovat. Pokročilým Android vývojářům jistě přijde rychlejí práce vhod, ale jako začínají programátor na této platformě více ocením transparentnost Javy.
 
     \newpage
     \subsection{Databáze}
