@@ -205,9 +205,11 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
         \end{figure}
 
         \subsection{Příklad inicializace LiveData}
-        Následující kód demonstruje inicializaci \emph{LiveData}. Jedná se o wrapper, který může obsahovat jakékoliv data. Může tedy i implementovat kolekce, například seznam. Následující kód byl převzat z~\cite{livedata} a názorně ukazuje, jakým způsobem jsou LiveData inicializována. Z důvodu perzistence její hodnoty se tak děje v rámci \emph{ViewModelu}.
+        Následující kód názorně předvádí inicializaci \emph{LiveData}. Jedná se o \emph{wrapper}, který může obsahovat jakékoliv data. Může tedy i implementovat kolekce, například seznam.
 
-        \begin{lstlisting}[language=Java, caption=Inicializace LiveData]
+        Z důvodu perzistence její hodnoty v rámci životního cyklu aktivity se inicializace provádí ve \emph{ViewModelu}.
+
+        \begin{lstlisting}[language=Java, caption=Inicializace \emph{LiveData}~\cite{livedata}.]
         public class NameViewModel extends ViewModel {
 
             // Create a LiveData with a String
@@ -227,7 +229,7 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
         \subsection{Příklad získání hodnoty LiveData}
         Hodnota \emph{LiveData} potřebná pro aktualizaci uživatelského rozhraní se získává pomocí \emph{Observeru}. K odběru změn se přihlásíme z Aktivity/Fragmentu, kde danou hodnotu potřebujeme.
 
-        \begin{lstlisting}[language=Java, caption=Získání hodnoty LiveData]
+        \begin{lstlisting}[language=Java, caption=Získání hodnoty LiveData~\cite{livedata}]
         public class NameActivity extends AppCompatActivity {
 
             private NameViewModel model;
