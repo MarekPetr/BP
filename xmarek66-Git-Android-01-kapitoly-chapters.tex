@@ -225,7 +225,7 @@ Protože uživatel má plnou volnost přecházet z a do aplikace, z aktivity do 
 
         \newpage
         \subsection{Příklad získání hodnoty LiveData}
-        Hodnota \emph{LiveData} potřebná pro aktualizaci uživatelského rozhraní se získává pomocí \emph{Observeru}. Hodnotu je potřeba znát v rámci aktivity a proto se k odběru změn hodnoty \emph{LiveData} přihlásíme právě z ní.
+        Hodnota \emph{LiveData} potřebná pro aktualizaci uživatelského rozhraní se získává pomocí \emph{Observeru}. K odběru změn se přihlásíme z Aktivity/Fragmentu, kde danou hodnotu potřebujeme.
 
         \begin{lstlisting}[language=Java, caption=Získání hodnoty LiveData]
         public class NameActivity extends AppCompatActivity {
