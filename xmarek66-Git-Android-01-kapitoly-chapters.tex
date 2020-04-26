@@ -153,7 +153,7 @@ Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivita
  Tato sekce čerpá informace z oficiálních návodů pro architekturu \emph{Android}~\footnoteURL{https://developer.android.com/jetpack/docs/guide}. Jedná se o doporučenou architekturu pro vývoj mobilních aplikací a aplikace, které se týká tato práce je na ní postavena. Pro implementaci této architektury se využívá knihovny \emph{Android Jetpack}~\footnoteURL{https://developer.android.com/jetpack}.
 
     \subsection{Základní architektonické principy}
-    Existují dva základní architektonické principy. Jejich použití řeší problém kde uchovávat data a stav aplikace tak, aby byly odděleny od uživatelského rozhraní a aplikace byla dobře testovatelná a konzistentní.
+    Existují dva základní architektonické principy. Jejich použití řeší problém, kde uchovávat data a stav aplikace tak, aby byly odděleny od uživatelského rozhraní. Aplikace se tím stává konzistentní a dobře testovatelná.
 
         \subsubsection{Oddělení zodpovědnosti}
         Základem této architektury je, aby Aktivita nebo Fragment implementoval pouze logiku týkající se uživatelského rozhraní. To umožní vyhnout se mnoha problémům, které jsou způsobené životním cyklem aplikace.
@@ -163,7 +163,7 @@ Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivita
 
         \newpage
         \subsection{Doporučená architektura}
-        Následující diagram zobrazuje závislosti jednotlivých komponent doporučené architektury. Využitím těchto komponent se dosáhne splnění zmíněných architektonických principů. Tuto architekturu lze také popsat jako \emph{Model, View, ViewModel} - zkráceně \emph{MVVM}.
+        Následující diagram zobrazuje závislosti jednotlivých komponent doporučené architektury. Využitím těchto komponent se dosáhne splnění zmíněných architektonických principů. Tuto architekturu lze také popsat jako \emph{Model, View, ViewModel} - zkráceně \emph{MVVM}. Vyjma části \emph{Remote Data Source} ji implementuje i aplikace této práce.
 
         \begin{figure}[h!]
             \centering
@@ -353,8 +353,28 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     Tento balíček obsahuje třídy, které slouží k zobrazení položek stejného typu. Tato aplikace je využívá k zobrazení seznamu repozitářů základní obrazovky a příkazů \emph{Gitu} v bočním výsuvném panelu. Adaptér \code{RepoTasksAdapter.java} pro zobrazení tohoto výsuvného panelu byl převzat z implementace aplikace \emph{MGit} třídy \code{RepoOperationsAdapter.java}~\footnoteURL{https://github.com/maks/MGit/blob/master/app/src/main/java/me/sheimi/sgit/adapters/RepoOperationsAdapter.java} a následně upraven pro potřeby aplikace.
 
     \subsubsection{database}
-    Tento balíček obsahuje balíček \code{model}, ve kterém se nachází třída \code{Repo}. Ta implementuje tabulku databáze, uchovávající všechny potřebné informace o repozitáři. Instance databáze se uchovává ve třídě \code{RepoDatabase}. K přístupu k ní se využívá třída \code{RepoDao}. Tato třída obsahuje metody volající \emph{SQLite} dotazy databáze. Aplikaci je databáze zprostředkována třídou \code{RepoRepository}, která odpovídá \code{Repository} modelu~\emph{MVVM}. Databáze se ukládá do bezpečného vnitřního prostoru balíčku aplikace.
+    Tento balíček obsahuje balíček \code{model}, ve kterém se nachází třída \code{Repo}. Ta implementuje tabulku databáze, uchovávající všechny potřebné informace o repozitáři. Instance databáze se uchovává ve třídě \code{RepoDatabase}. K přístupu k ní se využívá třída \code{RepoDao}. Tato třída obsahuje metody volající \emph{SQLite} dotazy databáze. Aplikaci je databáze zprostředkována třídou \code{RepoRepository}, která odpovídá \code{Repository} modelu~\emph{MVVM}. Databáze se ukládá do bezpečného vnitřního prostoru balíčku aplikace. Pro získání abstraktní vrstvy nad databází aplikace využívá knihovny \emph{Room Persistence Library}~\footnoteURL{https://developer.android.com/topic/libraries/architecture/room}.
 
+    \begin{figure}[h]
+        \centering
+        \vspace{0.5cm}
+        \includegraphics[]{drawio/room_diagram.pdf}
+        \caption[Struktura databáze]{Struktura databáze~\cite{room-structure}}
+        \label{diagram:packages}
+    \end{figure}
+
+    \subsubsection{view\_models}
+    Třídy obsahující perzistentní data a implementující logiku nad nimi. Tento balíček odpovídá části \emph{ViewModel}~\emph{MVVM} a poskytuje aplikaci metody zajišťující její funkčnost. Komunikace mezi třídami \emph{ViewModelů} a aktivitami je zajištěna pomocí \emph{databindingu}, \emph{observerů} a veřejných metod, které tyto třídy poskytují.
+
+    \begin{figure}[h]
+        \centering
+        \vspace{0.5cm}
+        \includegraphics[]{drawio/viewmodels_class_diagram.pdf}
+        \caption[Diagram závislostí tříd ViewModelů]{Diagram závislostí tříd \emph{ViewModelů}. Pro přehlednost byl zahrnut jen výběr stěžejních atributů a metod těchto tříd.}
+        \label{diagram:view_models}
+    \end{figure}
+
+    \newpage
     \subsubsection{fragments}
     Fragmenty jsou třídy které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace je používá například k instalaci a nastavení. Každá aktivita může obsahovat několik fragmentů, které samostatně řeší určitou část aktivity.
 
@@ -366,18 +386,6 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
 
     \subsubsection{utilities}
     Jedná se o třídy, metody a proměnné, které je možné použít kdekoliv v aplikaci.
-
-    \newpage
-    \subsubsection{view\_models}
-    Třídy obsahující perzistentní data a implementující logiku nad nimi. Tento balíček odpovídá části \emph{ViewModel}~\emph{MVVM} a poskytuje aplikaci metody zajišťující její funkčnost. Komunikace mezi třídami \emph{ViewModelů} a aktivitami je zajištěna pomocí \emph{databindingu}, \emph{observerů} a veřejných metod, které tyto třídy poskytují.
-
-    \begin{figure}[h]
-        \centering
-        \vspace{0.5cm}
-        \includegraphics[]{drawio/viewmodels_class_diagram.pdf}
-        \caption[Diagram závislostí tříd ViewModelů]{Diagram závislostí tříd \emph{ViewModelů}. Pro přehlednost byl zahrnut jen výběr stěžejních atributů a metod těchto tříd.}
-        \label{diagram:view_models}
-    \end{figure}
 
 \newpage
 \section{Grafické uživatelské rozhraní}
