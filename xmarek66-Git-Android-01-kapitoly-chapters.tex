@@ -489,8 +489,8 @@ Implementace provázelo velké množství překážek. Ty se začaly objevovat j
         \end{figure}
     
     \subsection{Správce souborů}
-    Implementace užití externího správce souborů se ukázala jako více problematická, než se při návrhu předpokládalo. Původní návrh této funkcionality spočíval v předání \emph{URI} externí aplikaci správce souborů, kterou uživatel používá jako výchozí. Toho nebylo možné dosáhnout z důvodu použití rozdílných typů \emph{URI} existujících aplikací správce souborů. Pro jeho zahrnutí do aplikace by tak bylo nutné implementovat vlastní správce. Toho se aplikace snažila z mnoha důvodů již od návrhu vyhnout. Zejména proto, že různí uživatelé budou mít na tento správce různé požadavky. Proto byl prostor aplikace plně věnován prostředí \emph{Git}. Uživatel tak bude přecházet z jedné aplikace do druhé, obdobně jako při práci na PC. To pro pokročilého uživatele systému \emph{Android} a \emph{Git}, na kterého tato aplikace cílí, nepředstavuje překážku.
-    Toto rozhodnutí je podpořeno také faktem, že samotné užití programu \emph{Git} neřeší žádný komplexní problém uživatele. Ten proto pravděpodobně bude používat řadu dalších aplikací, které v kooperaci splní jeho záměr.
+    Implementace užití externího správce souborů se ukázala jako více problematická, než se při návrhu předpokládalo. Původní návrh této funkcionality spočíval v předání \emph{URI} externí aplikaci správce souborů, kterou uživatel používá jako výchozí. Toho nebylo možné dosáhnout z důvodu použití rozdílných typů \emph{URI} existujících aplikací správce souborů. Pro jeho zahrnutí do aplikace by tak bylo nutné implementovat vlastní správce souborů. Toho se aplikace snažila z mnoha důvodů již od návrhu vyhnout. Zejména proto, že různí uživatelé budou mít na tento správce různé požadavky a pro implementaci tak komplexního správce souborů, který by uživatele přesvědčil o jeho používání namísto jiné aplikace, nebyl prostor. Správce souborů tedy nakonec implementován nebyl a aplikace slouží čistě jako \emph{Git} klient. Uživatel tak bude přecházet z jedné aplikace do druhé, obdobně jako při práci na PC. To pro pokročilého uživatele systému \emph{Android} a \emph{Git}, na kterého tato aplikace cílí, nepředstavuje překážku.
+    Toto rozhodnutí je podpořeno i faktem, že samotné užití programu \emph{Git} neřeší žádný komplexní problém uživatele. Ten proto pravděpodobně bude používat řadu dalších aplikací, které v kooperaci splní jeho záměr.
 
     \newpage
     \subsection{Git LFS}\label{sec:problemy_lfs}
@@ -558,10 +558,12 @@ Aplikace umožňuje uživateli spravovat \emph{Git} repozitáře uložené v pam
 
 Jelikož je \emph{Git} velice komplexní systém, byl hlavní důraz kladen na rozšiřitelnost aplikace a transparentnost dostupných příkazů. Při vývoji bylo prováděno zejména testování funkčnosti těchto příkazů a správy repozitářů.
 
+Oproti již existujícím \emph{Android} aplikací, tato aplikace nabízí především podporu \emph{Git LFS} s možností rozšíření o \emph{Git Annex}, případně i další programy. Mezi již přidané funkcionality patří například mělké klonování nebo zobrazení prostředí \emph{LFS env}. Dále aplikace nabízí transparentní a jednoduché uživatelské rozhraní, které uživateli zobrazuje výstup příkazů shodný s \emph{Git} verzí na PC.
+
+Aplikace oproti mnoha jiným aplikací této platformy neobsahuje správce souborů. Integrovaný správce souborů se obecně ukázal jako nedostačující a uživatel je pro plnou správu souborů i v jejich případě nucen užít jiné aplikace.
+
 \section{Zhodnocení výsledku práce}
-Požadavky na práci byly vyjma podpory \emph{Git Annex} splněny. Aplikace má potenciál stát se úspěšnou \emph{Git} aplikací systému \emph{Android}.
+Požadavky na práci byly vyjma podpory \emph{Git Annex} splněny. Aplikace má potenciál stát se úspěšnou \emph{Git} aplikací systému \emph{Android} pro práci s velkými soubory.
 
 \section{Pokračování ve vývoji}
-Další vývoj aplikace se bude odvíjet více směry. Zejména bude navázáno na postup integrace \emph{Git Annex} s cílem nalezení možného řešení.
-
-Mezitím bude probíhat testování v reálném provozu, které odhalí reálný potenciál aplikace. Na základě této zpětné vazby budou přidávány i další příkazy \emph{Gitu} a jiné funkce aplikace. Současně bude také přepracováváno a zdokonalováno uživatelské rozhraní.
+Další vývoj aplikace se bude odvíjet více směry. Zejména bude navázáno na postup integrace \emph{Git Annex} s cílem nalezení možného řešení. Mezitím bude probíhat testování v reálném provozu, které odhalí reálný potenciál aplikace. Na základě této zpětné vazby budou přidávány i další příkazy \emph{Gitu} a jiné funkce aplikace. Reálný provoz také ukáže správnost rozhodnutí neimplementace správce souborů, na jehož základě bude rozhodnuto o dalším postupu. Jako další rozšíření se nabízí i podpora autentizace k \emph{Git} serverům pomocí \emph{ssh} klíčů. Současně s provedenými změnami bude také přepracováváno a zdokonalováno uživatelské rozhraní.
