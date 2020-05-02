@@ -150,7 +150,7 @@ Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivita
 
  Je důležité mít na paměti, že komponenty mohou být spuštěny v různém pořadí a operační systém může jejich běh v jakoukoliv dobu ukončit. Proto by data a stav aplikace neměli být uchovávány v rámci těchto komponent.
  
- Tato sekce čerpá informace z oficiálních návodů pro architekturu \emph{Android}~\footnoteURL{https://developer.android.com/jetpack/docs/guide}. Jedná se o doporučenou architekturu pro vývoj mobilních aplikací a aplikace, které se týká tato práce je na ní postavena. Pro implementaci této architektury se využívá knihovny \emph{Android Jetpack}~\footnoteURL{https://developer.android.com/jetpack}.
+ Tato kapitola čerpá informace z oficiálních návodů pro architekturu \emph{Android}~\footnoteURL{https://developer.android.com/jetpack/docs/guide}. Jedná se o doporučenou architekturu pro vývoj mobilních aplikací a aplikace, které se týká tato práce je na ní postavena. Pro implementaci této architektury se využívá knihovny \emph{Android Jetpack}~\footnoteURL{https://developer.android.com/jetpack}.
 
     \subsection{Základní architektonické principy}
     Existují dva základní architektonické principy. Jejich použití řeší problém, kde uchovávat data a stav aplikace tak, aby byly odděleny od uživatelského rozhraní. Aplikace se tím stává konzistentní a dobře testovatelná.
@@ -183,7 +183,7 @@ Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivita
         \end{enumerate}
 
         \subsection{ViewModel}
-        Stěžejní částí této architektury je \emph{ViewModel}. Do něj se přesouvá logika aplikace, data i operace nad nimi. \emph{ViewModel} je inicializován v rámci aktivity nebo fragmentu. Jak již bylo naznačeno v předchozí sekci~\ref{arch:viewmodel}, data uložená v jeho rámci přetrvávají změny stavu spojené s životním cyklem aktivity / fragmentu. Jak dokládá i \ref{diagram:viewmodel_lifecycle}, jeho stav zůstává v paměti dokud neskončí daná aktivita nebo není odpojen příslušný fragment.
+        Stěžejní částí této architektury je \emph{ViewModel}. Do něj se přesouvá logika aplikace, data i operace nad nimi. \emph{ViewModel} je inicializován v rámci aktivity nebo fragmentu. Jak již bylo naznačeno v předchozí kapitole~\ref{arch:viewmodel}, data uložená v jeho rámci přetrvávají změny stavu spojené s životním cyklem aktivity / fragmentu. Jak dokládá i \ref{diagram:viewmodel_lifecycle}, jeho stav zůstává v paměti dokud neskončí daná aktivita nebo není odpojen příslušný fragment.
 
         \begin{figure}[h!]
             \centering
@@ -435,7 +435,7 @@ Jak již bylo zmíněno, aplikace pro příkazy \emph{Gitu} využívá binární
 Pro tuto aplikaci bylo použito dynamicky linkovaných binárních souborů s vlastní instalací i spouštěním. Lépe se s těmito soubory pracuje a aplikace tak bude lépe do budoucna rozšiřitelná. Navíc je velké množství dynamicky linkovaných programů již připraveno pro kompilaci prostřednictvím \emph{Termux-packages}~\footnoteURL{https://github.com/termux/termux-packages/}. Pro samotné spouštění bylo využito třídy \code{ProcessBuilder}. Je snadno použitelná a umožňuje intuitivní nastavování různých parametrů běhu procesu.
 
 \section{Aplikační binární rozhraní - ABI}
-Většina fyzických zařízení používá architekturu \emph{arm}~\footnoteURL{https://handstandsam.com/2016/01/28/determining-supported-processor-types-abis-for-an-android-device/}. Pro ladění aplikací se používá \emph{Android} emulátorů a ty naopak pro nejlepší výkon používají architekturu \emph{x86}. Pro vydání aplikace na \emph{Google Play} je nutné, aby aplikace podporovala 32-bitové i 64-bitové verze dané architektury. Proto aplikace podporuje obě architektury pro obě verze. Jelikož by takto vytvořený \emph{APK} balíček byl příliš velký, aplikace používá pro distribuci formát \emph{Android App Bundle}~\footnoteURL{https://developer.android.com/guide/app-bundle}.
+Většina fyzických zařízení používá architekturu \emph{arm}~\footnoteURL{https://handstandsam.com/2016/01/28/determining-supported-processor-types-abis-for-an-android-device/}. Pro ladění aplikací se používá \emph{Android} emulátorů a ty naopak pro nejlepší výkon používají architekturu \emph{x86}. Pro vydání aplikace na \emph{Google Play} je nutné, aby aplikace podporovala 32-bitové i 64-bitové verze dané architektury. Proto aplikace podporuje obě architektury pro obě verze. Jelikož by takto vytvořený \emph{APK} balíček byl příliš velký, aplikace používá pro distribuci formát \emph{Android App Bundle}~\footnoteURL{https://developer.android.com/guide/app-bundle}\label{abi_aab}.
     
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Implementace}
@@ -445,7 +445,7 @@ Po návrhu řešení aplikace následuje implementační část. V předchozí k
 Následující text rozebírá postup získání binárních souborů pro účely příkazů \emph{Gitu}, způsob jejich instalace a spouštění.
 
     \subsection{Kompilace binárních souborů}
-    Jak již bylo zmíněno při návrhu v sekci~\ref{termux_packages}, binární soubory jsou zkompilovány využitím repozitáře \emph{Termux-packages}~\footnoteURL{https://github.com/termux/termux-packages/}. Ten pro tento účel poskytuje obraz \emph{Dockeru}. Pro jeho použití pro jinou aplikaci je nutné upravit skript \code{scripts/build/termux\_step\_setup\_variables.sh} tak, aby cesta ke spustitelným souborům odpovídala cílové aplikaci. Při kompilaci pro tuto aplikaci byla nastavena cesta \code{TERMUX\_PREFIX} na \code{/data/data/com.lfgit/files/usr}. Takto byly zkompilovány binární soubory pro \emph{Git} i \emph{Git LFS}. \emph{Git Annex} touto cestou bohužel získat nelze. Jeho kompilace je velice problémová a přes veškeré úsilí se nakonec nepodařila. Další informace o provedeném postupu se nachází v sekci~\ref{sec:problemy_annex}.
+    Jak již bylo zmíněno při návrhu v kapitole~\ref{termux_packages}, binární soubory jsou zkompilovány využitím repozitáře \emph{Termux-packages}~\footnoteURL{https://github.com/termux/termux-packages/}. Ten pro tento účel poskytuje obraz \emph{Dockeru}. Pro jeho použití pro jinou aplikaci je nutné upravit skript \code{scripts/build/termux\_step\_setup\_variables.sh} tak, aby cesta ke spustitelným souborům odpovídala cílové aplikaci. Při kompilaci pro tuto aplikaci byla nastavena cesta \code{TERMUX\_PREFIX} na \code{/data/data/com.lfgit/files/usr}. Takto byly zkompilovány binární soubory pro \emph{Git} i \emph{Git LFS}. \emph{Git Annex} touto cestou bohužel získat nelze. Jeho kompilace je velice problémová a přes veškeré úsilí se nakonec nepodařila. Další informace o provedeném postupu se nachází v kapitole~\ref{sec:problemy_annex}.
 
     \subsection{Instalace binárních souborů}
     Pro instalaci binárních souborů bylo využito třídy \code{TermuxInstaller} aplikace Termux~\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java}. Ta řeší podobný problém při instalaci linuxového prostředí. Využití části metody \code{setupIfNeeded} tak vyřešilo problémy s instalací symbolických odkazů do aplikace. Běžné kopírování souborů, jehož metody jsou popsány například zde~\footnoteURL{https://www.baeldung.com/java-copy-file} totiž kopírují samotné soubory, na které tyto symbolické odkazy ukazují a tím dochází k jejich redundanci a nabývání velikosti instalace. Tato část byla implementována třídou \code{installTask} v balíčku \code{install}.
@@ -455,7 +455,7 @@ Následující text rozebírá postup získání binárních souborů pro účel
     Po kompilaci byly smazány některé nepotřebné soubory zvětšující velikost instalace. Dále bylo třeba vygenerovat seznam symbolických odkazů pro všechny architektury. Ten byl vygenerován příkazem \code{find . -type l -ls > SYMLINKS.txt}. Poté byl tento seznam upraven tak, aby odpovídal formátu \code{$\hbox{symlink} \rightarrow \hbox{file}$}. Třída \code{installTask} byla upravena tak, aby s tímto formátem pracovala. Soubor \code{SYMLINKS.txt} byl dále připojen ke složce s binárními soubory dané architektury. Celá tato složka byla zkomprimována a archiv přesunut do složky \code{cpp}. Z těchto archivů se poté během instalace aplikace, za pomocí \emph{Android NDK}, kopírují soubory do zařízení.
 
     \subsection{Spouštění binárních souborů}
-    Jak již bylo zmíněno v sekci~\ref{subsec:dyn_binaries}, aplikace využívá pro spouštění spustitelných souborů \code{Process Builder}. Ten je implementován metodou \code{run} třídy \code{BinaryExecutor}. \code{Process Builder} se sice postará o vytvoření nového procesu, ale pokud je po jeho ukončení očekáván jeho výstup, nemůže se samozřejmě běh aplikace během čekání na něj blokovat. Proto se tyto příkazy spouští na samostatném vlákně a výsledek je předáván prostřednictvím příslušného \emph{callbacku}, tedy zpětného volání. Toto zpětné volání je implementováno rozhraním \code{ExecListener} třídy \code{executors}. Toto rozhraní poté implementuje třída, která očekává výsledek daného volání.
+    Jak již bylo zmíněno v kapitole~\ref{subsec:dyn_binaries}, aplikace využívá pro spouštění spustitelných souborů \code{Process Builder}. Ten je implementován metodou \code{run} třídy \code{BinaryExecutor}. \code{Process Builder} se sice postará o vytvoření nového procesu, ale pokud je po jeho ukončení očekáván jeho výstup, nemůže se samozřejmě běh aplikace během čekání na něj blokovat. Proto se tyto příkazy spouští na samostatném vlákně a výsledek je předáván prostřednictvím příslušného \emph{callbacku}, tedy zpětného volání. Toto zpětné volání je implementováno rozhraním \code{ExecListener} třídy \code{executors}. Toto rozhraní poté implementuje třída, která očekává výsledek daného volání.
 
 \section{Aplikace}
 Po implementaci spouštění binárních souborů přichází na řadu implementace samotné aplikace. Základní popis implementace stěžejních částí je rozdělen podle jednotlivých obrazovek aplikace.
@@ -536,7 +536,7 @@ Testována byla také schopnost provedení základního vytvoření repozitáře
 
 Opravy se dotkly i rozšíření \emph{Git LFS}. Během testování bylo využito například příkazů \emph{git-lfs env} nebo \emph{git-lfs status}. Tyto příkazy byly poté pro jejich užitečnost přidány do příkazů aplikace.
 
-\emph{Git LFS} také zpočátku neposílalo obsah sledovaných souborů na server, ale pouze jejich odkaz. Ten byl při stažení na jiná zařízení neplatný. Tento problém se týkal \emph{Git LFS hooks} a byl již popsán v sekci~\ref{subsub:problemy_git_hooks}.
+\emph{Git LFS} také zpočátku neposílalo obsah sledovaných souborů na server, ale pouze jejich odkaz. Ten byl při stažení na jiná zařízení neplatný. Tento problém se týkal \emph{Git LFS hooks} a byl již popsán v kapitole~\ref{subsub:problemy_git_hooks}.
 
 \section{Správa repozitářů}
 Tato fáze testování se zaměřovala na práci se seznamem repozitářů. Testováno bylo validní přidání repozitáře, jeho odebrání i aktualizace jeho informací. Byly odhaleny a odstraněny chyby související se synchronizací odstranění repozitáře během jeho ovládání. Z informací o repozitáři byla testována zejména aktualizace \emph{URL} vzdáleného repozitáře při jeho změně.
@@ -548,7 +548,7 @@ Otestováno bylo i uživatelské rozhraní. Testováno bylo přerušení započa
 Upravovány byly i velikosti písma a některých jiných grafických prvků. Změnami také prošla obrazovka inicializace a klonování repozitáře. Ta při vodorovném režimu skrývala tlačítko pro spuštění klonování. Proto byla do aplikace přidána speciální verze pro vodorovné rozložení, které toto tlačítko posune do viditelné zóny obrazovky.
 
 \section{Vydání aplikace}
-Po otestování byla aplikace uvedena do reálného provozu na \emph{Google Play} pod názvem \emph{LFGit}\footnoteURL{https://play.google.com/store/apps/details?id=com.lfgit}.
+Po otestování byla aplikace uvedena do reálného provozu na \emph{Google Play}\\ pod názvem \emph{LFGit}\footnoteURL{https://play.google.com/store/apps/details?id=com.lfgit}. Jak již bylo zmíněno v kapitole \ref{abi_aab}, aplikace k distribuci používá balíčku \emph{Android App Bundle}~\footnoteURL{https://developer.android.com/guide/app-bundle}.
 
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Závěr}
