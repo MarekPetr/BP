@@ -379,13 +379,13 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     Fragmenty jsou třídy které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace je používá například k instalaci a nastavení. Každá aktivita může obsahovat několik fragmentů, které samostatně řeší určitou část aktivity.
 
     \subsubsection{install}
-    O instalaci binárních souborů se stará třída \code{InstallTask} v balíčku \code{install}. Ta při prvním spuštění aplikace zkopíruje potřebné soubory ze složky \code{cpp} do interní paměti zařízení.
+    O instalaci binárních souborů se stará třída \code{InstallTask}~\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java} v balíčku \code{install}. Ta při prvním spuštění aplikace zkopíruje potřebné soubory ze složky \code{cpp} do interní paměti zařízení.
 
     \subsubsection{executors}
     Základní příkazy \emph{Gitu} i jeho rozšíření jsou implementovány v balíčku \code{executors}. Tyto jednotlivé příkazy implementují metody třídy \code{GitExec}. Tyto metody volají metodu \code{run} třídy \code{BinaryExecutor}.
 
     \subsubsection{utilities}
-    Jedná se o třídy, metody a proměnné, které je možné použít kdekoliv v aplikaci.
+    Jedná se o třídy, metody a proměnné, které je možné použít kdekoliv v aplikaci. Součástí jsou také třídy \code{TaskState} pro definování stavu zpracovávaného příkazu \emph{Gitu} a \code{UriHelper}~\footnoteURL{https://gist.github.com/asifmujteba/d89ba9074bc941de1eaa\#file-asfurihelper}, sloužící pro získání \emph{URI} k přístupu k paměti zařízení.
 
 \newpage
 \section{Grafické uživatelské rozhraní}
@@ -448,7 +448,7 @@ Následující text rozebírá postup získání binárních souborů pro účel
     Jak již bylo zmíněno při návrhu v kapitole~\ref{termux_packages}, binární soubory jsou zkompilovány využitím repozitáře \emph{Termux-packages}~\footnoteURL{https://github.com/termux/termux-packages/}. Ten pro tento účel poskytuje obraz \emph{Dockeru}. Pro jeho použití pro jinou aplikaci je nutné upravit skript \code{scripts/build/termux\_step\_setup\_variables.sh} tak, aby cesta ke spustitelným souborům odpovídala cílové aplikaci. Při kompilaci pro tuto aplikaci byla nastavena cesta \code{TERMUX\_PREFIX} na \code{/data/data/com.lfgit/files/usr}. Takto byly zkompilovány binární soubory pro \emph{Git} i \emph{Git LFS}. \emph{Git Annex} touto cestou bohužel získat nelze. Jeho kompilace je velice problémová a přes veškeré úsilí se nakonec nepodařila. Další informace o provedeném postupu se nachází v kapitole~\ref{sec:problemy_annex}.
 
     \subsection{Instalace binárních souborů}
-    Pro instalaci binárních souborů bylo využito třídy \code{TermuxInstaller} aplikace Termux~\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java}. Ta řeší podobný problém při instalaci linuxového prostředí. Využití části metody \code{setupIfNeeded} tak vyřešilo problémy s instalací symbolických odkazů do aplikace. Běžné kopírování souborů, jehož metody jsou popsány například zde~\footnoteURL{https://www.baeldung.com/java-copy-file} totiž kopírují samotné soubory, na které tyto symbolické odkazy ukazují a tím dochází k jejich redundanci a nabývání velikosti instalace. Tato část byla implementována třídou \code{installTask} v balíčku \code{install}.
+    Pro instalaci binárních souborů bylo využito třídy \code{TermuxInstaller} aplikace Termux~\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java}. Ta řeší podobný problém při instalaci linuxového prostředí. Využití části metody \code{setupIfNeeded} tak vyřešilo problémy s instalací symbolických odkazů do aplikace. Běžné kopírování souborů, jehož metody jsou popsány například zde~\footnoteURL{https://www.baeldung.com/java-copy-file} totiž kopírují samotné soubory, na které tyto symbolické odkazy ukazují a tím dochází k jejich redundanci a nabývání velikosti instalace. Tato část byla implementována třídou \code{InstallTask} v balíčku \code{install}.
 
     Tento postup instalace vyžaduje užití \emph{Android NDK}~\footnoteURL{https://developer.android.com/ndk/} pro získání zdroje dat ze zkomprimovaného souboru ve formátu \emph{ZIP}. Ty jsou využity jak pro snížení velikosti, tak pro snadnou implementaci načtení a přenosu souborů.
 
