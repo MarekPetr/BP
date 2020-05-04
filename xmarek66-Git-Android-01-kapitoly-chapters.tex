@@ -77,7 +77,7 @@ Během průzkumu již existujících aplikací jsem se zaměřil jak na aplikace
 
 Při vývoji \emph{Android} aplikací je tedy nutné brát ohled na nejnovější trendy a sledovat procentuální zastoupení kritických parametrů tak, aby výsledná aplikace splňovala zadané požadavky na většině cílových zařízení. To má za následek roztříštěnost aplikací podle mnoha kritérií tak, aby byly plně funkční na co možná největším počtu zařízení. Naštěstí je při vývoji na této platformě k dispozici mnoho nástrojů, se kterými je možné se s těmito problémy vypořádat.
 
-Tato kapitola se zabývá teoretickými základy tohoto systému, které je užitečné mít pro úspěšný vývoj aplikací na paměti. Při získávání přehledu o principu programování \emph{Android} poslouží zejména oficiální online dokumentace~\footnoteURL{https://developer.android.com/docs} a návody~~\footnoteURL{https://developer.android.com/guide/}. Především z těchto návodů čerpá následující text, pojednávající o základech aplikací. Také je možné najít různou kvalitní tištěnou literaturu. Pro účely programování této aplikace se například osvědčila kniha \emph{Vývoj aplikací pro Android}\cite{android-Lacko}.
+Tato kapitola se zabývá teoretickými základy tohoto systému, které je užitečné mít pro úspěšný vývoj aplikací na paměti. Při získávání přehledu o principu programování \emph{Android} poslouží zejména oficiální online dokumentace~\footnoteURL{https://developer.android.com/docs} a návody~~\footnoteURL{https://developer.android.com/guide/}. Především z těchto návodů čerpá následující text, pojednávající o základech aplikací. Také je možné najít různou kvalitní tištěnou literaturu. Například Pro účely programování této aplikace se například osvědčila kniha \emph{Vývoj aplikací pro Android}\cite{android-Lacko}.
 
 \section{Základy aplikace}
 Aplikace pro \emph{Android} mohou být psány v Kotlinu, Javě, nebo C++. Nástroje \emph{Android SDK} kompilují kód spolu s ostatními potřebnými daty do \emph{APK} souboru. Prakticky se jedná o \emph{zip} archiv, který \emph{Android} používá pro instalaci aplikací.
@@ -376,10 +376,10 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
 
     \newpage
     \subsubsection{fragments}
-    Fragmenty jsou třídy které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace je používá například k instalaci a nastavení. Každá aktivita může obsahovat několik fragmentů, které samostatně řeší určitou část aktivity.
+    Fragmenty jsou třídy které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace je používá k instalaci - \code{InstallFragment}, nastavení - \code{SettingsFragment} a zobrazování dialogů pro získání vstupu od uživatele. Každá aktivita může obsahovat několik fragmentů, které samostatně řeší určitou část aktivity. Kód třídy \code{InstallFragment} byl inspirován článkem z \emph{Android Research Blog}~\footnoteURL{https://androidresearch.wordpress.com/2013/05/10/dealing-with-asynctask-and-screen-orientation/}.
 
     \subsubsection{install}
-    O instalaci binárních souborů se stará třída \code{InstallTask}~\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java} v balíčku \code{install}. Ta při prvním spuštění aplikace zkopíruje potřebné soubory ze složky \code{cpp} do interní paměti zařízení.
+    O instalaci binárních souborů se stará třída \code{InstallTask}~\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java} v balíčku \code{install}. Ta při prvním spuštění aplikace pomocí \code{AsyncTask}~\footnoteURL{https://developer.android.com/reference/android/os/AsyncTask} zkopíruje potřebné soubory ze složky \code{cpp} do interní paměti zařízení.
 
     \subsubsection{executors}
     Základní příkazy \emph{Gitu} i jeho rozšíření jsou implementovány v balíčku \code{executors}. Tyto jednotlivé příkazy implementují metody třídy \code{GitExec}. Tyto metody volají metodu \code{run} třídy \code{BinaryExecutor}.
@@ -548,7 +548,7 @@ Otestováno bylo i uživatelské rozhraní. Testováno bylo přerušení započa
 Upravovány byly i velikosti písma a některých jiných grafických prvků. Změnami také prošla obrazovka inicializace a klonování repozitáře. Ta při vodorovném režimu skrývala tlačítko pro spuštění klonování. Proto byla do aplikace přidána speciální verze pro vodorovné rozložení, které toto tlačítko posune do viditelné zóny obrazovky.
 
 \section{Vydání aplikace}
-Po otestování byla aplikace uvedena do reálného provozu na \emph{Google Play}\\ pod názvem \emph{LFGit}\footnoteURL{https://play.google.com/store/apps/details?id=com.lfgit}. Jak již bylo zmíněno v kapitole \ref{abi_aab}, aplikace k distribuci používá balíčku \emph{Android App Bundle}~\footnoteURL{https://developer.android.com/guide/app-bundle}.
+Po otestování byla aplikace uvedena do reálného provozu na \emph{Google Play}\\ pod názvem \emph{LFGit}\footnoteURL{https://play.google.com/store/apps/details?id=com.lfgit}. Jak již bylo zmíněno v kapitole \ref{abi_aab}, aplikace k distribuci používá balíčku \emph{Android App Bundle}~\footnoteURL{https://developer.android.com/guide/app-bundle}. Zdrojový kód aplikace je dostupný na \emph{GitHub}~\footnoteURL{https://github.com/MarekPetr/LFGit}.
 
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Závěr}
