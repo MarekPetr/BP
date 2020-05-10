@@ -3,8 +3,8 @@
 % Autoři: Michal Bidlo, Bohuslav Křena, Jaroslav Dytrych, Petr Veigend a Adam Herout 2019
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Úvod}
-Trendem poslední doby je neustálé zvětšování obrazovek mobilních zařízení i jejich výkonu. Dostali jsme se již do takové fáze, že je tyto zařízení možné využívat obdobně jako klasické počítače a tak je jejich využití pro synchronizaci souborů na snadě.
-Vyvíjená aplikace poskytuje systém, který může každý uživatel využít pro svůj účel a svým způsobem. Nejčastěji je \emph{Git} využíván programátory pro verzování souborů vyvíjených programů. Rozšíření \emph{Git LFS} a \emph{Git Annex} slouží pro správu velkých souborů v \emph{Git} repozitářích. Užitím \emph{Git LFS} se dosáhne efektivity využití paměťového prostoru zařízení. \emph{Git Annex} zase usnadní například ukládání videí nebo i jiných velkých souborů na externí úložiště, pro pozdější synchronizaci mezi různými zařízeními různých systémů.
+Trendem poslední doby je neustálé zvětšování obrazovek mobilních zařízení i jejich výkonu. Dostali jsme se již do takové fáze, že je tyto zařízení možné využívat obdobně jako klasické počítače a tak je jejich využití pro verzování souborů na snadě.
+Vyvíjená aplikace poskytuje systém, který může každý uživatel využít pro svůj účel a svým způsobem. Nejčastěji je \emph{Git} využíván programátory pro verzování souborů vyvíjených programů. Rozšíření \emph{Git LFS} a \emph{Git Annex} slouží pro správu velkých souborů v \emph{Git} repozitářích. Užitím \emph{Git LFS} se dosáhne efektivity využití paměťového prostoru zařízení. \emph{Git Annex} zase usnadní například ukládání videí nebo i jiných velkých souborů na externí úložiště. To umožní jejich synchronizaci mezi různými zařízeními různých systémů.
 
 Cílem práce je navrhnout, implementovat a otestovat aplikaci určenou pro operační systém \emph{Android}. Tato aplikace bude uživateli zprostředkovávat \emph{Git} formou přívětivého grafického rozhraní. Dále bude implementovat rozšíření \emph{Git LFS} a \emph{Git Annex} pro práci s velkými soubory. Aplikace je určena zejména vývojářům a jiným pokročilým uživatelům. Je tedy navržena jako maximálně transparentní, za účelem efektivního řešení problémů vznikajících při používání \emph{Git}.
 \newpage
@@ -38,10 +38,10 @@ Aplikace bude mít dvě základní funkce. Jsou jimi správa repozitářů a pro
 Cílovou skupinou jsou především programátoři nebo i jiní technicky zdatní uživatelé. Ti aplikaci využijí nejčastěji pro prohlížení jejich repozitářů, ale mohou je také jakkoliv měnit a pracovat na nich třeba i z veřejné dopravy. \emph{Git Annex} využijí například pro přehlednou správu souborů uložených na více fyzických úložištích.
 
 \section{Průzkum existujících řešení}
-Během průzkumu již existujících aplikací jsem se zaměřil jak na aplikace operačního systému \emph{Android}, tak na osobní počítače (dále jen PC) operačních systémů Linux a Windows.
+Během průzkumu již existujících aplikací jsem se zaměřil jak na aplikace operačního systému \emph{Android}, tak na osobní počítače (dále jen PC).
 
     \subsection {Android}
-    Pro operační systémy \emph{Android} je trh s řešeními \emph{Gitu} velice omezený. Existuje zde několik málo aplikací s podporou pouze pro čtení repozitáře ale i takové, které zvládají i ostatní základní příkazy \emph{Gitu}. Jejich popis a mé postřehy z nich se dočtete na následujících řádcích.
+    Pro operační systémy \emph{Android} je trh s řešeními \emph{Gitu} velice omezený. Většina aplikací pro tuto platformu podporuje pouze čtení repozitáře, ale je možné nalézt i takové, které zvládají i další základní příkazy \emph{Gitu}. V následujících kapitolách krátce představím a zhodnotím několik právě takových aplikací.
 
         \subsubsection{MGit~\footnoteURL{https://play.google.com/store/apps/details?id=com.manichord.mgit}}
         Za zmínku z nich stojí zejména MGit. Bohužel neposkytuje podporu pro \emph{Git LFS} ani \emph{Git Annex}. K implementaci příkazů \emph{Gitu} využívá knihovnu \emph{JGit}. \emph{JGit} sice v aktuální verzi podporuje \emph{Git LFS}, ale aplikace tuto podporu nemá. K hlavním přednostem aplikace \emph{MGit} patří otevřený kód a velice intuitivní ovládání.
