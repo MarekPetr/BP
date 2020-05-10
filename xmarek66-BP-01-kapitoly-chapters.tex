@@ -94,6 +94,20 @@ Různá zařízení mají osazeny různý hardware a tedy i procesory. Různé p
     \item Formu implementace \emph{C++} kódu~\footnoteURL{http://itanium-cxx-abi.github.io/cxx-abi/}.
 \end{itemize}
 
+\section{Ukládání dat}
+Android používá podobný souborý systém jako ostatní platformy. Tento systém poskytuje řadu možností k ukládání dat~\footnoteURL{https://developer.android.com/training/data-storage}:
+\begin{itemize}
+    \item \textbf{App-specific storage}: Data může aplikace ukládat buď do jejího soukromého interního úložiště nebo do různých složek externího úložiště. Z pohledu aplikace je externí úložiště paměť zařízení, kam přístup uživatel i další aplikace. Do interního úložiště má přístup jen aplikace, které toto úložiště náleží. Je tedy vhodné pro ukládání citlivých dat.
+    \item \textbf{Shared storage}: Úložiště sloužící pro sdílení dat s jinými aplikacemi.
+    \item \textbf{Preferences}\label{preferences}: Ukládání soukromých dat ve formátu \emph{klíč-hodnota}. Tímto způsobem jsou ukládány například různá nastavení aplikací.
+    \item \textbf{Databáze}: Strukturovaná data v soukromé databázi.
+\end{itemize}
+
+
+    \subsection{Symbolické odkazy}
+    Podpora symbolických odkazů závisí na formátu souborovém systému daného úložiště a oprávnění k jeho vytvoření v konkrétním umístění. Linuxový systém rozpoznává symbolické odkazy pomocí souborových oprávnění~\footnoteURL{https://www.linux.com/training-tutorials/understanding-linux-file-permissions/}. Aplikace má potřebná oprávění přiděleny pouze v jejím interním úložišti~\footnoteURL{https://developer.android.com/training/data-storage/app-specific}. Proto na zařízení, které nemá odemčený tzv. \emph{Root}~\footnoteURL{https://www.androidcentral.com/root}, pro uživatele není možné v paměti zařízení, symbolické odkazy číst ani vytvářet.
+
+\newpage
 \section{Komponenty aplikace}
 Komponenty aplikace jsou základním stavebním blokem každé \emph{Android} aplikace. Tyto komponenty jsou vstupním bodem aplikace pro uživatele i pro samotný systém.
 
@@ -277,7 +291,7 @@ Po zhodnocení průzkumu i vlastních zkušeností, byly na aplikaci stanoveny n
     Jelikož žádné aplikace pro \emph{Android} kromě \emph{Termux} neimplementují rozšíření \emph{Git Annex} a nenalezl jsem knihovnu, která by toto dokázala, bylo rozhodnuto pro příkazy \emph{Gitu} i rozšíření využít zkompilované binární soubory. Všechny tyto příkazy budou dostupné při otevření repozitáře v bočním výsuvném panelu aplikace. Pro transparentní zobrazení stavu repozitáře, budou tyto funkce zobrazovat i svůj klasický textový výstup.
 
         \subsubsection{Git}
-        Pro umožnění základního užití nástroje \emph{Git} budou uživateli dostupné následující příkazy:
+        Pro umožnění základního užití nástroje \emph{Git}~\footnoteURL{https://git-scm.com/docs/git} budou uživateli dostupné následující příkazy:
         \begin{itemize}
             \item \textbf{\code{add}} - přidání souborů do \emph{stage}
             \item \textbf{\code{commit}} - vytvoření nového \emph{commitu} - potvrzení změn a vytvoření nového uzlu \emph{Gitu}
@@ -294,12 +308,13 @@ Po zhodnocení průzkumu i vlastních zkušeností, byly na aplikaci stanoveny n
         \end{itemize}
 
         \subsubsection{Git LFS}
-        Pro rozšíření \emph{Git LFS} pak budou dostupné tyto příkazy:
+        Pro rozšíření \emph{Git LFS}~\footnoteURL{https://github.com/git-lfs/git-lfs/tree/master/docs/man} pak budou dostupné tyto příkazy:
         \begin{itemize}
             \item \textbf{\code{track <pattern>}} - přidání souborů, které odpovídají regulárnímu výrazu \emph{pattern} sledovaných souborů
             \item \textbf{\code{untrack <pattern>}} - ukončení sledování souborů daných výrazem \emph{pattern}
             \item \textbf{\code{track}} - výpis sledovaných výrazů
-            \item \textbf{\code{ls-files}} - výpis sledovaných souborů 
+            \item \textbf{\code{ls-files}} - výpis sledovaných souborů
+            \item \textbf{\code{prune}} - odstraní staré kopie místních LFS souborů k uvolnění paměti zařízení
             \item \textbf{\code{status}} - výpis stavu repozitáře s \emph{Git LFS}
             \item \textbf{\code{env}} - výpis prostředí \emph{Git LFS}, pro hledání řešení chyb repozitáře
         \end{itemize}
@@ -376,7 +391,7 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
 
     \newpage
     \subsubsection{fragments}
-    Fragmenty jsou třídy které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace je používá k instalaci - \code{InstallFragment}, nastavení - \code{SettingsFragment} a zobrazování dialogů pro získání vstupu od uživatele. Každá aktivita může obsahovat několik fragmentů, které samostatně řeší určitou část aktivity. Kód třídy \code{InstallFragment} byl inspirován článkem z \emph{Android Research Blog}~\footnoteURL{https://androidresearch.wordpress.com/2013/05/10/dealing-with-asynctask-and-screen-orientation/}.
+    Fragmenty jsou třídy které dynamicky rozšiřují nebo mění obsah aktivity. Aplikace je používá k instalaci - \code{InstallFragment}, nastavení - \code{SettingsFragment} a zobrazování dialogů pro získání vstupu od uživatele. Každá aktivita může obsahovat několik fragmentů, které samostatně řeší určitou část aktivity. Kód třídy \code{InstallFragment} byl inspirován článkem z \emph{Android Research Blog}~\footnoteURL{https://androidresearch.wordpress.com/2013/05/10/dealing-with-asynctask-and-screen-orientation/}. Dalším důležitým fragmentem je \code{SettingsFragment}, který pomocí \emph{Preferences} (viz kap. \ref{preferences}) ukládá nastavení aplikace.
 
     \subsubsection{install}
     O instalaci binárních souborů se stará třída \code{InstallTask}~\footnoteURL{https://github.com/termux/termux-app/blob/master/app/src/main/java/com/termux/app/TermuxInstaller.java} v balíčku \code{install}. Ta při prvním spuštění aplikace pomocí \code{AsyncTask}~\footnoteURL{https://developer.android.com/reference/android/os/AsyncTask} zkopíruje potřebné soubory ze složky \code{cpp} do interní paměti zařízení.
@@ -476,7 +491,7 @@ Implementace provázelo velké množství překážek. Ty se začaly objevovat j
     Logika příkazů \emph{Gitu} je implementována ve \emph{View Modelech} daných aktivit. Jelikož všechny volané funkce vrací hodnotu zpětným voláním, bylo nutné pro získání všech vstupů pro vykonání daného příkazu definovat stavy jeho zpracování. K tomu slouží třída \code{TaskState}. Obsahuje atribut \code{mInnerState} určující aktuální stav rozpracovaného příkazu a atribut \code{mPendingTask} definující zpracovávaný příkaz. Existují zde dva speciální stavy atributu \code{mInnerState} \code{FOR\_APP} a \code{FOR\_USER}. Tyto stavy určují, jestli bude výsledek následujícího příkazu zobrazen uživateli, nebo bude využit jako vstupní argument pro jiný účel aplikace.
 
         \subsubsection{Push}
-        Nejsložitější příkaz k implementaci je příkaz \emph{push}. Ten pro přístup do vzdáleného repozitáře potřebuje jak jeho \emph{URL}, tak přihlašovací údaje uživatele. Ty jsou od uživatele žádány pro každý nově přidaný repozitář pouze při prvním vykonávání tohoto příkazu. Po jejich zadání jsou uloženy v databázi v tabulce daného repozitáře. Databáze je uložena ve vnitřním prostoru aplikace, kam má přístup jen ona samotná. Uložení těchto citlivých údajů je tedy relativně bezpečné. Před provedením příkazu jsou znaky uživatelského jména a hesla kódovány do \emph{MIME} formátu \emph{application/x-www-form-urlencoded}~\footnoteURL{https://developer.android.com/reference/java/net/URLEncoder}.\\ Samotné provedení pak probíhá prostřednictvím \emph{http} nebo \emph{https} protokolu a to příkazem \code{git push http(s)://username:password@domain}.
+        Nejsložitější příkaz k implementaci je příkaz \emph{push}. Ten pro přístup do vzdáleného repozitáře potřebuje jak jeho \emph{URL}, tak přihlašovací údaje uživatele. Ty jsou od uživatele žádány pro každý nově přidaný repozitář pouze při prvním vykonávání tohoto příkazu. Po jejich zadání jsou uloženy v databázi v tabulce daného repozitáře. Databáze je uložena ve vnitřním prostoru aplikace, kam má přístup jen ona samotná. Uložení těchto citlivých údajů je tedy poměrně bezpečné. Před provedením příkazu jsou znaky uživatelského jména a hesla kódovány do \emph{MIME} formátu \emph{application/x-www-form-urlencoded}~\footnoteURL{https://developer.android.com/reference/java/net/URLEncoder}.\\ Samotné provedení pak probíhá prostřednictvím \emph{http} nebo \emph{https} protokolu a to příkazem \code{git push http(s)://username:password@domain}.
         Tento způsob aplikace používá z důvodu nemožnosti zadávat vstupní data binárním souborům během jejich běhu. \emph{ProcessBuilder} sice umožňuje před spuštěním programu zadat vstupní data, ale není možné v rámci běhu reagovat na čtení vstupů z příkazové řádky tak jako při využití terminálového rozhraní.
 
         \newpage
