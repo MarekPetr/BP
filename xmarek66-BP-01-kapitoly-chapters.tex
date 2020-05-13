@@ -176,7 +176,7 @@ Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivita
 
         \newpage
         \subsection{Doporučená architektura}
-        Následující diagram zobrazuje závislosti jednotlivých komponent doporučené architektury. Jejich dodržení je základem pro splnění zmíněných architektonických principů. Tuto architekturu lze také popsat jako \emph{Model, View, ViewModel} - zkráceně \emph{MVVM}. Vyjma části \emph{Remote Data Source} ji implementuje i aplikace této práce.
+        Následující diagram zobrazuje závislosti jednotlivých komponent doporučené architektury. Jejich dodržení je základem pro splnění zmíněných architektonických principů. Tuto architekturu lze také popsat jako \emph{Model-View-ViewModel} - zkráceně \emph{MVVM}. Vyjma části \emph{Remote Data Source} ji implementuje i aplikace této práce.
 
         \begin{figure}[h!]
             \centering
@@ -527,7 +527,7 @@ Implementace provázelo velké množství překážek. Ty se začaly objevovat j
     Z tohoto důvodu byla vybrána druhá varianta. \emph{Hooky} se vytváří automaticky ve vnitřním prostoru aplikace při její instalaci. Uživatel je navíc nemusí instalovat manuálně v každém repozitáři zvlášť a to zjednoduší jeho práci.
 
     \newpage
-    \subsection{Git annex}\label{sec:problemy_annex}
+    \subsection{Git Annex}\label{sec:problemy_annex}
     Získávání spustitelných souborů pro \emph{Git Annex} se ukázalo jako velice problematické. Následující text je shrnutím mnoha provedených pokusů, z nichž některé byly velice blízko k získání těchto souborů.
 
     \subsubsection{Oficiální distribuce pro Termux}
@@ -537,7 +537,7 @@ Implementace provázelo velké množství překážek. Ty se začaly objevovat j
     Dále následovalo mnoho pokusů o vlastní křížovou kompilaci \emph{Git Annexu}. Jeho kód je psán v jazyce \emph{Haskell} a tato kompilace je tím značně zkomplikována. Byly provedeny pokusy o kompilace pomocí nástroje \emph{Nix}~\footnoteURL{https://github.com/pololu/nixcrpkgs}, \emph{GHC Android}~\footnoteURL{https://medium.com/@zw3rk/a-haskell-cross-compiler-for-android-8e297cb74e8a} a dalších. Některé pokusy selhaly již při kompilaci křížového kompilátoru, jiné až při kompilaci \emph{Git Annexu}.
 
     \subsubsection{Vlastní kompilace nástroje Proot}
-    Jelikož nebylo skrze křížovou kompilaci dosaženo většího pokroku než užitím verze určené pro \emph{Termux}, další pokusy pokračovaly právě s ní. Na pomoc s problémem s \emph{Proot} byla kontaktována jeho komunita na komunikačním kanále služby \emph{Gitter}~\footnoteURL{https://gitter.im}. S pomocí těchto vývojářů se podařilo zkompilovat verzi \emph{Prootu}, kterou používá \emph{Termux} pro prostředí balíčku vyvíjené aplikace. To vyřešilo problém s \emph{Seccomp} filtrováním, ale objevil se další. \emph{Git annex} stále nebylo možné spustit. Problém se týkal chybějících programů interpretu. \emph{Termux} pro běh programů vytváří vlastní linuxový systém, kde jsou nainstalovány všechny standardní programy. Toto prostředí mu tato aplikace neposkytuje. Tento problém nastal již dříve a je popsán v kapitole ~\ref{annex_skripts_overwrite}. Tam bylo možné ho obejít přepsáním určitých skriptů. Pro binární soubory toto bohužel možné není. Implementace vlastního systému uvnitř aplikace je velice problémová a také náročná na úložiště. Přes veškeré snahy se nepodařilo přijít na řešení. Zbývající zdroje byly investovány do vývoje kvalitní aplikace bez podpory \emph{Git Annexu} s možností rozšíření po jejím vydání v případě nalezení řešení.
+    Jelikož nebylo skrze křížovou kompilaci dosaženo většího pokroku než užitím verze určené pro \emph{Termux}, další pokusy pokračovaly právě s ní. Na pomoc s problémem s \emph{Proot} byla kontaktována jeho komunita na komunikačním kanále služby \emph{Gitter}~\footnoteURL{https://gitter.im}. S pomocí těchto vývojářů se podařilo zkompilovat verzi \emph{Prootu}, kterou používá \emph{Termux} pro prostředí balíčku vyvíjené aplikace. To vyřešilo problém s \emph{Seccomp} filtrováním, ale objevil se další. \emph{Git Annex} stále nebylo možné spustit. Problém se týkal chybějících programů interpretu. \emph{Termux} pro běh programů vytváří vlastní linuxový systém, kde jsou nainstalovány všechny standardní programy. Toto prostředí mu tato aplikace neposkytuje. Tento problém nastal již dříve a je popsán v kapitole ~\ref{annex_skripts_overwrite}. Tam bylo možné ho obejít přepsáním určitých skriptů. Pro binární soubory toto bohužel možné není. Implementace vlastního systému uvnitř aplikace je velice problémová a také náročná na úložiště. Přes veškeré snahy se nepodařilo přijít na řešení. Zbývající zdroje byly investovány do vývoje kvalitní aplikace bez podpory \emph{Git Annexu} s možností rozšíření po jejím vydání v případě nalezení řešení.
 
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Testování}
