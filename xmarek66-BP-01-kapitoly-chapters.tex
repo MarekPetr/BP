@@ -3,16 +3,16 @@
 % Autoři: Michal Bidlo, Bohuslav Křena, Jaroslav Dytrych, Petr Veigend a Adam Herout 2019
 %-----------------------------------CHAPTER------------------------------------
 \chapter{Úvod}
-Trendem poslední doby je neustálé zvětšování obrazovek mobilních zařízení i jejich výkonu. Dostali jsme se již do takové fáze, že je tyto zařízení možné využívat obdobně jako klasické počítače a tak je jejich využití pro verzování souborů na snadě.
+Trendem poslední doby je neustálé zvětšování obrazovek mobilních zařízení, jejich výkonu i paměti. Dostali jsme se již do takové fáze, že je tyto zařízení možné využívat obdobně jako klasické počítače a tak je jejich využití pro verzování souborů na snadě.
 Vyvíjená aplikace poskytuje systém, který může každý uživatel využít pro svůj účel a svým způsobem. Nejčastěji je \emph{Git} využíván programátory pro verzování souborů vyvíjených programů. Rozšíření \emph{Git LFS} a \emph{Git Annex} slouží pro správu velkých souborů v \emph{Git} repozitářích. Užitím \emph{Git LFS} se dosáhne efektivity využití paměťového prostoru zařízení. \emph{Git Annex} zase usnadní například ukládání videí nebo i jiných velkých souborů na externí úložiště. To umožní jejich synchronizaci mezi různými zařízeními různých systémů.
 
-Cílem práce je navrhnout, implementovat a otestovat aplikaci určenou pro operační systém \emph{Android}. Tato aplikace bude uživateli zprostředkovávat \emph{Git} formou přívětivého grafického rozhraní. Dále bude implementovat rozšíření \emph{Git LFS} a \emph{Git Annex} pro práci s velkými soubory. Aplikace je určena zejména vývojářům a jiným pokročilým uživatelům. Je tedy navržena jako maximálně transparentní, za účelem efektivního řešení problémů vznikajících při používání \emph{Git}.
+Cílem práce je navrhnout, implementovat a otestovat aplikaci určenou pro operační systém \emph{Android}. Tato aplikace bude uživateli zprostředkovávat \emph{Git} formou přívětivého grafického rozhraní. Dále bude implementovat rozšíření \emph{Git LFS} a \emph{Git Annex} pro práci s velkými soubory. Aplikace je určena zejména vývojářům a jiným pokročilým uživatelům. Je tedy navržena jako maximálně transparentní, za účelem efektivního řešení problémů vznikajících při používání systému \emph{Git}.
 \newpage
 \section{Git}
-\emph{Git}~\cite{git} slouží zejména programátorům k verzování jejich práce i jejího sdílení s ostatními členy týmu. Jeho využití je široké a to zejména při využití rozšíření \emph{Git LFS}~\cite{git-lfs} nebo \emph{Git Annex}~\cite{git-annex}, která se zaměřují na práci s velkými soubory.
+\emph{Git}~\cite{git} je rychlý, škálovatelný, distribuovaný systém správy verzí. Slouží zejména programátorům k verzování jejich práce i jejího sdílení s ostatními členy týmu. Jeho využití je široké a to zejména při využití rozšíření \emph{Git LFS}~\cite{git-lfs} nebo \emph{Git Annex}~\cite{git-annex}, která se zaměřují na práci s velkými soubory.
 
 \section{Git LFS}
-\emph{Git Large File Storage} (\emph{Git LFS}) nahrazuje velké soubory v repozitářích ukazateli. Samotné soubory jsou pak uloženy na vzdáleném serveru. Tento systém tedy slouží k efektivnímu uložení velkých souborů v \emph{Git}. Jedná se například o video záznamy, zvukové stopy, datasety a jiné velké binární soubory.
+\emph{Git Large File Storage} (\emph{Git LFS}) nahrazuje velké soubory v repozitářích ukazateli. Samotné soubory jsou pak uloženy na vzdáleném serveru. Tento systém tedy slouží k efektivnímu uložení velkých souborů v \emph{Git} repozitářích. Jedná se například o video záznamy, zvukové stopy, datasety a jiné velké binární soubory.
 
 \begin{figure}[h!]
     \begin{minipage}{\textwidth}

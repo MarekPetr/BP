@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html><head>
+<title>Projekty v ak.r. 2019/2020</title>
+<link rel="SHORTCUT ICON" href="https://wis.fit.vutbr.cz/images/favicon.ico" type="image/x-icon">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="Projekty%20v%20ak.r.%202019_2020_files/style8.css" type="text/css">
+<style type="text/css">
+div.agr, p.agr, dd { max-width: 600px; }
+</style>
+<script type="text/javascript">
+var ClockMonths = new Array("ledna", "února", "března", "dubna", "května", "června",
+"července", "srpna", "září", "října", "listopadu", "prosince");
+var ClockElm;
+var ClockDiff=0;
+document.cookie = "res=w:"+screen.width+",h:"+screen.height+",r:"+window.devicePixelRatio+",p:"+navigator.platform+",tp:"+navigator.maxTouchPoints+"; path=/";
+
+function ClockInit()
+{
+    if (!document.getElementById) return;
+    ClockElm = document.getElementById('clock');
+    if (!ClockElm || !ClockElm.innerHTML) return;
+    var ClockTm = new Date();
+    var datefmt = /^(\d\d?)[.]? ([^ ]+) (\d{4})\s(\d\d):(\d\d):(\d\d)$/;
+    var datep = datefmt.exec(ClockElm.innerHTML);
+    if (datep) {
+	var SrvClock = new Date();
+	SrvClock.setDate(datep[1]);
+	for (var i = 0; i<12; i++) {
+	    if (datep[2] == ClockMonths[i]) {
+		SrvClock.setMonth(i);
+	    }
+	}
+	SrvClock.setYear(datep[3]);
+	SrvClock.setHours(datep[4]);
+	SrvClock.setMinutes(datep[5]);
+	SrvClock.setSeconds(datep[6]);
+	ClockDiff = 500 + SrvClock.getTime()-ClockTm.getTime();
+    }
+    setInterval(UpdateClock, 1000);
+}
+
+function UpdateClock()
+{
+    var hr,min,sec,day,mon,year;
+
+    if (!ClockElm || !ClockElm.innerHTML) return;
+    var ClockTm = new Date();
+    ClockTm.setMilliseconds(ClockDiff+ClockTm.getMilliseconds());
+    if (ClockTm.getFullYear) year = ClockTm.getFullYear();
+    else year = ClockTm.getYear+1900;
+    mon = ClockTm.getMonth();
+    day = ClockTm.getDate();
+    hr = ClockTm.getHours();
+    min = ClockTm.getMinutes();
+    sec = ClockTm.getSeconds();
+    ClockElm.innerHTML = day+'. '+ClockMonths[mon]+' '+year+'\n '+(hr<=9?'0':'')+hr+':'+(min<=9?'0':'')+min+':'+(sec<=9?'0':'')+sec; 
+}
+
+function filter_empty(name)
+{
+    var i;
+    for (i = 0; i < document[name].elements.length; i++) {
+	var o = document.forms[name].elements[i];
+	if (o.type != 'text' && o.type != 'select-one') continue;
+	if (o.value == '') o.disabled = true;
+    }
+    return true;
+}
+</script>
+<script type="text/javascript" src="Projekty%20v%20ak.r.%202019_2020_files/taedit.js">
+</script>
+<script src="Projekty%20v%20ak.r.%202019_2020_files/prompt.js"></script></head>
+<body onload="StartOnLoad(); ClockInit()">
+<table class="noprint" role="navigation" style="background-color: #3498db" width="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td><a href="https://www.fit.vut.cz/.cs"><img class="FITlogo" src="Projekty%20v%20ak.r.%202019_2020_files/fitnewz.png" alt="FIT"></a></td>
+<td class="mitembg" nowrap="nowrap"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/index.php.cs"><span style="font-size:24px;line-height:14px">&nbsp;&#8962;&nbsp;</span></a></td>
+<th class="mitem hide-m"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/study.php.cs">studia</a></th>
+<th class="mitem hide-m"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/courses.php.cs">předměty</a></th>
+<th class="mitem"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/study-v.php.cs">termíny</a></th>
+<th class="mitem"><a class="stabs" href="https://wis.fit.vutbr.cz/FIT/st/reg.php.cs">registrace</a></th>
+<th class="mitem"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/admin.php.cs">hesla</a></th>
+<th class="mitem hide-m"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/other.php.cs">ostatní</a></th>
+<td class="mitembg hide-d hide-t"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/other.php.cs"><span style="font-size: 16px;line-height:16px">&nbsp;&gt;&nbsp;</span></a></td><td class="mitembg hide-m"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/logoff.php.cs?logoff=1"><span style="font-size:16px;line-height:16px">&nbsp;&#9032;&nbsp;</span></a></td><th class="mitem"><a class="stab" href="https://wis.fit.vutbr.cz/FIT/st/bci-prj-z.php.en?id=23027&amp;typ=BP1">&nbsp;EN&nbsp;</a></th></tr>
+</tbody></table>
+<table width="100%" cellpadding="4" border="0">
+<tbody><tr valign="top"><td style="width: 90%"><h1>Projekty v ak.r. 2019/2020</h1></td>
+<td style="text-align: right; white-space: nowrap"><div id="clock">13. května 2020
+ 20:02:24</div></td></tr></tbody></table>
+<div role="main" class="content">
+Login xmarek66, <b>Marek Petr</b>, 4. ročník BIT, prezenční, FIT<br>
+Ak. rok 2019/2020 studium č.2: řádný zápis<p></p><form action="/FIT/st/bci-prj-z.php.cs#abst" enctype="multipart/form-data" method="post" name="selform" onsubmit="return EditSubmit()">
+<p>V ak.r. 2019/2020 máte přihlášeny tyto projekty:
+</p><ul class="nomargin">
+<li>IBT - Bakalářská práce: <b><a href="https://wis.fit.vutbr.cz/FIT/st/bci-prj-z.php.cs?id=23027&amp;rok=2019&amp;typ=BP1">Android aplikace pro Git s podporou git-lfs a git-annex</a></b> (zadáno)<br>Zahájení projektu: <b>2019-11-01</b><br>Odevzdání projektu: <b>2020-05-28</b><br>Obhajoba semestrální části projektu: <b><a href="https://wis.fit.vutbr.cz/FIT/st/bci-com-l.php.cs?id=22">komise Databáze a informační systémy</a></b>, 2020-01-21 09:38<br>&#187; <a href="https://wis.fit.vutbr.cz/FIT/st/bci-prj-o.php?id=23027"><b>Zadání pro vložení do práce</b></a> <img src="Projekty%20v%20ak.r.%202019_2020_files/pdf.gif" alt="[PDF]" style="vertical-align: top"><br>&#187; <a href="https://wis.fit.vutbr.cz/FIT/st/bci-prj-t.php.cs?id=23027"><b>Vzor desek práce - český</b></a> <img src="Projekty%20v%20ak.r.%202019_2020_files/pdf.gif" alt="[PDF]" style="vertical-align: top"><br>&#187; <a href="https://wis.fit.vutbr.cz/FIT/st/bci-prj-t.php.en?id=23027"><b>Vzor desek práce - anglický</b></a> <img src="Projekty%20v%20ak.r.%202019_2020_files/pdf.gif" alt="[PDF]" style="vertical-align: top">
+</li></ul>
+<p></p><ul class="nomargin">
+<li><a href="https://www.fit.vut.cz/study/theses/schedule/.cs">Harmonogram vypracování bakalářských a diplomových prací</a>
+</li><li><a href="https://www.fit.vut.cz/study/theses/external/.cs">Externí zadání práce</a>
+</li><li><a href="https://www.fit.vut.cz/study/theses/bachelor-theses/.cs">Pokyny ke zpracování závěrečných prací a SZZ</a>
+</li></ul><hr size="1"><table width="100%" border="0"><tbody><tr valign="top"><td><a name="seznam"></a><h3>Android aplikace pro Git s podporou git-lfs a git-annex<br>Android Application for Git with git-lfs and git-annex Support</h3></td><td align="right">&nbsp;<a href="https://wis.fit.vutbr.cz/FIT/st/bci-prj-z.php.cs?typ=BP1#seznam">Zpět na seznam</a></td></tr></tbody></table>
+<dl class="nomargin"><dt><b>Vedoucí:</b></dt><dd><a href="http://www.fit.vutbr.cz/~rychly/.cs">Rychlý Marek, RNDr., Ph.D.</a>, UIFS FIT VUT</dd><dt><b>Oponent:</b></dt><dd><a href="http://www.fit.vutbr.cz/~burgetr/.cs">Burget Radek, Ing., Ph.D.</a>, UIFS FIT VUT</dd><dt><b>Student:</b></dt><dd>Marek Petr</dd><dt><b>Jazyk práce:</b></dt><dd>čeština</dd><dt><b>Zadání:</b></dt><dd style="max-width: 600px"><ol class="nomargin"><li>Seznamte
+ se s Git a jeho rozšířeními git-lfs a git-annex. Prozkoumejte 
+existující aplikace (nejen pro operační systém Android) pro ovládání 
+repositářů Git, git-lfs a git-annex, soustřeďte se zejména na aplikace s
+ grafickým uživatelským rozhraním.</li><li>Navrhněte aplikaci pro 
+operační systém Android, která umožní ovládat Git repositáře s podporou 
+git-lfs a git-annex. Zaměřte se na uživatelskou přívětivost a 
+minimalizaci velikosti repositářů ("shallow clone", ignorování a 
+odstraňování nepotřebných souborů, aj.). Řešte také problémy 
+kompatibility s úložištěm (např. podpora symbolických odkazů).</li><li>Po konzultaci s vedoucím aplikaci pro operační systém Android implementujte.</li><li>Řešení otestujte, vyhodnoťte a diskutujte výsledky. Výsledný software publikujte jako open-source.</li></ol></dd><dt><b>Část požadovaná pro obhajobu SP:</b></dt><dd>Body 1, 2 a započatá práce na bodu 3.</dd><dt><b>Kategorie:</b></dt><dd>Uživatelská rozhraní</dd><dt><b>Implementační jazyk:</b></dt><dd>Java aj.</dd><dt><b>Operační systém:</b></dt><dd>Android</dd><dt><b>Návrhová metodologie:</b></dt><dd>OOP</dd><dt><b>Literatura:</b></dt><dd><ul class="nomargin"><li>Ľuboslav Lacko. Vývoj aplikací pro Android. Computer Press, Brno, 2015. ISBN 978-80-251-4347-6.</li><li>Scott Chacon. Pro Git. CZ.NIC, Praha, 2009. ISBN 978-80-904248-1-4</li></ul></dd><dt><b>Komentář:</b></dt><dd>V
+ průběhu řešení BP je nutné zpracovat na přelomu každého kalendářního 
+měsíce krátkou zprávu, která stručně shrnuje řešitelův přínos za 
+uplynulý měsíc a očekávaný postup za měsíc následující. Zpráva se 
+odevzdává emailem na adresu vedoucího BP.</dd></dl><input type="hidden" name="typ" value="BP1"><input type="hidden" name="id" value="23027">
+<h2 id="abst">Odevzdávání práce</h2><table class="res" cellspacing="0" cellpadding="4" border="0"><tbody><tr valign="top"><td><p><b>Abstrakt česky (slovensky):</b><br><div class="editbox"><table style="border: 1px solid black; box-sizing: border-box; border-collapse: separate;" width="377" cellspacing="0" cellpadding="0"><tbody><tr><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: 0px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -20px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -40px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -60px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -80px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -100px;"> </div></td><td style="border: 2px inset rgb(176, 176, 176);" width="21" height="20"><div class="tabut" style="background-position-y: -120px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -140px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -160px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -180px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -200px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -220px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -240px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -260px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -280px;"> </div></td></tr></tbody></table><table style="border: 1px solid black; box-sizing: border-box; border-collapse: separate; display: none;" width="27" cellspacing="0" cellpadding="0"><tbody><tr><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -300px;"> </div></td></tr></tbody></table><iframe id="iframe_taedit0" style="width: 533px; height: 180px; border: 1px solid rgb(128, 128, 128); background-color: white; padding: 0px;" frameborder="0"></iframe></div><textarea name="anotcz" cols="60" rows="10" class="forminput" style="display: none;" wrap="soft">Tato
+ práce má za cíl implementovat aplikaci umožňující použití programu Git a
+ jeho rozšíření Git LFS a Git Annex na operačním systému Android. 
+Poslouží zejména vývojářům k usnadnění práce s Git a velkými soubory na 
+této platformě. Uživatelské rozhraní je proto navrženo jako maximálně 
+transparentní, za účelem efektivního řešení problémů vznikajících při 
+použití Git.</textarea></p></td><td style="background-color: #f0f0f0; border-bottom: 8px solid white"><h3>Zobrazený text na Webu:</h3><span class="red">Pokud obsahuje HTML entity nebo zalomení na nesprávných místech, opravte!</span><br>Tato
+ práce má za cíl implementovat aplikaci umožňující použití programu Git a
+ jeho rozšíření Git LFS a Git Annex na operačním systému Android. 
+Poslouží zejména vývojářům k usnadnění práce s Git a velkými soubory na 
+této platformě. Uživatelské rozhraní je proto navrženo jako maximálně 
+transparentní, za účelem efektivního řešení problémů vznikajících při 
+použití Git.</td></tr><tr valign="top"><td><b>Abstrakt anglicky:</b><br><div class="editbox"><table style="border: 1px solid black; box-sizing: border-box; border-collapse: separate;" width="377" cellspacing="0" cellpadding="0"><tbody><tr><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: 0px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -20px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -40px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -60px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -80px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -100px;"> </div></td><td style="border: 2px inset rgb(176, 176, 176);" width="21" height="20"><div class="tabut" style="background-position-y: -120px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -140px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -160px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -180px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -200px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -220px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -240px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -260px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -280px;"> </div></td></tr></tbody></table><table style="border: 1px solid black; box-sizing: border-box; border-collapse: separate; display: none;" width="27" cellspacing="0" cellpadding="0"><tbody><tr><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -300px;"> </div></td></tr></tbody></table><iframe id="iframe_taedit1" style="width: 533px; height: 180px; border: 1px solid rgb(128, 128, 128); background-color: white; padding: 0px;" frameborder="0"></iframe></div><textarea name="anoten" cols="60" rows="10" class="forminput" style="display: none;" wrap="soft">This
+ thesis aims to design and develop an Android application implementing 
+Git and its extensions Git LFS and Git Annex. The target audience 
+consists mainly of developers looking for an effective way to work with 
+Git and large files on this platform. The user interface is therefore 
+designed to provide a transparent environment which makes it effective 
+in solving Git related issues.</textarea></td><td style="padding: 0px 4px; background-color: #f0f0f0; border-bottom: 8px solid white">This
+ thesis aims to design and develop an Android application implementing 
+Git and its extensions Git LFS and Git Annex. The target audience 
+consists mainly of developers looking for an effective way to work with 
+Git and large files on this platform. The user interface is therefore 
+designed to provide a transparent environment which makes it effective 
+in solving Git related issues.</td></tr><tr valign="top"><td><b>Klíčová slova česky (slovensky):</b><br><div class="editbox"><table style="border: 1px solid black; box-sizing: border-box; border-collapse: separate;" width="377" cellspacing="0" cellpadding="0"><tbody><tr><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: 0px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -20px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -40px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -60px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -80px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -100px;"> </div></td><td style="border: 2px inset rgb(176, 176, 176);" width="21" height="20"><div class="tabut" style="background-position-y: -120px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -140px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -160px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -180px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -200px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -220px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -240px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -260px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -280px;"> </div></td></tr></tbody></table><table style="border: 1px solid black; box-sizing: border-box; border-collapse: separate; display: none;" width="27" cellspacing="0" cellpadding="0"><tbody><tr><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -300px;"> </div></td></tr></tbody></table><iframe id="iframe_taedit2" style="width: 533px; height: 97px; border: 1px solid rgb(128, 128, 128); background-color: white; padding: 0px;" frameborder="0"></iframe></div><textarea name="keycz" cols="60" rows="5" class="forminput" style="display: none;" wrap="soft">Android,
+ Java, mobilní aplikace, Android Studio, Git, Git LFS, git-lfs, Git 
+Annex, git-annex, MVVM, Model-View-ViewModel, LiveData, ViewModel, Room 
+Persistence Library&lt;br&gt;</textarea></td><td style="padding: 0px 4px; background-color: #f0f0f0; border-bottom: 8px solid white">Android,
+ Java, mobilní aplikace, Android Studio, Git, Git LFS, git-lfs, Git 
+Annex, git-annex, MVVM, Model-View-ViewModel, LiveData, ViewModel, Room 
+Persistence Library<br></td></tr><tr valign="top"><td><b>Klíčová slova anglicky:</b><br><div class="editbox"><table style="border: 1px solid black; box-sizing: border-box; border-collapse: separate;" width="377" cellspacing="0" cellpadding="0"><tbody><tr><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: 0px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -20px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -40px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -60px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -80px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -100px;"> </div></td><td style="border: 2px inset rgb(176, 176, 176);" width="21" height="20"><div class="tabut" style="background-position-y: -120px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -140px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -160px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -180px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -200px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -220px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -240px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -260px;"> </div></td><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -280px;"> </div></td></tr></tbody></table><table style="border: 1px solid black; box-sizing: border-box; border-collapse: separate; display: none;" width="27" cellspacing="0" cellpadding="0"><tbody><tr><td style="border: 2px solid rgb(192, 192, 192);" width="21" height="20"><div class="tabut" style="background-position-y: -300px;"> </div></td></tr></tbody></table><iframe id="iframe_taedit3" style="width: 533px; height: 97px; border: 1px solid rgb(128, 128, 128); background-color: white; padding: 0px;" frameborder="0"></iframe></div><textarea name="keyen" cols="60" rows="5" class="forminput" style="display: none;" wrap="soft">Android, Java, mobile application, Android Studio, Git, Git LFS,  
+git-lfs, Git Annex, git-annex, MVVM, Model-View-ViewModel, LiveData,  
+ViewModel, Room Persistence Library</textarea></td><td style="padding: 0px 4px; background-color: #f0f0f0; border-bottom: 8px solid white">Android, Java, mobile application, Android Studio, Git, Git LFS,  
+git-lfs, Git Annex, git-annex, MVVM, Model-View-ViewModel, LiveData,  
+ViewModel, Room Persistence Library</td></tr></tbody></table>
+<p><b>Souhlasím se zveřejněním textu práce na Webu FIT a VUT:</b> <select class="formselect" name="zverej">
+<option value="0">-nezadáno-</option>
+<option selected="selected" value="-1">ihned</option>
+<option value="1">po 1 roce</option>
+<option value="2">po 2 letech</option>
+<option value="3">po 3 letech</option>
+</select>
+</p><div class="agr">Dle novely VŠ zákona 137/2016 Sb. musí být text 
+práce zveřejněn. Zveřejnění lze pouze odložit z důvodu ochrany duševního
+ vlastnictví nebo obchodního tajemství, pak  bude text práce zveřejněn 
+po zadaném počtu let. <span class="red"><b>Odložení zveřejnění musí 
+schválit příslušný proděkan. Oba výtisky práce musí být v tomto případě 
+odevzdány svázané, jeden bude odeslán na MŠMT.</b></span></div><p><b>Nahrát text práce:</b> (PDF max. 16 MB)<br><input type="hidden" name="MAX_FILE_SIZE" value="16777216">
+<input type="file" name="pdf_public" class="forminput">
+<br>Plný text práce včetně utajovaných skutečností.</p><p class="agr"><b>Text obsahuje zadání práce:</b> <input type="checkbox" name="jezad" value="1" checked="checked"><br>Zaškrtnutím potvrzuji, že v textu nahrané práce je vloženo zadání práce.</p><p><b>Uložený text práce:</b>&nbsp;<a href="https://wis.fit.vutbr.cz/FIT/st/rp.php/rp/2019/BP/23027.pdf">https://wis.fit.vutbr.cz/FIT/st/rp.php/rp/2019/BP/23027.pdf</a> <input class="forminput" type="submit" name="delpub" value="Smazat"></p><p class="agr"><b>URL příloh k práci</b> (toho, co bude uloženo na paměťovém médiu v listinné verzi; obsah média uložte na <a href="https://nextcloud.fit.vutbr.cz/" target="nextcloud">https://nextcloud.fit.vutbr.cz/</a> a zde vložte link pro sdílení souboru nebo adresáře):<br><input type="text" name="bciurl" class="forminput" value="https://nextcloud.fit.vutbr.cz/apps/files/?dir=/xmarek66-BP&amp;fileid=299417" size="60" maxlength="255" autocomplete="off">
+</p><p><b>Zdrojové kódy pro zveřejnění:</b> (archív TGZ nebo ZIP, max. 16 MB)<br><input type="hidden" name="MAX_FILE_SIZE" value="16777216">
+<input type="file" name="sources" class="forminput">
+</p><div class="agr">Zveřejnění zdrojového kódu práce je podmíněno 
+uvedením licenční smlouvy svolující toto užití autorského díla a je na 
+rozdíl od odevzdání textu a příloh práce dobrovolné a nepovinné 
+(zdrojový kód nemusí být odevzdán zde, stačí jej přiložit v přílohách 
+práce). Archív by měl obsahovat soubor s GNU GPL/BSD/MIT/Apache/apod. 
+licencí k volnému užití autorského díla. Zveřejnění musí poté povolit a 
+potvrdit vedoucí práce.</div><p class="agr"><b>Elektronické odevzdání práce:</b> <input type="checkbox" name="final" value="1"><br>Zaškrtnutím
+ tohoto políčka potvrzuji, že práci definitivně odevzdávám. Před 
+zaškrtnutím je nutno mít v IS úspěšně uložen text práce, abstrakt, 
+klíčová slova a rozsáhlejší přílohy musí být uloženy v příslušném 
+úložišti, na které je uveden odkaz. <span class="red">Po zaškrtnutí a uložení bude práce odevzdána a již nebude možné nic změnit!</span></p><p align="center"><input class="forminput" type="submit" name="sendan" value="Uložit"></p></form><p></p></div>
+<div class="noprint">
+<address>&#169;Fakulta informačních technologií VUT, Božetěchova 2, 612 00 Brno<br>Připomínky zasílejte na adresu <a href="mailto:lampa@fit.vut.cz">lampa@fit.vut.cz</a></address></div>
+
+
+</body></html>
