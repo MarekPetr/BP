@@ -384,13 +384,13 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     \end{figure}
 
     \subsubsection{view\_models}
-    Třídy obsahující perzistentní data a implementující logiku nad nimi. Tento balíček odpovídá části \emph{ViewModel}~\emph{MVVM} a poskytuje aplikaci metody zajišťující její funkčnost. Komunikace mezi třídami \emph{ViewModelů} a aktivitami je zajištěna pomocí \emph{databindingu}, \emph{observerů} a veřejných metod, které tyto třídy poskytují.
+    Třídy obsahující perzistentní data a implementující logiku nad nimi. Tento balíček odpovídá části \emph{ViewModel}~\emph{MVVM} a poskytuje aplikaci metody zajišťující její funkčnost. Komunikace mezi třídami \emph{ViewModelů} a aktivitami je zajištěna pomocí \emph{databindingu}, \emph{observerů} a veřejných metod, které tyto třídy poskytují. Tento balíček také obsahuje další balíček \code{Events}, který poskytuje třídy \code{Event}~\footnoteURL{https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150} a \code{SingleLiveEvent}~\footnoteURL{https://github.com/NordicSemiconductor/Android-nRF-Blinky/blob/master/app/src/main/java/no/nordicsemi/android/blinky/viewmodels/SingleLiveEvent.java} sloužící ke komunikaci mezi \emph{ViewModelem} a \emph{View}.
 
     \begin{figure}[h]
         \centering
         \vspace{0.5cm}
         \includegraphics[]{drawio/viewmodels_class_diagram.pdf}
-        \caption[Diagram závislostí tříd ViewModelů]{Diagram závislostí tříd \emph{ViewModelů}. Pro přehlednost byl zahrnut jen výběr stěžejních atributů a metod těchto tříd.}
+        \caption[Diagram závislostí tříd ViewModelů]{Diagram závislostí tříd \emph{ViewModelů}. Pro přehlednost byl zahrnut jen výběr stěžejních atributů a metod těchto tříd. \code{RepoTasksViewModel} také implementuje rozhraní, která poskytuje balíček \emph{dialogs}, který je součástí balíčku \emph{fragments}.}
         \label{diagram:view_models}
     \end{figure}
 
@@ -405,7 +405,7 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     Základní příkazy \emph{Gitu} i jeho rozšíření jsou implementovány v balíčku \code{executors}. Tyto jednotlivé příkazy implementují metody třídy \code{GitExec}. Tyto metody volají metodu \code{run} třídy \code{BinaryExecutor}.
 
     \subsubsection{utilities}
-    Jedná se o třídy, metody a proměnné, které je možné použít kdekoliv v aplikaci. Součástí jsou také třídy \code{TaskState} pro definování stavu zpracovávaného příkazu \emph{Gitu} a \code{UriHelper} sloužící pro získání \emph{URI} k přístupu k paměti zařízení. Kód této třídy byl převzat z \emph{GitHub Gist}~\footnoteURL{https://gist.github.com/asifmujteba/d89ba9074bc941de1eaa\#file-asfurihelper}.
+    Jedná se o třídy, metody a proměnné, které je možné použít kdekoliv v aplikaci. Součástí jsou také třídy \code{TaskState} pro definování stavu zpracovávaného příkazu \emph{Gitu} a \code{UriHelper} sloužící pro získání \emph{URI} k přístupu k paměti zařízení. Kód této třídy byl převzat z \emph{GitHub Gist}~\footnoteURL{https://gist.github.com/asifmujteba/d89ba9074bc941de1eaa\#file-asfurihelper} a upraven tak, aby podporoval i SD karty.
 
 \newpage
 \section{Grafické uživatelské rozhraní}
