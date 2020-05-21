@@ -158,11 +158,11 @@ Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivita
 
     Tento stav přetrvává do výskytu události, která pozornost uživatele přenese jinam. To může nastav z iniciativy uživatele, aplikace, či systému. Když k takové události dojde, systém spustí \emph{callback} \emph{onPause()} a aktivita změní stav na \emph{Paused}.
     
-    \item \textbf{onPause()}: Tímto voláním systém oznamuje, že uživatel opouští danou aktivitu. Volání této metody je rychlé a proto by se nemělo používat k ukládání dat uživatele, či provádění jiných časově náročných operací. Pro tento účel slouží metoda \emph{onStop()}.
+    \item \textbf{onPause()}: Tímto voláním systém oznamuje, že uživatel opouští danou aktivitu. Volání této metody je rychlé a proto by se nemělo používat k ukládání dat uživatele nebo provádění jiných časově náročných operací. Pro tento účel slouží metoda \emph{onStop()}.
     
-    \item \textbf{onStop()}: Když už aktivita není pro uživatele viditelná, vstoupila do stavu \emph{Stopped} a systém zavolal metodu \emph{onStop()}. Při přechodu do tohoto stavu by aplikace měla uvolnit všechny zdroje, které nejsou potřeba když uživatel aplikaci právě nepoužívá. Dále se zde provádí dlouhé operace pro uložení stavu aktivity před jejím opuštěním.
+    \item \textbf{onStop()}: Když už aktivita není pro uživatele viditelná, vstoupila do stavu \emph{Stopped} a systém zavolal metodu \emph{onStop()}. Při přechodu do tohoto stavu by aplikace měla uvolnit všechny zdroje, které nejsou potřeba, když uživatel aplikaci právě nepoužívá. Zde je tedy vhodné provádět operace pro uložení stavu aktivity před jejím opuštěním.
     
-    \item \textbf{onDestroy()}: Tato metoda je zavolána když je aktivita definitivně ukončena. Toho se dosáhne buď tak, že uživatel vynutí ukončení aktivity nebo systém aktivitu ukončí z důvodu změny konfigurace (například otočení displeje).
+    \item \textbf{onDestroy()}: Tato metoda je zavolána, když je aktivita definitivně ukončena. Toho se dosáhne buď tak, že uživatel vynutí ukončení aktivity nebo systém aktivitu ukončí z důvodu změny konfigurace (například otočení displeje).
 
 \end{itemize}
 
