@@ -147,8 +147,26 @@ Komponenty aplikace~\footnoteURL{https://developer.android.com/guide/components/
 
 \newpage
 \section{Životní cyklus aktivity}
-Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivitami, je často potřeba pro různé účely detekovat změny těchto stavů. K tomu aktivita poskytuje řadu metod zpětného volání tzv. \emph{callback}. Ty jsou volány v případě, že systém aktivitu vytváří - \textbf{OnCreate()}, přerušuje - \textbf{onPause()}), zastavuje - \textbf{onStop()}, obnovuje - \textbf{onRestart()} nebo ruší - \textbf{onDestroy()}.
+Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivitami, je často potřeba pro různé účely detekovat změny těchto stavů. K tomu aktivita poskytuje řadu metod zpětného volání (tzv. \emph{callback}), které umožňují tyto změny stavů detekovat a při jejich přechodu vykonat potřebnou akci~\cite{activity-life-cycle}.
 
+\begin{itemize}
+    \item \textbf{onCreate()}: Tento \emph{callback} je volán při prvním spuštění aktivity.
+
+    \item \textbf{onStart()}: Volání \emph{onStart()} danou aktivitu zobrazí uživateli. Aplikace se v této fázi připravuje na přenesení do popředí, kde se stane uživatelem ovladatelnou. Tato metoda proběhne velice rychle. Aktivita záhy vstoupí do \emph{Resumed} režimu a systém zavolá metodu \emph{onResume()}. 
+    
+    \item \textbf{onResume()}: Se vstupem aktivity do \emph{Resumed} režimu se aktivita přenese do popředí a uživatel může ovládat prvky, které mu jsou zpřístupněny.
+
+    Tento stav přetrvává do výskytu události, která pozornost uživatele přenese jinam. To může nastav z iniciativy uživatele, aplikace, či systému. Když k takové události dojde, systém spustí \emph{callback} \emph{onPause()} a aktivita změní stav na \emph{Paused}.
+    
+    \item \textbf{onPause()}: Tímto voláním systém oznamuje, že uživatel opouští danou aktivitu. Volání této metody je rychlé a proto by se nemělo používat k ukládání dat uživatele, či provádění jiných časově náročných operací. Pro tento účel slouží metoda \emph{onStop()}.
+    
+    \item \textbf{onStop()}: Když už aktivita není pro uživatele viditelná, vstoupila do stavu \emph{Stopped} a systém zavolal metodu \emph{onStop()}. Při přechodu do tohoto stavu by aplikace měla uvolnit všechny zdroje, které nejsou potřeba když uživatel aplikaci právě nepoužívá. Dále se zde provádí dlouhé operace pro uložení stavu aktivity před jejím opuštěním.
+    
+    \item \textbf{onDestroy()}: Tato metoda je zavolána když je aktivita definitivně ukončena. Toho se dosáhne buď tak, že uživatel vynutí ukončení aktivity nebo systém aktivitu ukončí z důvodu změny konfigurace (například otočení displeje).
+
+\end{itemize}
+
+\newpage
 \begin{figure}[h!]
     \centering
     \vspace{0.5cm}
@@ -159,7 +177,7 @@ Protože uživatel má plnou volnost přecházet mezi aplikacemi i mezi aktivita
 
 \newpage
 \section{Architektura aplikace}
- Mobilní prostředí aplikací je velice odlišné od toho na PC, což má vliv i na architekturu aplikací. Zejména je to dáno tím, že uživatel často využívá kooperace více aplikací. Například pro sdílení snímků fotoaparátu na sociálních sítích, daná aplikace vyvolá \emph{intent} pro spuštění kamery. Ten spustí jinou aplikaci, poskytující rozhraní pro pořízení snímku. Tato aplikace po jeho pořízení, předá snímek původní aplikaci a ta ho dále zpracovává. Tento způsob práce je pro \emph{Android} typický a aplikace s ním musí umět pracovat.
+ Mobilní prostředí aplikací je velice odlišné od toho na PC, což má vliv i na architekturu aplikací. Zejména je to dáno tím, že uživatel často využívá kooperace více aplikací. Například pro sdílení snímků fotoaparátu na sociálních sítích, daná aplikace vyvolá \emph{intent} pro spuštění kamery. Ten spustí jinou aplikaci, která poskytuje rozhraní pro pořízení snímku. Tato aplikace po jeho pořízení, předá snímek původní aplikaci a ta ho dále zpracovává. Tento způsob práce je pro \emph{Android} typický a aplikace s ním musí umět pracovat.
 
  Je důležité mít na paměti, že komponenty mohou být spuštěny v různém pořadí a operační systém může jejich běh v jakoukoliv dobu ukončit. Proto by data a stav aplikace neměli být uchovávány v rámci těchto komponent.
  
@@ -369,10 +387,10 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     Nejdůležitější součástí balíčku \code{java} je balíček \code{activities}. Ten aplikaci dělí na obrazovky. O každou z nich se stará jedna třída. V případě, že aplikace potřebuje určitou obrazovku, je zavolána příslušná aktivita s jejím chováním. Všechny aktivity aplikace rozšiřují základní aktivitu \code{BasicAbstractActivity}. Ta implementuje společné prvky rozhraní aktivit. Například získávání oprávnění, zobrazení různých oznámení a dialogů.
 
     \subsubsection{adapters}
-    Tento balíček obsahuje třídy, které slouží k zobrazení položek stejného typu. Tato aplikace je využívá k zobrazení seznamu repozitářů základní obrazovky a příkazů \emph{Gitu} v bočním výsuvném panelu. Adaptér \code{RepoTasksAdapter} sloužící k zobrazení tohoto výsuvného panelu byl převzat z třídy \code{RepoOperationsAdapter}~\footnoteURL{https://github.com/maks/MGit/blob/master/app/src/main/java/me/sheimi/sgit/adapters/RepoOperationsAdapter.java} aplikace \emph{MGit} a následně upraven pro potřeby této aplikace.
+    Tento balíček obsahuje třídy, které slouží k zobrazení položek stejného typu. Tato aplikace je využívá k zobrazení seznamu repozitářů základní obrazovky a příkazů \emph{Gitu} v bočním výsuvném panelu. K zobrazení tohoto panelu slouží třída \code{RepoTasksAdapter}. Její kód byl převzat z třídy \code{RepoOperationsAdapter}~\footnoteURL{https://github.com/maks/MGit/blob/master/app/src/main/java/me/sheimi/sgit/adapters/RepoOperationsAdapter.java} aplikace \emph{MGit} a následně upraven pro potřeby této aplikace.
 
     \subsubsection{database}
-    Tento balíček obsahuje balíček \code{model}, ve kterém se nachází třída \code{Repo}. Ta implementuje tabulku databáze uchovávající všechny potřebné informace o repozitáři. Instance databáze se uchovává ve třídě \code{RepoDatabase}. K přístupu k ní se využívá třída \code{RepoDao}. Tato třída obsahuje metody volající \emph{SQLite} dotazy databáze. Databáze je aplikaci zprostředkována třídou \code{RepoRepository}, která odpovídá \code{Repository} modelu~\emph{MVVM}. Uložena je v bezpečném vnitřním prostoru aplikace. Pro získání abstraktní vrstvy nad databází aplikace využívá knihovny \emph{Room Persistence Library}~\footnoteURL{https://developer.android.com/topic/libraries/architecture/room}.
+    Tento balíček obsahuje balíček \code{model}, ve kterém se nachází třída \code{Repo}. Ta implementuje tabulku databáze, která uchovává všechny potřebné informace o repozitáři. Instance databáze se uchovává ve třídě \code{RepoDatabase}. K přístupu k ní se využívá třída \code{RepoDao}. Tato třída obsahuje metody volající \emph{SQLite} dotazy databáze. Databáze je aplikaci zprostředkována třídou \code{RepoRepository}, která odpovídá \code{Repository} modelu~\emph{MVVM}. Uložena je v bezpečném vnitřním prostoru aplikace. Pro získání abstraktní vrstvy nad databází aplikace využívá knihovny \emph{Room Persistence Library}~\footnoteURL{https://developer.android.com/topic/libraries/architecture/room}.
 
     \begin{figure}[h]
         \centering
@@ -383,7 +401,7 @@ Aplikace je psána v jazyce \emph{Java}. Dále využívá návrhového vzoru \em
     \end{figure}
 
     \subsubsection{view\_models}
-    Třídy obsahující perzistentní data a implementující logiku nad nimi. Tento balíček odpovídá části \emph{ViewModel}~\emph{MVVM} a poskytuje aplikaci metody zajišťující její funkčnost. Komunikace mezi třídami \emph{ViewModelů} a aktivitami je zajištěna pomocí \emph{databindingu}, \emph{observerů} a veřejných metod, které tyto třídy poskytují. Tento balíček také obsahuje další balíček \code{Events}, který poskytuje třídy \code{Event}~\footnoteURL{https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150} a \code{SingleLiveEvent}~\footnoteURL{https://github.com/NordicSemiconductor/Android-nRF-Blinky/blob/master/app/src/main/java/no/nordicsemi/android/blinky/viewmodels/SingleLiveEvent.java} sloužící ke komunikaci mezi \emph{ViewModelem} a \emph{View}.
+    Jedná se o třídy, které zpracovávají perzistentní data a implementují logiku aplikace. Tento balíček odpovídá části \emph{ViewModel}~\emph{MVVM} a poskytuje tak aplikaci metody zajišťující její funkčnost. Komunikace mezi třídami \emph{ViewModelů} a aktivitami je zajištěna pomocí \emph{databindingu}, \emph{observerů} a veřejných metod, které tyto třídy poskytují. Tento balíček také obsahuje další balíček \code{Events}, který poskytuje třídy \code{Event}~\footnoteURL{https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150} a \code{SingleLiveEvent}~\footnoteURL{https://github.com/NordicSemiconductor/Android-nRF-Blinky/blob/master/app/src/main/java/no/nordicsemi/android/blinky/viewmodels/SingleLiveEvent.java} sloužící ke komunikaci mezi \emph{ViewModelem} a \emph{View}.
 
     \begin{figure}[h]
         \centering
